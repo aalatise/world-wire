@@ -1,2 +1,2 @@
 # world-wire
-Infrastructure for a digital asset exchange based on Stellar.
+Infrastructure for digital asset exchanges based on Stellar blockchain.
