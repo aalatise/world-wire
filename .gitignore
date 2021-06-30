@@ -1,0 +1,123 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+.idea
+node_modules
+*.exe
+*debug
+anchor-service/logs/anchor-service.log
+api-service/logs/logs.txt
+callback-service/logs/logs.txt
+compliance-service/logs/logs.txt
+crypto-service/logs/logs.txt
+federation-service/logs/logs.txt
+gas-service/logs/logs.txt
+payment-listener/logs/logs.txt
+rdo-service/logs/logs.txt
+quotes-service/logs/logs.txt
+*vendor*
+.vendor-new
+app.yaml
+.DS_Store
+logs.txt
+rdo-client
+*.log
+nohup.out
+.vscode
+log.txt
+# rdo-service
+# payout-service
+# callback-service
+# payment-listener
+# anchor-service
+# participant-registry
+# fee-service
+
+
+# compiled output
+world-wire-web/dist
+world-wire-web/tmp
+world-wire-web/out-tsc
+world-wire-webfunctions/lib
+world-wire-webfunctions/db
+world-wire-webfunctions/def
+world-wire-webfunctions/node_modules
+world-wire-webfunctions/spec
+world-wire-web.firebase
+
+# dependencies
+world-wire-webnode_modules
+
+# IDEs and editors
+world-wire-web/.idea
+world-wire-web.project
+world-wire-web.classpath
+world-wire-web.c9/
+world-wire-web*.launch
+world-wire-web.settings/
+world-wire-web*.sublime-workspace
+
+# IDE - VSCode
+world-wire-web/.vscode/*
+!world-wire-web/.vscode/settings.json
+!world-wire-web/.vscode/tasks.json
+!world-wire-web/.vscode/launch.json
+!world-wire-web/.vscode/extensions.json
+
+# misc
+world-wire-web/.sass-cache
+world-wire-web/connect.lock
+world-wire-web/coverage
+world-wire-web/libpeerconnection.log
+world-wire-web/npm-debug.log
+world-wire-web/testem.log
+world-wire-web/typings
+
+# e2e
+world-wire-web/e2e/*.map
+
+# System Files
+world-wire-web/.DS_Store
+world-wire-web/Thumbs.db
+
+# Auth Service environment file
+*firebase-adminsdk*
+*credentials*
+auth-service/google-cloud-sdk/**/*
+auth-service/authorization/env.go
+auth-service/service-account-cred.json
+auth-service/micro-services/*
+auth-service/.credentials/
+auth-service/authorization/authorization
+auth-service/.vscode/launch_old.json
+auth-service/node_modules
+auth-service/deployment/node_modules
+auth-service/deployment/gcp_endpoints/node_modules
+auth-service/travis-setup/node_modules
+auth-service/secret-mgmt/test
+auth-service/secret-mgmt/cicdtest
+
+auth-service/credentials.tar
+auth-service/credentials.zip
+auth-service/provisionAdminUser.json
+
+# delete shared dir (ie: copy from another dir at debug runtime)
+auth-service/authentication/src/shared/**/*
+auth-service/deployment/src/shared/**/*
+
+# build dir except .vscode (ignoring compiled /build js files)
+/auth-service/**/*.js
+/auth-service/**/*.map
+/auth-service/authentication/build/*
+# /auth-service/authentication/build/.vscode
+!/auth-service/**/jest.config.js
+auth-service/authorization/middleware/permissions/permissions.go
+auth-service/authorization/__debug_bin
+auth-service/authentication/.ibmid-certs/*
+auth-service/**/tmp/*
+
+# Infra related ignores
+infrastructure/kubernetes/eks-dev/istio/
+infrastructure/kubernetes/eks-qa/istio/
+infrastructure/kubernetes/eks-pen/istio/
+infrastructure/kubernetes/eks-st/istio/
+infrastructure/kubernetes/eks-prod/istio/

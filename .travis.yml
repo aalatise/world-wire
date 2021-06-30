@@ -1,0 +1,288 @@
+_services_shared_settings: &services_shared_settings
+#  if: (branch = foc-finance and type = api and env(job) = push)
+  sudo: true
+  dist: xenial
+  language: go
+  go: "1.13"
+  git:
+    depth: false
+  services:
+    - docker
+  before_install:
+    - docker pull golang:1.13.15-alpine3.12
+    - docker tag golang:1.13.15-alpine3.12 golang:alpine
+    - docker login -u iamapikey -p ${RES_IBM_SERVICE_ID_API_KEY} ${RES_ICR_URL}
+    - docker pull ${RES_ICR_URL}/gftn/node-alpine:latest
+    - docker tag ${RES_ICR_URL}/gftn/node-alpine:latest gftn/node-alpine:latest
+    - docker pull ${RES_ICR_URL}/gftn/alpine:latest
+    - docker tag ${RES_ICR_URL}/gftn/alpine:latest gftn/alpine:latest
+    - mkdir -p ../../gftn/world-wire-services && mv ${PWD}/* ${PWD}/../../gftn/world-wire-services && cd ${PWD}/../../gftn/world-wire-services
+  install:
+    - bash travis/scripts/travis-microservices.sh beforeInstall || travis_terminate 1;
+  before_script:
+    - docker login -u iamapikey -p ${RES_IBM_SERVICE_ID_API_KEY} ${RES_ICR_URL}
+
+_pr_services_shared_settings: &pr_services_shared_settings
+#  if: (branch = foc-finance and type = pull_request)
+  sudo: true
+  dist: xenial
+  language: go
+  go: "1.13"
+  git:
+    depth: false
+  services:
+    - docker
+  before_install:
+    - docker pull golang:1.13.15-alpine3.12
+    - docker tag golang:1.13.15-alpine3.12 golang:alpine
+    - docker login -u iamapikey -p ${RES_IBM_SERVICE_ID_API_KEY} ${RES_ICR_URL}
+    - docker pull ${RES_ICR_URL}/gftn/node-alpine:latest
+    - docker tag ${RES_ICR_URL}/gftn/node-alpine:latest gftn/node-alpine:latest
+    - docker pull ${RES_ICR_URL}/gftn/alpine:latest
+    - docker tag ${RES_ICR_URL}/gftn/alpine:latest gftn/alpine:latest
+    - mkdir -p ../../gftn/world-wire-services && mv ${PWD}/* ${PWD}/../../gftn/world-wire-services && cd ${PWD}/../../gftn/world-wire-services
+  install:
+    - bash travis/scripts/travis-microservices.sh beforeInstall || travis_terminate 1;
+
+# _clear_push_shared_settings: &clear_push_shared_settings
+#   if: (branch = foc-finance and type = api and env(job) = push)
+#   language: go
+#   go: "1.13"
+#   sudo: true
+#   dist: xenial
+
+after_failure:
+  # dump the last 2000 lines of our build to show error
+  - tail -n 2000 build.log
+
+after_success:
+  # Log that the build was a success
+  - echo "build succeeded."
+
+_packer_build_settings: &packer_build_settings
+#  if: (branch = foc-finance and type = api and env(job) = packer)
+  language: go
+  go: "1.13"
+  services:
+    - docker
+  sudo: true
+
+jobs:
+  include:
+    # Build for the hardened alpine linux image
+    - stage: Create hardened alpine linux image
+      <<: *packer_build_settings
+      script:
+        - cd travis/hardened-alpine
+        - bash -x build-and-launch.sh || exit 1
+
+    # Build for the hardened node alpine linux image
+    - stage: Create hardened NODE alpine linux image
+      <<: *packer_build_settings
+      script:
+        - cd travis/hardened-node
+        - bash -x build-and-launch.sh || exit 1
+
+    - stage: Build and test docker images
+      name: Admin Service
+      env:
+        - BUILD_CONTEXT=Admin-service
+      <<: *pr_services_shared_settings
+      script: bash travis/scripts/travis-microservices.sh runAdministrationService || (echo "Build Admin Service failed" && travis_terminate 1;)
+    - name: Anchor Service
+      env:
+        - BUILD_CONTEXT=Anchor-service
+      <<: *pr_services_shared_settings
+      script: bash travis/scripts/travis-microservices.sh runAnchorService || (echo "Build Anchor Service failed" && travis_terminate 1;)
+    - name: Api Service
+      env:
+        - BUILD_CONTEXT=Api-service
+      <<: *pr_services_shared_settings
+      script: bash travis/scripts/travis-microservices.sh runApiService || (echo "Build Api Service failed" && travis_terminate 1;)
+    - name: Automation Service
+      env:
+        - BUILD_CONTEXT=Automation-service
+      <<: *pr_services_shared_settings
+      script: bash travis/scripts/travis-microservices.sh runAutomationService || (echo "Build Automation Service failed" && travis_terminate 1;)
+    - name: Crypto Service
+      env:
+        - BUILD_CONTEXT=Crypto-service
+      <<: *pr_services_shared_settings
+      script: bash travis/scripts/travis-microservices.sh runCryptoService || (echo "Build Crypto Service failed" && travis_terminate 1;)
+    - name: Fee Service
+      env:
+        - BUILD_CONTEXT=Fee-service
+      <<: *pr_services_shared_settings
+      script: bash travis/scripts/travis-microservices.sh runFeeService || (echo "Build Fee Service failed" && travis_terminate 1;)
+    - name: Gas Service
+      env:
+        - BUILD_CONTEXT=Gas-service
+      <<: *pr_services_shared_settings
+      # Gas service needs to pull alpine images to build, so requires ICR Login step
+      script: bash travis/scripts/travis-microservices.sh runGasService || (echo "Build Gas Service failed" && travis_terminate 1;)
+    - name: Global Whitelist Service
+      env:
+        - BUILD_CONTEXT=Global-service
+      <<: *pr_services_shared_settings
+      script: bash travis/scripts/travis-microservices.sh runGlobalWhitelistService || (echo "Build Whitelist Service failed" && travis_terminate 1;)
+    - name: Build Participant Registry Service
+      env:
+        - BUILD_CONTEXT=Build-service
+      <<: *pr_services_shared_settings
+      script: bash travis/scripts/travis-microservices.sh runParticipantRegistry || (echo "Build Participant Registry Service failed" && travis_terminate 1;)
+    - name: Payment Listener Service
+      env:
+        - BUILD_CONTEXT=Payment-service
+      <<: *pr_services_shared_settings
+      script: bash travis/scripts/travis-microservices.sh runPaymentListener || (echo "Build Payment Listener Service failed" && travis_terminate 1;)
+    - name: Quotes Service
+      env:
+        - BUILD_CONTEXT=Quotes-service
+      <<: *pr_services_shared_settings
+      script: bash travis/scripts/travis-microservices.sh runQuotesService || (echo "Build Quotes Service failed" && travis_terminate 1;)
+    - name: Send Service
+      env:
+        - BUILD_CONTEXT=Send-service
+      <<: *pr_services_shared_settings
+      script: bash travis/scripts/travis-microservices.sh runSendService || (echo "Build Send Service failed" && travis_terminate 1;)
+    - name: WW Gateway Service
+      env:
+        - BUILD_CONTEXT=WW-service
+      <<: *pr_services_shared_settings
+      script: bash travis/scripts/travis-microservices.sh runWWGateway || (echo "Build WW Gateway Service failed" && travis_terminate 1;)
+    - name: Auth Service
+      env:
+        - BUILD_CONTEXT=Auth-service
+      <<: *pr_services_shared_settings
+      script: bash travis/scripts/travis-microservices.sh runAuthService || (echo "Build Auth Service failed" && travis_terminate 1;)
+    - name: Portal API Service
+      env:
+        - BUILD_CONTEXT=Portal-service
+      <<: *pr_services_shared_settings
+      script: bash travis/scripts/travis-microservices.sh runPortalAPIService || (echo "Build Portal API Service failed" && travis_terminate 1;)
+    - name: WW Portal
+      env:
+        - BUILD_CONTEXT=WW-Portal
+      <<: *pr_services_shared_settings
+      script: bash travis/scripts/travis-microservices.sh runWWPortal || (echo "Build WW Portal failed" && travis_terminate 1;)
+    # - stage: Deploy World Wire to IBM Cloud
+    #   if: branch = foc-finance and type = api and env(job) = deploy
+    #   sudo: true
+    #   dist: xenial
+    #   install:
+    #     - curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
+    #     - chmod +x ./kubectl
+    #     - sudo mv ./kubectl /usr/local/bin/kubectl
+    #   script:
+    #     - echo "Deploy WW IBM Cloud"
+
+    # - stage: clear_docker_cache
+    #   git:
+    #     clone: false
+    #     depth: false
+    #   script:
+    #     - ls $HOME/docker
+    #     - rm -f $HOME/docker/*
+    #     - ls $HOME/docker
+    #   <<: *clear_push_shared_settings
+    - stage: push_docker_images
+      name: build_admin
+      <<: *services_shared_settings
+      script: bash travis/scripts/travis-microservices.sh runAdministrationService push || (echo "Build Admin Service failed" && travis_terminate 1;)
+    - name: build_anchor
+      <<: *services_shared_settings
+      script: bash travis/scripts/travis-microservices.sh runAnchorService push || (echo "Build Anchor Service failed" && travis_terminate 1;)
+    - name: build_api
+      <<: *services_shared_settings
+      script: bash travis/scripts/travis-microservices.sh runApiService push || (echo "Build Api Service failed" && travis_terminate 1;)
+    - name: build_automation
+      <<: *services_shared_settings
+      script: bash travis/scripts/travis-microservices.sh runAutomationService push || (echo "Build Automation Service failed" && travis_terminate 1;)
+    - name: build_crypto
+      <<: *services_shared_settings
+      script: bash travis/scripts/travis-microservices.sh runCryptoService push || (echo "Build Crypto Service failed" && travis_terminate 1;)
+    - name: build_fees
+      <<: *services_shared_settings
+      script: bash travis/scripts/travis-microservices.sh runFeeService push || (echo "Build Fee Service failed" && travis_terminate 1;)
+    - name: build_gas
+      <<: *services_shared_settings
+      script: bash travis/scripts/travis-microservices.sh runGasService push || (echo "Build Gas Service failed" && travis_terminate 1;)
+    - name: build_global_whitelist
+      <<: *services_shared_settings
+      script: bash travis/scripts/travis-microservices.sh runGlobalWhitelistService push || (echo "Build Whitelist Service failed" && travis_terminate 1;)
+    - name: build_pr
+      <<: *services_shared_settings
+      script: bash travis/scripts/travis-microservices.sh runParticipantRegistry push || (echo "Build Participant Registry Service failed" && travis_terminate 1;)
+    - name: build_payment_listener
+      <<: *services_shared_settings
+      script: bash travis/scripts/travis-microservices.sh runPaymentListener push || (echo "Build Payment Listener Service failed" && travis_terminate 1;)
+    - name: build_quotes
+      <<: *services_shared_settings
+      script: bash travis/scripts/travis-microservices.sh runQuotesService push || (echo "Build Quotes Service failed" && travis_terminate 1;)
+    - name: build_send
+      <<: *services_shared_settings
+      script: bash travis/scripts/travis-microservices.sh runSendService push || (echo "Build Send Service failed" && travis_terminate 1;)
+    - name: build_ww_gateway
+      <<: *services_shared_settings
+      script: bash travis/scripts/travis-microservices.sh runWWGateway push || (echo "Build WW Gateway Service failed" && travis_terminate 1;)
+    - name: build_auth
+      <<: *services_shared_settings
+      script: bash travis/scripts/travis-microservices.sh runAuthService push || (echo "Build Auth Service failed" && travis_terminate 1;)
+    - name: build_portal_api
+      <<: *services_shared_settings
+      script: bash travis/scripts/travis-microservices.sh runPortalAPIService push || (echo "Build Portal API Service failed" && travis_terminate 1;)
+    - name: build_ww_portal
+      <<: *services_shared_settings
+      script: bash travis/scripts/travis-microservices.sh runWWPortal push || (echo "Build WW Portal failed" && travis_terminate 1;)
+notifications:
+  slack:
+    secure: gos7bvbW6a2bVK7ySBDVbG0+o59YPlSjVyQvcu13ZZ/DbqoYLefFrIsEMd4TTUNZnACk3p04bSnankU8IDKNOpMM5z2ROgZXxebIzWjU7TUuDB7PgE7uOvucGD5SrPi+gYPEN2/4weee4dhh2QqKLW8Qg1ZDSAC5e4T3iN/liSdU59RHMPVmQDbLMaeM3KVJ1Cg4BfXI/wwNoYadjzm1LNN0DFl2RQjbYOt6V0Cd/diPlEff6WdtCQfaEyE5dVQdrW9h9oVyHtnZbyV1flUv/Gd4TCJggUV43fuwK6ZzjdHC/iIcU/Xt54/dCrIa10qxBXaGtJFonH0l52c0ul6idW9/1s4WbAFL6RyiN+Hbefpaac4DlNwuBnUU8WD/za5SVE7mpjYx06yqgtChiMjcVX+RJMK5c414w504ywOtY8MT/oAh4aAMLG8hQPkS9EeGMuLEmADLjwv+qNCK4zChd6squvT50/k7hMbr88JmYQLrTgDMIOsUXZC3cLzFXNjR//x6CWYZH54KLCs+VD27LUxL6CYCX9C/pr1/267+KtIxhI0n4S/WzftiiawqQGNyDPiAiwevLpkXbrStU3hCi0HYMZ9ZgiBXGdl1K4w4SfGF7aNW6XJgLg9jCGjwUYYVK1Cwxrv5YC7LHmdenzlmCP+8LcsqnU8iEbm9N9OCMYs=
+    # Build Auth Service
+    # - stage: Build Auth service
+    #   if: (branch = foc-finance and type = api and env(job) = push)
+    #   language: node_js
+    #   node_js:
+    #     - "10"
+    #   dist: xenial
+    #   sudo: true
+    #   services:
+    #     - docker
+    #   script:
+    #     - bash travis/scripts/travis-microservices.sh runAuthService || travis_terminate 1;
+    #   before_cache:
+    #     # Save tagged docker images to cache so that push build stage can use it if this job is not triggered by a pull request
+    #     - >
+    #       docker images -a --filter='dangling=false' --filter=reference='gftn/*:*' --format '{{.Repository}}:{{.Tag}} {{.ID}}'
+    #       | xargs -n 2 -t sh -c 'docker save $0 -o $HOME/docker/"$1".tar';
+    #   cache:
+    #     directories:
+    #       - node_modules
+    #       - $HOME/docker
+    # - stage: push_docker_images
+    #   <<: *clear_push_shared_settings
+    #   services:
+    #     - docker
+    #   before_script:
+    #     - ls $HOME/docker
+    #     # Load cached docker images
+    #     - if [[ -d $HOME/docker ]]; then ls $HOME/docker/*.tar | xargs -t -I {} sh -c "docker load -i {}"; else echo "No images to push" && travis_terminate 1; fi
+    #   script:
+    #     - docker login -u iamapikey -p ${RES_IBM_SERVICE_ID_API_KEY} ${RES_ICR_URL}
+    #     - bash travis/scripts/travis-microservices.sh pushAllDockerImages || travis_terminate 1;
+    # - name: Push Auth Service
+    #   language: node_js
+    #   node_js:
+    #     - "10"
+    #   dist: xenial
+    #   sudo: true
+    #   services:
+    #     - docker
+    #   cache:
+    #     directories:
+    #       - node_modules
+    #       - $HOME/docker
+    #   before_script:
+    #     - ls $HOME/docker
+    #     # Load cached docker images
+    #     - if [[ -d $HOME/docker ]]; then ls $HOME/docker/*.tar | xargs -t -I {} sh -c "docker load -i {}"; else echo "No images to push" && travis_terminate 1; fi
+    #   script: bash travis/scripts/travis-microservices.sh pushAllDockerImages || travis_terminate 1;
