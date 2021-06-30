@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: default
+  name: automation-service
+  labels:
+    app: automation-service
+    type: admin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: automation-service
+  template:
+    metadata:
+      labels:
+        app: automation-service
+        type: admin
+      annotations:
+        sidecar.istio.io/inject: "true"
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/agent-init-first: "true"
+        vault.hashicorp.com/agent-inject-token: "true"
+        vault.hashicorp.com/role: "automation-service"
+        vault.hashicorp.com/agent-pre-populate-only: "true"
+        vault.hashicorp.com/ca-cert: "/run/secrets/kubernetes.io/serviceaccount/ca.crt"
+    spec:
+      serviceAccountName: automation-service
+      containers:
+        - env:
+            - name: SERVICE_NAME
+              value: "automation-service"
+            - name: SERVICE_LOG_FILE
+              value: "/var/logs/logs.txt"
+            - name: SERVICE_ERROR_CODES_FILE
+              value: "/opt/error-codes/ErrorCodes.toml"
+          image: jp.icr.io/dapww/automation-service:latest
+          imagePullPolicy: Always
+          name: automation-service
+          ports:
+            - containerPort: 5566
+          envFrom:
+            - configMapRef:
+                name: env-config-global
+            - secretRef:
+                name: vault-cert
+            - secretRef:
+                name: automation-service-secret
+      restartPolicy: Always

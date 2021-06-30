@@ -1,0 +1,22 @@
+title: AssetType
+type: object
+required:
+  - account_name
+  - asset_code
+  - balance
+properties:
+  account_name:
+    type: string
+    x-go-custom-tag: 'validate:"required"'
+  asset_code:
+    type: string
+    x-go-custom-tag: 'validate:"required"'
+  balance:
+    type: integer
+    x-go-custom-tag: 'validate:"required"'
+  issuer_id:
+    type: string
+    x-go-custom-tag: 'validate:"omitempty"'
+externalDocs:
+  url: '#/definitions/assetType'
+x-go-name: AssetType

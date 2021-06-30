@@ -1,0 +1,20 @@
+{
+  "name": "auth-service",
+  "version": "1.0.0",
+  "description": "**Step 1** - retrieve the .credential.zip file from the organization's box account via [https://ibm.box.com/s/7mgtvv5yrvjs1k95pm74ib2jnpmstt4n](https://ibm.box.com/s/7mgtvv5yrvjs1k95pm74ib2jnpmstt4n) and extract the zip file to `./auth-service`    - *NOTE 1: obtain password to the zip file from a engineering team member, eg: Chase Oliphant or Daniel Smith*      - *NOTE 2: To update credentials run  `$ zip -re credentials.zip .credentials` from `./auth-service` and upload to box*",
+  "main": "index.js",
+  "devDependencies": {
+    "@types/chai": "^4.2.3",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^12.7.9",
+    "chai": "^4.2.0",
+    "mocha": "^6.2.1",
+    "ts-node": "^8.4.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {}
+}

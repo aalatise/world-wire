@@ -1,0 +1,4 @@
+package: github.ibm.com/gftn/world-wire-services/gftn-models
+import:
+- package: github.com/op/go-logging
+

@@ -1,0 +1,43 @@
+title: KillswitchRequest
+type: object
+required:
+  - participantId
+  - accountAddress
+  - approvalIds
+  - status
+properties:
+  participantId:
+    type: string
+    x-go-custom-tag: 'validate:"required"'
+  accountAddress:
+    type: string
+    x-go-custom-tag: 'validate:"required"'
+  suspendRequestedBy:
+    type: string
+    x-go-custom-tag: 'validate:"omitempty"'
+  reactivateRequestedBy:
+    type: string
+    x-go-custom-tag: 'validate:"omitempty"'
+  suspendRejectedBy:
+    type: string
+    x-go-custom-tag: 'validate:"omitempty"'
+  reactivateRejectedBy:
+    type: string
+    x-go-custom-tag: 'validate:"omitempty"'
+  suspendApprovedBy:
+    type: string
+    x-go-custom-tag: 'validate:"omitempty"'
+  reactivateApprovedBy:
+    type: string
+    x-go-custom-tag: 'validate:"omitempty"'
+  approvalIds:
+    type: array
+    items:
+      type: string
+    x-go-custom-tag: 'validate:"required"'
+  status:
+    type: string
+    x-go-custom-tag: 'validate:"required"'
+externalDocs:
+  url: '#/definitions/killswitchRequest'
+x-go-name: KillswitchReq

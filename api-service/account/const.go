@@ -1,0 +1,10 @@
+package account
+
+var (
+
+	GOOD_DISPOSITION = "OK"
+	BAD_DISPOSITION = "DENIED"
+	INVALID_ACCOUNT_IDENTIFIER = "Bad Account Identifier"
+	DEFAULT_DISTRIBUTION_ACCOUNT = "default"
+)
+

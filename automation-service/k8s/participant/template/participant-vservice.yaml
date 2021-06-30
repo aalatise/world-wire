@@ -1,0 +1,63 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: participant_id_variable
+  labels:
+    id: participant_id_variable
+spec:
+  hosts:
+  - "ww.mycluster-us-sout-115799-86386958d3c13264906f077e197c9f08-0006.us-south.containers.appdomain.cloud"
+  gateways:
+  - worldwire-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /participant_id_variable/api/
+    route:
+    - destination:
+        port:
+          number: 12000
+        host: participant_id_variable-api.default.svc.cluster.local
+    rewrite:
+      uri: /
+  - match:
+    - uri:
+        prefix: /participant_id_variable/crypto/
+    route:
+    - destination:
+        port:
+          number: 9999
+        host: participant_id_variable-crypto.default.svc.cluster.local
+    rewrite:
+      uri: /
+  - match:
+    - uri:
+        prefix: /participant_id_variable/listener/
+    route:
+    - destination:
+        port:
+          number: 11005
+        host: participant_id_variable-listener.default.svc.cluster.local
+    rewrite:
+      uri: /
+  - match:
+    - uri:
+        prefix: /participant_id_variable/send/
+    route:
+    - destination:
+        port:
+          number: 8888
+        host: participant_id_variable-send.default.svc.cluster.local
+    rewrite:
+      uri: /
+  - match:
+    - uri:
+        prefix: /participant_id_variable/gateway/
+    route:
+    - destination:
+        port:
+          number: 9000
+        host: participant_id_variable-gateway.default.svc.cluster.local
+    rewrite:
+      uri: /
+---

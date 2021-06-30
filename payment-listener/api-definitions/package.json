@@ -1,0 +1,19 @@
+{
+  "name": "gftn-payment-listener-definition",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "md-docs-client-api": "swagger-markdown -i client-api.json -o generated/client-api.md"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.ibm.com/gftn/world-wire-services/payment-listener"
+  },
+  "author": "Seema Phalke",
+  "license": "ISC",
+  "dependencies": {
+    "swagger-markdown": "^1.1.2"
+  }
+}

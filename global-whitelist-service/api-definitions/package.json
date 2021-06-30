@@ -1,0 +1,19 @@
+{
+  "name": "global-whitelist-service-api-definition",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "md-docs-global-whitelist-service-api": "swagger-markdown -i global-whitelist-service-api.json -o generated/global-whitelist-service-api.md"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.ibm.com/gftn/world-wire-services/global-whitelist-service"
+  },
+  "author": "Aaron Chung",
+  "license": "ISC",
+  "dependencies": {
+    "swagger-markdown": "^1.1.2"
+  }
+}

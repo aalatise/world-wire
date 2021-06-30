@@ -1,0 +1,87 @@
+{
+	"info": {
+		"_postman_id": "58692fc2-9604-406c-9ce1-af92d1053eae",
+		"name": "Worldwire-Onboarding-DA(2.9.3.13_RC1)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/admin/anchor/ibmtaiwan5/onboard/assets",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-fid",
+						"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjU0ODZkYTNlMWJmMjA5YzZmNzU2MjlkMWQ4MzRmNzEwY2EzMDlkNTAiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc3QyMS0yNTExMDciLCJhdWQiOiJzdDIxLTI1MTEwNyIsImF1dGhfdGltZSI6MTU2NzkwNTQ4MiwidXNlcl9pZCI6ImF5WUVCM1lNaENYc3hkWXRjUjRDSHF4OVpvdjEiLCJzdWIiOiJheVlFQjNZTWhDWHN4ZFl0Y1I0Q0hxeDlab3YxIiwiaWF0IjoxNTY3OTA3NjYzLCJleHAiOjE1Njc5MTEyNjMsImVtYWlsIjoicnVieWNoQHNnLmlibS5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsicnVieWNoQHNnLmlibS5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJjdXN0b20ifX0.hoj6udMI3iQI4rOgbTyTbUHD_XKS1mRqEfTgKy-DP_bRyMQZTRRbeP6ZoegZtiBl24xaRTy41ClEQg31WivFWYqIy440BPMHnGdgpdGQPSahX2sdk390Ywxg26S1rg0avad9mxslZElJrv2DtbtYLfcjqICNjU0ZEnajENFXcXqE9xmW5cwTwv1IKAtj2EXsjoxutIrFGp60GNm1NBPwPpKhp62qUHuQ1qkhEUf0AeV2554xefANwnKYq0Op22bLmNo8pq66WDuUolGWNbUBC0zveqrd-3YQ21g0hbpSQlfSIlb9QsEkDd_oSQvkt1PnQlwPxnyCbjUFV3uPzlzHzw",
+						"description": "ibm super user1 (/fid) ---1",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "x-iid",
+						"value": "-LoDH40-xUF2TWosk4S6",
+						"description": "---1---2",
+						"type": "text"
+					},
+					{
+						"key": "X-PERMISSION",
+						"value": "request",
+						"description": "---1",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "x-request",
+						"value": "-LoD__o1wNUIsqKbVce1",
+						"description": "---2",
+						"type": "text"
+					},
+					{
+						"key": "X-fid",
+						"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjU0ODZkYTNlMWJmMjA5YzZmNzU2MjlkMWQ4MzRmNzEwY2EzMDlkNTAiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc3QyMS0yNTExMDciLCJhdWQiOiJzdDIxLTI1MTEwNyIsImF1dGhfdGltZSI6MTU2NzkwNjI0MiwidXNlcl9pZCI6IjBhWUN3UmI5S1JUYVN0eFhwejZqSFlZNjVSMTMiLCJzdWIiOiIwYVlDd1JiOUtSVGFTdHhYcHo2akhZWTY1UjEzIiwiaWF0IjoxNTY3OTA3NTIxLCJleHAiOjE1Njc5MTExMjEsImVtYWlsIjoicnVieWNoZW5nMTIxQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJydWJ5Y2hlbmcxMjFAZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoiY3VzdG9tIn19.XnV6Bz99TMnRNOdgMymixAESDxNJhZGVFiySAug6fLCejbuXTPsnu4Qm9N0CXXpavOq5jTymQs8WqFFFJnvD1RxubqAEyjmdWYLMgSd7Kr31uaZehK8ffy8tY5j4k-dHaQejj5cNCJNA05Af8jCAGg3eMfjgimPitq4rWLW37qDI5NFDg4VsvkgPIr_VVA2tOfDvXtWH67qxK17Kd-ioI4XA2wiFTaHHcajA1-BVLJhWXNrc6yyFwQnzP4LcHD8F1LVc7neK5XomSHOGUKAS8mfH2Q6VzvWESqbQq2qkuy4XvdBDALGQNd2RQtMzK5uxSXxXqpry_ko2HrY3Q7XSSQ",
+						"description": "ibm super user2(/fid)---2",
+						"type": "text"
+					},
+					{
+						"key": "X-PERMISSION",
+						"value": "approve",
+						"description": "---2",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "ibmanchor.worldwire-st.io/global/anchor/v1/admin/anchor/ibmanchor/onboard/assets?asset_code=USD&asset_type=DA",
+					"host": [
+						"ibmanchor",
+						"worldwire-st",
+						"io"
+					],
+					"path": [
+						"global",
+						"anchor",
+						"v1",
+						"admin",
+						"anchor",
+						"ibmanchor",
+						"onboard",
+						"assets"
+					],
+					"query": [
+						{
+							"key": "asset_code",
+							"value": "USD"
+						},
+						{
+							"key": "asset_type",
+							"value": "DA"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

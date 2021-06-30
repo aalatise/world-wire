@@ -1,0 +1,41 @@
+# Participant Registry Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ww-pr
+  namespace: default
+  labels:
+    app: ww-pr
+    type: global
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ww-pr
+  template:
+    metadata:
+      labels:
+        app: ww-pr
+        type: global
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      serviceAccountName: sandbox-ww-global
+      containers:
+      - env:
+        - name: SERVICE_NAME
+          value: "pr-service"
+        - name: HOME_DOMAIN_NAME
+          value: "ww"
+        image: jp.icr.io/dapww/participant-registry:latest
+        imagePullPolicy: Always
+        name: ww-pr
+        ports:
+        - containerPort: 8080
+        - containerPort: 18080
+        envFrom:
+        - configMapRef:
+            name: env-config-global
+        - secretRef:
+            name: vault-cert
+      restartPolicy: Always

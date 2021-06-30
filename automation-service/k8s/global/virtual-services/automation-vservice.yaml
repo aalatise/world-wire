@@ -1,0 +1,21 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: automation-vs
+spec:
+  hosts:
+  - ww.foc-dap-world-wire-2a0beb393d3242574412e5315d3d4662-0006.jp-tok.containers.appdomain.cloud
+  gateways:
+  - worldwire-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /admin/automate/
+    route:
+    - destination:
+        port:
+          number: 5566
+        host: automation-service.default.svc.cluster.local
+    rewrite:
+      uri: /
+---

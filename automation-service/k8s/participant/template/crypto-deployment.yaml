@@ -1,0 +1,55 @@
+# Crypto Service Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: participant_id_variable-crypto
+  labels:
+    app: participant_id_variable-crypto
+    type: mm
+    id: participant_id_variable
+spec:
+  replicas: replica_variable
+  selector:
+    matchLabels:
+      app: participant_id_variable-crypto
+  template:
+    metadata:
+      labels:
+        app: participant_id_variable-crypto
+        type: mm
+        id: participant_id_variable
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      serviceAccountName: sandbox-ww-participant_id_variable
+      containers:
+      - env:
+        - name: SERVICE_NAME
+          value: "crypto-service"
+        - name: HOME_DOMAIN_NAME
+          value: "participant_id_variable"
+        - name: MONGO_COLLECTION_NAME
+          value: "jwt_info"
+        - name: MONGO_DB_NAME
+          value: "auth"
+        image: jp.icr.io/dapww/crypto-service:docker_tag_variable
+        imagePullPolicy: Always
+        name: participant_id_variable-crypto
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "0.1"
+          limits:
+            memory: "128Mi"
+            cpu: "0.25"
+        ports:
+        - containerPort: 9999
+        - containerPort: 10042
+        envFrom:
+        - configMapRef:
+            name: env-config-global
+        - secretRef:
+            name: vault-cert-participant_id_variable
+        - secretRef:
+            name: auth-secret
+      restartPolicy: Always

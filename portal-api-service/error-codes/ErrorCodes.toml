@@ -1,0 +1,10 @@
+[WW_ERROR]
+	[WW_ERROR.PORTAL-API-1000]
+		SHORT_MESSAGE = "Bad request or internal error"
+		DETAILS = "Bad request or internal error"
+	[WW_ERROR.PORTAL-API-1001]
+		SHORT_MESSAGE = "Invalid token"
+		DETAILS = "Error validating token"
+	[WW_ERROR.PORTAL-API-1002]
+		SHORT_MESSAGE = "Unauthorized"
+		DETAILS = "User access restriced"

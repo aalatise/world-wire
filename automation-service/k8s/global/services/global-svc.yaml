@@ -1,0 +1,111 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ww-pr
+  namespace: default
+  labels:
+    app: ww-pr
+    service: ww-pr
+spec:
+  ports:
+    - name: external
+      port: 8080
+    - name: internal
+      port: 18080
+  selector:
+    app: ww-pr
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ww-admin
+  namespace: default
+  labels:
+    app: ww-admin
+    service: ww-admin
+spec:
+  ports:
+    - name: external
+      port: 18090
+    - name: internal
+      port: 8090
+  selector:
+    app: ww-admin
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ww-anchor
+  namespace: default
+  labels:
+    app: ww-anchor
+    service: ww-anchor
+spec:
+  ports:
+    - name: external
+      port: 6080
+  selector:
+    app: ww-anchor
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ww-gas
+  namespace: default
+  labels:
+    app: ww-gas
+    service: ww-gas
+spec:
+  ports:
+    - name: external
+      port: 8099
+  selector:
+    app: ww-gas
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ww-quotes
+  namespace: default
+  labels:
+    app: ww-quotes
+    service: ww-quotes
+spec:
+  ports:
+    - name: external
+      port: 8083
+  selector:
+    app: ww-quotes
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ww-whitelist
+  namespace: default
+  labels:
+    app: ww-whitelist
+    service: ww-whitelist
+spec:
+  ports:
+    - name: external
+      port: 11234
+    - name: internal
+      port: 21234
+  selector:
+    app: ww-whitelist
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ww-fee
+  namespace: default
+  labels:
+    app: ww-fee
+    service: ww-fee
+spec:
+  ports:
+    - name: external
+      port: 8082
+  selector:
+    app: ww-fee
+---

@@ -1,0 +1,16 @@
+{
+  "name": "gftn-models",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.ibm.com/gftn/world-wire-services/gftn-models"
+  },
+  "author": "Michael Dowling",
+  "license": "ISC",
+  "dependencies": {
+  }
+}

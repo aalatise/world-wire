@@ -1,0 +1,102 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: global-svc
+  namespace: default
+spec:
+  hosts:
+  - ww.foc-dap-world-wire-2a0beb393d3242574412e5315d3d4662-0006.jp-tok.containers.appdomain.cloud
+  gateways:
+  - worldwire-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /global/pr/
+    route:
+    - destination:
+        port:
+          number: 8080
+        host: ww-pr.default.svc.cluster.local
+    rewrite: 
+      uri: /
+  - match:
+    - uri:
+        prefix: /global/admin/
+    route:
+    - destination:
+        port:
+          number: 18090
+        host: ww-admin.default.svc.cluster.local
+    rewrite: 
+      uri: /
+  - match:
+    - uri:
+        prefix: /global/anchor/
+    route:
+    - destination:
+        port:
+          number: 6080
+        host: ww-anchor.default.svc.cluster.local
+    rewrite: 
+      uri: /
+  - match:
+    - uri:
+        prefix: /global/gas/
+    route:
+    - destination:
+        port:
+          number: 8099
+        host: ww-gas.default.svc.cluster.local
+    rewrite: 
+      uri: /
+  - match:
+    - uri:
+        prefix: /admin/api/
+    rewrite:
+      uri: /
+    route:
+    - destination:
+        host: ww-portal-api.default.svc.cluster.local
+        port:
+          number: 8686
+  - match:
+    - uri:
+        prefix: /global/payout/
+    route:
+    - destination:
+        port:
+          number: 8084
+        host: ww-payout.default.svc.cluster.local
+    rewrite: 
+      uri: /
+  - match:
+    - uri:
+        prefix: /global/whitelist/
+    route:
+    - destination:
+        port:
+          number: 11234
+        host: ww-whitelist.default.svc.cluster.local
+    rewrite: 
+      uri: /
+  - match:
+    - uri:
+        prefix: /global/quotes/
+    route:
+    - destination:
+        port:
+          number: 8083
+        host: ww-quotes.default.svc.cluster.local
+    rewrite: 
+      uri: /
+  - match:
+    - uri:
+        prefix: /global/fee/
+    route:
+    - destination:
+        port:
+          number: 8082
+        host: ww-fee.default.svc.cluster.local
+    rewrite: 
+      uri: /
+---

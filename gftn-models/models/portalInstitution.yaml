@@ -1,0 +1,14 @@
+title: PortalInstitution
+type: object
+required:
+  - info
+properties:
+  info:
+    $ref: 'institutionInfo.yaml'
+  nodes:
+    type: array
+    items:
+      $ref: 'institutionNode.yaml'
+externalDocs:
+  url: '#/definitions/portalInstitution'
+x-go-name: Institution

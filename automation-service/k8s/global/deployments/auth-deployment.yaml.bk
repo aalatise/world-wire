@@ -1,0 +1,66 @@
+# auth Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ww-auth
+  namespace: default
+  labels:
+    app: ww-auth
+    type: global
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ww-auth
+  template:
+    metadata:
+      labels:
+        app: ww-auth
+        type: global
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      containers:
+      - env:
+        - name: SERVICE_NAME
+          value: "auth-service"
+        - name: HOME_DOMAIN_NAME
+          value: "ww"
+        - name: SERVICE_PORT
+          value: "6001"
+        - name: SERVICE_LOG_FILE
+          value: "/opt/logs/logs.txt"
+        - name: PORTAL_DOMAIN
+          value: "https://ww.foc-dap-world-wire-2a0beb393d3242574412e5315d3d4662-0006.jp-tok.containers.appdomain.cloud"
+        - name: LOGIN_URL
+          value: "/sso/login"
+        - name: REDIRECT_URL
+          value: "https://auth.foc-dap-world-wire-2a0beb393d3242574412e5315d3d4662-0006.jp-tok.containers.appdomain.cloud/sso/callback"
+        - name: ENABLE_JWT
+          value: "true"
+        - name: ALLOW_ORIGIN
+          value: "https://ww.foc-dap-world-wire-2a0beb393d3242574412e5315d3d4662-0006.jp-tok.containers.appdomain.cloud"
+        - name: MONGO_COLLECTION_NAME
+          value: "jwt_info"
+        - name: MONGO_DB_NAME
+          value: "auth"
+        - name: DB_TIMEOUT
+          value: "50"
+        - name: AUTH_URL
+          value: "https://dapww.verify.ibm.com/v1.0/endpoint/default/authorize"
+        - name: TOKEN_URL
+          value: "https://dapww.verify.ibm.com/v1.0/endpoint/default/token"
+        - name: TEMP_EMAIL
+          value: "hotmail.com"
+        image: jp.icr.io/dapww/auth-service:latest
+        imagePullPolicy: Always
+        name: ww-auth
+        ports:
+        - containerPort: 6001
+        envFrom:
+        - secretRef:
+            name: auth-secret
+        - configMapRef:
+            name: env-config-global
+      restartPolicy: Always
+---

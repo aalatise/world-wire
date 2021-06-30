@@ -1,0 +1,40 @@
+title: AssetRequest
+type: object
+required:
+  - participantId
+  - approvalIds
+  - asset_code
+  - asset_type
+properties:
+  participantId:
+    type: string
+    x-go-custom-tag: 'validate:"required"'
+  approvalIds:
+    type: array
+    items:
+      type: string
+    x-go-custom-tag: 'validate:"required"'
+  status:
+    type: string
+    x-go-custom-tag: 'validate:"omitempty"'
+  asset_code:
+    type: string
+    x-go-custom-tag: 'validate:"required"'
+  asset_type:
+    type: string
+    x-go-custom-tag: 'validate:"required"'
+  issuer_id:
+    type: string
+    x-go-custom-tag: 'validate:"omitempty"'
+  timeUpdated:
+    type: integer
+    x-go-custom-tag: 'validate:"omitempty"'
+  currency:
+    type: string
+    x-go-custom-tag: 'validate:"omitempty"'
+  balance:
+    type: integer
+    x-go-custom-tag: 'validate:"omitempty"'
+externalDocs:
+  url: '#/definitions/assetRequest'
+x-go-name: AssetReq

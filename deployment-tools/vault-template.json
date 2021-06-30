@@ -1,0 +1,333 @@
+{
+  "ww/automation-service": {
+    "version": 6,
+    "created": "2020-12-15T16:39:19.094066768Z",
+    "data": {
+      "ANCHOR_SH_ASSET_ID": "/stronghold.ibm-qa",
+      "ANCHOR_SH_CRED": "secret-or-key",
+      "ANCHOR_SH_PASS": "secret-or-key",
+      "ANCHOR_SH_ROOT_URL": "https://api.stronghold.co",
+      "ANCHOR_SH_SEC": "secret-or-key",
+      "ANCHOR_SH_VENUE": "ibmbww-testnet",
+      "DB_PWD": "secret-or-key",
+      "DB_TIMEOUT": "40",
+      "DB_USER": "secret-or-key",
+      "DOMAINNAME": "stronghold",
+      "KAFKA_AUTH_MODE": "SASL_SSL",
+      "KAFKA_BROKER_URL": "secret-or-key",
+      "KAFKA_KEY_SASL_MECHANISM": "PLAIN",
+      "KAFKA_KEY_SASL_PASSWORD": "secret-or-key",
+      "KAFKA_KEY_SASL_USER": "token",
+      "MONGO_COLLECTION_NAME": "institutions",
+      "MONGO_CONNECTION_CERT": "secret-or-key",
+      "MONGO_DB_NAME": "portal-db",
+      "MONGO_ID": "secret-or-key",
+      "POSTGRESQL_DB_NAME": "ibmclouddb",
+      "POSTGRESQL_DB_PORT": "30373",
+      "POSTGRESQL_DB_URL": "secret-or-key",
+      "POSTGRESQL_PWD": "secret-or-key",
+      "POSTGRESQL_TABLE_NAME": "transactions",
+      "POSTGRESQL_USER": "secret-or-key",
+      "SERVICE_PORT": "6080",
+      "STELLAR_NODE_CONFIG": "/opt/configuration/nodeconfig.toml",
+      "STRONGHOLD_ANCHOR_ID": "stronghold",
+      "WW_BIC": "WORLDWIRE00",
+      "WW_ID": "WW"
+    }
+  },
+  "ww/sandbox/template/participant-template": {
+    "version": 11,
+    "created": "2020-12-18T15:43:55.042174456Z",
+    "data": {
+      "api-service": {
+        "ACCOUNT_INITIAL_FUND": "100",
+        "ANCHOR_SH_CRED": "secret-or-key",
+        "ANCHOR_SH_PASS": "secret-or-key",
+        "ANCHOR_SH_SEC": "secret-or-key",
+        "ANCHOR_SH_VENUE": "ibmbww-testnet",
+        "DB_PWD": "secret-or-key",
+        "DB_TIMEOUT": "40",
+        "DB_USER": "secret-or-key",
+        "MONGO_COLLECTION_NAME": "institutions",
+        "MONGO_CONNECTION_CERT": "secret-or-key",
+        "MONGO_DB_NAME": "portal-db",
+        "MONGO_ID": "secret-or-key",
+        "SERVICE_INTERNAL_PORT": "11000",
+        "SERVICE_PORT": "12000",
+        "STRONGHOLD_ANCHOR_ID": "stronghold",
+        "TRANSACTION_BATCH_LIMIT": "500"
+      },
+      "crypto-service": {
+        "ACCOUNT_SOURCE": "HSM",
+        "PKCS11_PIN": "worldwire.io",
+        "PKCS11_SLOT": "1",
+        "SERVICE_INTERNAL_PORT": "10042",
+        "SERVICE_PORT": "9999"
+      },
+      "participant": {
+        "SERVICE_ERROR_CODES_FILE": "/opt/error-codes/ErrorCodes.toml",
+        "SERVICE_LOG_FILE": "/opt/logs/logs.txt"
+      },
+      "payment-service": {
+        "DB_PWD": "secret-or-key",
+        "DB_TIMEOUT": "40",
+        "DB_USER": "secret-or-key",
+        "KAFKA_AUTH_MODE": "SASL_SSL",
+        "KAFKA_BROKER_URL": "secret-or-key",
+        "KAFKA_KEY_SASL_MECHANISM": "PLAIN",
+        "KAFKA_KEY_SASL_USER": "token",
+        "MONGO_COLLECTION_NAME": "payments",
+        "MONGO_CONNECTION_CERT": "secret-or-key",
+        "MONGO_DB_NAME": "GFTN",
+        "MONGO_ID": "secret-or-key",
+        "SERVICE_INTERNAL_PORT": "11005",
+        "SERVICE_PORT": "21005",
+        "SERVICE_RETRY_INTERVAL": "50",
+        "SERVICE_RETRY_TIMES": "10"
+      },
+      "send-service": {
+        "DB_PWD": "secret-or-key",
+        "DB_TIMEOUT": "40",
+        "DB_USER": "secret-or-key",
+        "ENABLE_FIREBASE_LOGGING": "FALSE",
+        "KAFKA_AUTH_MODE": "SASL_SSL",
+        "KAFKA_BROKER_URL": "secret-or-key",
+        "KAFKA_KEY_SASL_MECHANISM": "PLAIN",
+        "KAFKA_KEY_SASL_USER": "token",
+        "MONGO_COLLECTION_NAME": "send",
+        "MONGO_CONNECTION_CERT": "secret-or-key",
+        "MONGO_DB_NAME": "GFTN",
+        "MONGO_ID": "secret-or-key",
+        "POSTGRESQL_DB_NAME": "ibmclouddb",
+        "POSTGRESQL_DB_PORT": "30373",
+        "POSTGRESQL_DB_URL": "secret-or-key",
+        "POSTGRESQL_PWD": "secret-or-key",
+        "POSTGRESQL_TABLE_NAME": "transactions",
+        "POSTGRESQL_USER": "secret-or-key",
+        "SERVICE_PORT": "8888"
+      },
+      "ww-gateway": {
+        "BATCH_LIMIT": "500",
+        "KAFKA_AUTH_MODE": "SASL_SSL",
+        "KAFKA_AUTO_OFF_RESET": "latest",
+        "KAFKA_BROKER_URL": "secret-or-key",
+        "KAFKA_CERTIFICATE_LOCATION": "",
+        "KAFKA_GROUP_ID": "",
+        "KAFKA_KEY_LOCATION": "",
+        "KAFKA_KEY_PASSWORD": "",
+        "KAFKA_KEY_SASL_MECHANISM": "PLAIN",
+        "KAFKA_KEY_SASL_USER": "token",
+        "KAFKA_PARTITION_NUMBER": "",
+        "MESSAGE_RETRIEVE_TIMEOUT": "50",
+        "SERVICE_PORT": "9000"
+      }
+    }
+  },
+  "ww/sandbox/ww/account/token": {
+    "version": 1,
+    "created": "2020-12-04T15:27:04.77842624Z",
+    "data": {
+      "NODE_ADDRESS": "secret-or-key",
+      "NODE_SEED": "secret-or-key",
+      "PRIVATE_LABEL": "",
+      "PUBLIC_LABEL": ""
+    }
+  },
+  "ww/sandbox/ww/admin-service/initialize": {
+    "version": 1,
+    "created": "2020-11-24T20:45:27.285422037Z",
+    "data": {
+      "DB_PWD": "secret-or-key",
+      "DB_TIMEOUT": "50",
+      "DB_USER": "secret-or-key",
+      "MONGO_COLLECTION_NAME": "blocklist",
+      "MONGO_CONNECTION_CERT": "secret-or-key",
+      "MONGO_DB_NAME": "GFTN",
+      "MONGO_ID": "secret-or-key",
+      "PAYMENT_COLLECTION_NAME": "payments",
+      "SERVICE_INTERNAL_PORT": "8090",
+      "SERVICE_PORT": "18090"
+    }
+  },
+  "ww/sandbox/ww/anchor-service/initialize": {
+    "version": 1,
+    "created": "2020-11-24T20:45:27.388934022Z",
+    "data": {
+      "ANCHOR_SH_ASSET_ID": "/stronghold.ibm-qa",
+      "ANCHOR_SH_CRED": "secret-or-key",
+      "ANCHOR_SH_PASS": "secret-or-key",
+      "ANCHOR_SH_ROOT_URL": "https://api.stronghold.co",
+      "ANCHOR_SH_SEC": "secret-or-key",
+      "ANCHOR_SH_VENUE": "ibmbww-testnet",
+      "DB_PWD": "secret-or-key",
+      "DB_TIMEOUT": "40",
+      "DB_USER": "secret-or-key",
+      "DOMAINNAME": "stronghold",
+      "KAFKA_AUTH_MODE": "SASL_SSL",
+      "KAFKA_BROKER_URL": "secret-or-key",
+      "KAFKA_KEY_SASL_MECHANISM": "PLAIN",
+      "KAFKA_KEY_SASL_PASSWORD": "secret-or-key",
+      "KAFKA_KEY_SASL_USER": "token",
+      "MONGO_COLLECTION_NAME": "payments",
+      "MONGO_CONNECTION_CERT": "secret-or-key",
+      "MONGO_DB_NAME": "GFTN",
+      "MONGO_ID": "secret-or-key",
+      "POSTGRESQL_DB_NAME": "ibmclouddb",
+      "POSTGRESQL_DB_PORT": "30373",
+      "POSTGRESQL_DB_URL": "secret-or-key",
+      "POSTGRESQL_PWD": "secret-or-key",
+      "POSTGRESQL_TABLE_NAME": "transactions",
+      "POSTGRESQL_USER": "secret-or-key",
+      "SERVICE_PORT": "6080",
+      "STELLAR_NODE_CONFIG": "/opt/configuration/nodeconfig.toml",
+      "STRONGHOLD_ANCHOR_ID": "stronghold",
+      "WW_BIC": "WORLDWIRE00",
+      "WW_ID": "WW"
+    }
+  },
+  "ww/sandbox/ww/automation-service/initialize": {
+    "version": 2,
+    "created": "2020-12-09T14:26:09.81467926Z",
+    "data": {
+      "DB_PWD": "secret-or-key",
+      "DB_TIMEOUT": "40",
+      "DB_USER": "secret-or-key",
+      "IS_UNIT_TEST": "false",
+      "MONGO_COLLECTION_NAME": "participants",
+      "MONGO_CONNECTION_CERT": "secret-or-key",
+      "MONGO_DB_NAME": "registry",
+      "MONGO_ID": "secret-or-key",
+      "SERVICE_INTERNAL_PORT": "18080",
+      "SERVICE_PORT": "8080"
+    }
+  },
+  "ww/sandbox/ww/fee-service/initialize": {
+    "version": 1,
+    "created": "2020-11-24T20:45:27.49811552Z",
+    "data": {
+      "KAFKA_AUTH_MODE": "SASL_SSL",
+      "KAFKA_BROKER_URL": "secret-or-key",
+      "KAFKA_KEY_SASL_MECHANISM": "PLAIN",
+      "KAFKA_KEY_SASL_PASSWORD": "secret-or-key",
+      "KAFKA_KEY_SASL_USER": "token",
+      "SERVICE_PORT": "8082"
+    }
+  },
+  "ww/sandbox/ww/gas-service/initialize": {
+    "version": 1,
+    "created": "2020-11-24T20:45:27.608188409Z",
+    "data": {
+      "COLLECTION_NAME": "ibm_accounts",
+      "DB_NAME": "gas_svc",
+      "DB_PWD": "secret-or-key",
+      "DB_TIMEOUT": "40",
+      "DB_USER": "secret-or-key",
+      "EMAIL_SENDER": "secret-or-key",
+      "GAS_SERVICE_EMAIL_NOTIFICATION": "false",
+      "GAS_SERVICE_EXPIRE_TIME": "60",
+      "GAS_SERVICE_MONITOR_LOCKACCOUNT_FEQ": "1000",
+      "GAS_SERVICE_PORT": "8099",
+      "GAS_SERVICE_SMS_NOTIFICATION": "false",
+      "HIGH_THRESHOLD_BALANCE": "4000",
+      "HIGH_THRESHOLD_TIMEOUT": "100000",
+      "LOW_THRESHOLD_BALANCE": "500",
+      "LOW_THRESHOLD_TIMEOUT": "50000",
+      "MONGO_CONNECTION_CERT": "secret-or-key",
+      "MONGO_ID": "secret-or-key",
+      "SENDGRID_API_KEY": "secret-or-key",
+      "SENDGRIID_ENDPINT": "https://api.sendgrid.com/v3/mail/send",
+      "SERVICE_ERROR_CODES_FILE": "/opt/error-codes/ErrorCodes.toml",
+      "SERVICE_LOG_FILE": "/opt/logs/logs.txt"
+    }
+  },
+  "ww/sandbox/ww/participant/initialize": {
+    "version": 1,
+    "created": "2020-11-24T20:45:27.712478483Z",
+    "data": {
+      "SERVICE_ERROR_CODES_FILE": "/opt/error-codes/ErrorCodes.toml",
+      "SERVICE_LOG_FILE": "/opt/logs/logs.txt"
+    }
+  },
+  "ww/sandbox/ww/portal-api-service/initialize": {
+    "version": 1,
+    "created": "2020-11-24T20:45:27.813036233Z",
+    "data": {
+      "DB_PWD": "secret-or-key",
+      "DB_TIMEOUT": "50",
+      "DB_USER": "secret-or-key",
+      "MONGO_COLLECTION_NAME": "institutions",
+      "MONGO_CONNECTION_CERT": "secret-or-key",
+      "MONGO_DB_NAME": "portal-db",
+      "MONGO_ID": "secret-or-key",
+      "SERVICE_PORT": "8686"
+    }
+  },
+  "ww/sandbox/ww/pr-service/initialize": {
+    "version": 1,
+    "created": "2020-11-24T20:45:27.915471049Z",
+    "data": {
+      "DB_PWD": "secret-or-key",
+      "DB_TIMEOUT": "40",
+      "DB_USER": "secret-or-key",
+      "IS_UNIT_TEST": "false",
+      "MONGO_COLLECTION_NAME": "participants",
+      "MONGO_CONNECTION_CERT": "secret-or-key",
+      "MONGO_DB_NAME": "registry",
+      "MONGO_ID": "secret-or-key",
+      "SERVICE_INTERNAL_PORT": "18080",
+      "SERVICE_PORT": "8080"
+    }
+  },
+  "ww/sandbox/ww/quotes-service/initialize": {
+    "version": 1,
+    "created": "2020-11-24T20:45:28.019017041Z",
+    "data": {
+      "DB_PWD": "secret-or-key",
+      "DB_TIMEOUT": "40",
+      "DB_USER": "secret-or-key",
+      "KAFKA_AUTH_MODE": "SASL_SSL",
+      "KAFKA_BROKER_URL": "secret-or-key",
+      "KAFKA_KEY_SASL_MECHANISM": "PLAIN",
+      "KAFKA_KEY_SASL_PASSWORD": "secret-or-key",
+      "KAFKA_KEY_SASL_USER": "token",
+      "MONGO_COLLECTION_NAME": "quotes",
+      "MONGO_CONNECTION_CERT": "secret-or-key",
+      "MONGO_DB_NAME": "GFTN",
+      "MONGO_ID": "secret-or-key",
+      "POSTGRESQLDBNAME": "ibmclouddb",
+      "POSTGRESQLHOST": "secret-or-key",
+      "POSTGRESQLPASSWORD": "secret-or-key",
+      "POSTGRESQLPORT": "30373",
+      "POSTGRESQLUSER": "secret-or-key",
+      "SERVICE_PORT": "8083"
+    }
+  },
+  "ww/sandbox/ww/whitelist-service/initialize": {
+    "version": 1,
+    "created": "2020-11-24T20:45:28.126643264Z",
+    "data": {
+      "DB_PWD": "secret-or-key",
+      "DB_TIMEOUT": "40",
+      "DB_USER": "secret-or-key",
+      "IDLE_TIMEOUT": "60",
+      "MONGO_COLLECTION_NAME": "whitelist",
+      "MONGO_CONNECTION_CERT": "secret-or-key",
+      "MONGO_DB_NAME": "GFTN",
+      "MONGO_ID": "secret-or-key",
+      "READ_TIMEOUT": "15",
+      "SERVICE_INTERNAL_PORT": "21234",
+      "SERVICE_PORT": "11234",
+      "WRITE_TIMEOUT": "80"
+    }
+  },
+  "ww/ww/account/token": {
+    "version": 1,
+    "created": "2020-12-04T15:00:22.996375387Z",
+    "data": {
+      "NODE_ADDRESS": "secret-or-key",
+      "NODE_SEED": "secret-or-key",
+      "PRIVATE_LABEL": "",
+      "PUBLIC_LABEL": ""
+    }
+  }
+}

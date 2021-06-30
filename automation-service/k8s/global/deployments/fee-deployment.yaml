@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ww-fee
+  namespace: default
+  labels:
+    app: ww-fee
+    type: global
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: ww-fee
+  template:
+    metadata:
+      labels:
+        app: ww-fee
+        type: global
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      serviceAccountName: sandbox-ww-global
+      containers:
+      - env:
+        - name: SERVICE_NAME
+          value: "fee-service"
+        - name: HOME_DOMAIN_NAME
+          value: "ww"
+        - name: MONGO_COLLECTION_NAME
+          value: "jwt_info"
+        - name: MONGO_DB_NAME
+          value: "auth"
+        image: jp.icr.io/dapww/fee-service:latest
+        imagePullPolicy: Always
+        name: ww-fee
+        ports:
+        - containerPort: 8082
+        envFrom:
+        - configMapRef:
+            name: env-config-global
+        - secretRef:
+            name: vault-cert
+        - secretRef:
+            name: auth-secret
+      restartPolicy: Always

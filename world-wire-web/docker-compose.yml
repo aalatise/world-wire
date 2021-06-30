@@ -1,0 +1,7 @@
+version: '3.3'
+services:
+  world-wire-web:
+    container_name: world-wire-web
+    build: .
+    ports:
+      - '4200:4200'

@@ -1,0 +1,19 @@
+{
+  "name": "gftn-administration-service-administration-definition",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "md-docs-internal-api": "swagger-markdown -i internal-api.json -o generated/internal-api.md"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.ibm.com/gftn/world-wire-services/administration-service"
+  },
+  "author": "Michael Dowling",
+  "license": "ISC",
+  "dependencies": {
+    "swagger-markdown": "^1.1.2"
+  }
+}

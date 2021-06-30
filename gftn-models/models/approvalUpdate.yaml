@@ -1,0 +1,15 @@
+title: ApprovalUpdate
+type: object
+required:
+  - uid_approve
+  - status
+properties:
+  uid_approve:
+    type: string
+    x-go-custom-tag: 'validate:"required"'
+  status:
+    type: string
+    x-go-custom-tag: 'validate:"required"'
+externalDocs:
+  url: '#/definitions/approvalUpdate'
+x-go-name: ApprovalUpdate

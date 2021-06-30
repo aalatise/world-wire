@@ -1,0 +1,40 @@
+# Anchor Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ww-anchor
+  namespace: default
+  labels:
+    app: ww-anchor
+    type: global
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ww-anchor
+  template:
+    metadata:
+      labels:
+        app: ww-anchor
+        type: global
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      serviceAccountName: sandbox-ww-global
+      containers:
+      - env:
+        - name: SERVICE_NAME
+          value: "anchor-service"
+        - name: HOME_DOMAIN_NAME
+          value: "ww"
+        image: jp.icr.io/dapww/anchor-service:latest
+        imagePullPolicy: Always
+        name: ww-anchor
+        ports:
+        - containerPort: 6080
+        envFrom:
+        - configMapRef:
+            name: env-config-global
+        - secretRef:
+            name: vault-cert
+      restartPolicy: Always

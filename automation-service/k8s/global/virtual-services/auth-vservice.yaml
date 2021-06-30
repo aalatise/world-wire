@@ -1,0 +1,28 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: auth-vs
+  namespace: default
+spec:
+  hosts:
+   - auth.foc-dap-world-wire-2a0beb393d3242574412e5315d3d4662-0006.jp-tok.containers.appdomain.cloud
+  gateways:
+  - worldwire-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        port:
+          number: 6001
+        host: ww-auth.default.svc.cluster.local
+    corsPolicy:
+      allowOrigin:
+      - http://localhost:4200
+      - http://localhost:4200/
+      allowCredentials: true
+    rewrite:
+      uri: /
+---
+

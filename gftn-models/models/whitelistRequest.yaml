@@ -1,0 +1,33 @@
+title: BlocklistRequest
+type: object
+required:
+  - approvalIds
+  - whitelistedId
+  - whitelisterId
+properties:
+  approvalIds:
+    type: array
+    items:
+      type: string
+    x-go-custom-tag: 'validate:"required"'
+  whitelistedId:
+    type: string
+    x-go-custom-tag: 'validate:"required"'
+  whitelisterId:
+    type: string
+    x-go-custom-tag: 'validate:"required"'
+  time_updated:
+    type: integer
+    x-go-custom-tag: 'validate:"omitempty"'
+  requestedBy:
+    type: string
+    x-go-custom-tag: 'validate:"omitempty"'
+  rejectedBy:
+    type: string
+    x-go-custom-tag: 'validate:"omitempty"'
+  status:
+    type: string
+    x-go-custom-tag: 'validate:"omitempty"'
+externalDocs:
+  url: '#/definitions/whitelistRequest'
+x-go-name: WhitelistReq

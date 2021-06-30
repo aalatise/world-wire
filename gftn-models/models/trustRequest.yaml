@@ -1,0 +1,73 @@
+title: TrustRequest
+type: object
+required:
+  - requestor_id
+  - issuer_id
+  - account_name
+  - asset_code
+  - limit
+  - time_updated
+  - approval_ids
+properties:
+  key:
+    type: string
+    x-go-custom-tag: 'validate:"omitempty"'
+  requestor_id:
+    type: string
+    x-go-custom-tag: 'validate:"required"'
+  issuer_id:
+    type: string
+    x-go-custom-tag: 'validate:"required"'
+  account_name:
+    type: string
+    x-go-custom-tag: 'validate:"required"'
+  asset_code:
+    type: string
+    x-go-custom-tag: 'validate:"required"'
+  limit:
+    type: integer
+    x-go-custom-tag: 'validate:"required"'
+  time_updated:
+    type: integer
+    x-go-custom-tag: 'validate:"omitempty"'
+  approval_ids:
+    type: array
+    items:
+      type: string
+    x-go-custom-tag: 'validate:"required"'  
+  status:
+    type: string
+    x-go-custom-tag: 'validate:"omitempty"'
+  reason_rejected:
+    type: string
+    x-go-custom-tag: 'validate:"omitempty"'
+  requestInitiatedBy:
+    type: string
+    x-go-custom-tag: 'validate:"omitempty"'
+  requestApprovedBy:
+    type: string
+    x-go-custom-tag: 'validate:"omitempty"'
+  allowInitiatedBy:
+    type: string
+    x-go-custom-tag: 'validate:"omitempty"'
+  allowApprovedBy:
+    type: string
+    x-go-custom-tag: 'validate:"omitempty"'
+  rejectInitiatedBy:
+    type: string
+    x-go-custom-tag: 'validate:"omitempty"'
+  rejectApprovedBy:
+    type: string
+    x-go-custom-tag: 'validate:"omitempty"'
+  revokeInitiatedBy:
+    type: string
+    x-go-custom-tag: 'validate:"omitempty"'
+  revokeApprovedBy:
+    type: string
+    x-go-custom-tag: 'validate:"omitempty"'
+  loaded:
+    type: string
+    x-go-custom-tag: 'validate:"omitempty"'
+externalDocs:
+  url: '#/definitions/trustRequest'
+x-go-name: TrustReq

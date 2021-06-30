@@ -1,0 +1,48 @@
+title: InstitutionNode
+type: object
+required:
+  - bic
+  - countryCode
+  - initialized
+  - institutionId
+  - participantId
+  - role
+  - status
+properties:
+  bic:
+    type: string
+    x-go-custom-tag: 'validate:"required"'
+  countryCode:
+    type: string
+    x-go-custom-tag: 'validate:"required"'
+  initialized:
+    type: boolean
+    x-go-custom-tag: 'validate:"required"'
+  institutionId:
+    type: string
+    x-go-custom-tag: 'validate:"required"'
+  participantId:
+    type: string
+    x-go-custom-tag: 'validate:"required"'
+  role:
+    type: string
+    x-go-custom-tag: 'validate:"required"'
+  status:
+    type: array
+    items:
+      type: string
+    x-go-custom-tag: 'validate:"required"'
+  version:
+    type: string
+    x-go-custom-tag: 'validate:"omitempty"'
+  update:
+    $ref: 'institutionNode.yaml'
+    x-go-custom-tag: 'validate:"omitempty"'
+  approvalIds:
+    type: array
+    items:
+      type: string
+    x-go-custom-tag: 'validate:"omitempty"'
+externalDocs:
+  url: '#/definitions/institutionNode'
+x-go-name: Node

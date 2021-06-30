@@ -1,0 +1,61 @@
+title: InstitutionInfo
+type: object
+required:
+  - address1
+  - city
+  - country
+  - geo_lat
+  - geo_lon
+  - kind
+  - name
+  - slug
+  - status
+properties:
+  address1:
+    type: string
+    x-go-custom-tag: 'validate:"required"'
+  address2:
+    type: string
+    x-go-custom-tag: 'validate:"omitempty"'
+  city:
+    type: string
+    x-go-custom-tag: 'validate:"required"'
+  country:
+    type: string
+    x-go-custom-tag: 'validate:"required"'
+  geo_lat:
+    type: string
+    x-go-custom-tag: 'validate:"required"'
+  geo_lon:
+    type: string
+    x-go-custom-tag: 'validate:"required"'
+  institutionId:
+    type: string
+    x-go-custom-tag: 'validate:"omitempty"'
+  kind:
+    type: string
+    x-go-custom-tag: 'validate:"required"'
+  name:
+    type: string
+    x-go-custom-tag: 'validate:"required"'
+  logo_url:
+    type: string
+    x-go-custom-tag: 'validate:"omitempty"'
+  site_url:
+    type: string
+    x-go-custom-tag: 'validate:"omitempty"'
+  slug:
+    type: string
+    x-go-custom-tag: 'validate:"required"'
+  state:
+    type: string
+    x-go-custom-tag: 'validate:"omitempty"'
+  status:
+    type: string
+    x-go-custom-tag: 'validate:"required"'
+  zip:
+    type: string
+    x-go-custom-tag: 'validate:"omitempty"'
+externalDocs:
+  url: '#/definitions/institutionInfo'
+x-go-name: Info

@@ -1,0 +1,4 @@
+package: github.ibm.com/gftn/world-wire-services/participant-registry-client
+import:
+- package: github.com/op/go-logging
+

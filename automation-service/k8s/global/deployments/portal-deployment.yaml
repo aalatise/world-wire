@@ -1,0 +1,28 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ww-portal
+  labels:
+    app: ww-portal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ww-portal
+  template:
+    metadata:
+      labels:
+        app: ww-portal
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      containers:
+        - image: jp.icr.io/dapww/ww-portal:latest
+          imagePullPolicy: Always
+          name: ww-portal
+          ports:
+            - containerPort: 4200
+      restartPolicy: Always
+
+---

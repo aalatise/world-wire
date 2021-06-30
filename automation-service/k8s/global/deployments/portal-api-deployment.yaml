@@ -1,0 +1,77 @@
+# portal-api Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ww-portal-api
+  namespace: default
+  labels:
+    app: ww-portal-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ww-portal-api
+  template:
+    metadata:
+      labels:
+        app: ww-portal-api
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      serviceAccountName: sandbox-ww-global
+      containers:
+        - env:
+            - name: SERVICE_NAME
+              value: "portal-api-service"
+            - name: HOME_DOMAIN_NAME
+              value: "ww"
+            - name: PORTAL_DB_NAME
+              value: "portal-db"
+            - name: AUTH_DB_NAME
+              value: "auth"
+            - name: TX_DB_NAME
+              value: "GFTN"
+            - name: INSTITUTION_DB_TABLE
+              value: "institutions"
+            - name: BLOCKLIST_REQ_DB_TABLE
+              value: "blocklist_requests"
+            - name: WHITELIST_REQ_DB_TABLE
+              value: "whitelist_requests"
+            - name: ACCOUNT_REQ_DB_TABLE
+              value: "account_requests"
+            - name: ASSET_REQ_DB_TABLE
+              value: "asset_requests"
+            - name: TRUST_REQ_DB_TABLE
+              value: "trust_requests"
+            - name: KILLSWITCH_REQ_DB_TABLE
+              value: "killswitch_requests"
+            - name: SUPER_APPROVAL_DB_TABLE
+              value: "super_approvals"
+            - name: PARTICIPANT_APPROVAL_DB_TABLE
+              value: "participant_approvals"
+            - name: USER_DB_TABLE
+              value: "users"
+            - name: JWT_INFO_DB_TABLE
+              value: "jwt_info"
+            - name: PAYMENT_DB_TABLE
+              value: "payments"
+            - name: QUOTE_DB_TABLE
+              value: "quotes"
+            - name: DB_TIMEOUT
+              value: "50"
+            - name: JWT_SECURE_DB_TABLE
+              value: "id_token_secure"
+            - name: PERMISSION_DB_TABLE
+              value: "participant_permissions"
+          image: jp.icr.io/dapww/portal-api-service:latest
+          imagePullPolicy: Always
+          name: ww-portal-api
+          ports:
+            - containerPort: 8686
+          envFrom:
+            - configMapRef:
+                name: env-config-global
+            - secretRef:
+                name: vault-cert
+      restartPolicy: Always
+---

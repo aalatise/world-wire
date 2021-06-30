@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: environment
+  name: env-config-global
+  namespace: default
+data:
+  ADMIN_SVC_URL: http://ww-admin:8090/v1
+  ANCHOR_SVC_URL: http://ww-anchor:8081/v1
+  API_SVC_URL: http://{participant_id}-api:11000/v1
+  CRYPTO_SVC_INT_URL: http://{participant_id}-crypto:10042/v1
+  CRYPTO_SVC_URL: http://{participant_id}-crypto:9999/v1
+  ENABLE_JWT: "true"
+  ENV_VERSION: sandbox
+  FEE_SVC_URL: http://ww-fee:8082/v1
+  GAS_ACCOUNT_ATTEMPTS: "3"
+  GAS_SVC_URL: http://ww-gas:8099
+  HOME_DOMAIN_NAME: ww
+  HORIZON_CLIENT_URL: http://165.192.135.135:8000
+  HTTPS_SET: "false"
+  IBM_TOKEN_DOMAIN_ID: ww
+  IDLE_TIMEOUT: "80"
+  ORIGIN_ALLOWED: "true"
+  PARTICIPANT_REGISTRY_URL: http://ww-pr:18080/v1
+  PAYMENT_SVC_URL: http://{participant_id}-listener:21005/v1
+  PORTAL_DOMAIN: '*'
+  QUOTE_SVC_URL: http://ww-quotes:8083/v1
+  RDO_SVC_URL: http://{participant_id}-rdo:21002/v1
+  READ_TIMEOUT: "80"
+  SECRET_STORAGE_LOCATION: HASHICORP_VAULT
+  SEND_SVC_URL: http://{participant_id}-send:8888/v1
+  SERVICE_VERSION: v1
+  STELLAR_NETWORK: Standalone Network ; February 2017
+  VAULT_ADDR: https://vault.foc-dap-world-wire-2a0beb393d3242574412e5315d3d4662-0006.jp-tok.containers.appdomain.cloud
+  VAULT_BASE_URL: something
+  VAULT_CERT: something
+  VAULT_CERT_PRIVATE_KEY: something
+  WAIT_UNLOCK_DURATION: "2"
+  WL_SVC_URL: http://ww-whitelist:21234/v1
+  WRITE_TIMEOUT: "80"
+  WW_BIC: WORLDWIRE00
+  WW_ID: WW
