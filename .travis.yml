@@ -11,16 +11,11 @@ _services_shared_settings: &services_shared_settings
   before_install:
     - docker pull golang:1.13.15-alpine3.12
     - docker tag golang:1.13.15-alpine3.12 golang:alpine
-    - docker login -u iamapikey -p ${RES_IBM_SERVICE_ID_API_KEY} ${RES_ICR_URL}
-    - docker pull ${RES_ICR_URL}/gftn/node-alpine:latest
-    - docker tag ${RES_ICR_URL}/gftn/node-alpine:latest gftn/node-alpine:latest
-    - docker pull ${RES_ICR_URL}/gftn/alpine:latest
-    - docker tag ${RES_ICR_URL}/gftn/alpine:latest gftn/alpine:latest
-    - mkdir -p ../../gftn/world-wire-services && mv ${PWD}/* ${PWD}/../../gftn/world-wire-services && cd ${PWD}/../../gftn/world-wire-services
+    - mkdir -p ../../IBM/world-wire && mv ${PWD}/* ${PWD}/../../IBM/world-wire && cd ${PWD}/../../IBM/world-wire
   install:
     - bash travis/scripts/travis-microservices.sh beforeInstall || travis_terminate 1;
   before_script:
-    - docker login -u iamapikey -p ${RES_IBM_SERVICE_ID_API_KEY} ${RES_ICR_URL}
+    - ignore
 
 _pr_services_shared_settings: &pr_services_shared_settings
 #  if: (branch = foc-finance and type = pull_request)
@@ -35,12 +30,7 @@ _pr_services_shared_settings: &pr_services_shared_settings
   before_install:
     - docker pull golang:1.13.15-alpine3.12
     - docker tag golang:1.13.15-alpine3.12 golang:alpine
-    - docker login -u iamapikey -p ${RES_IBM_SERVICE_ID_API_KEY} ${RES_ICR_URL}
-    - docker pull ${RES_ICR_URL}/gftn/node-alpine:latest
-    - docker tag ${RES_ICR_URL}/gftn/node-alpine:latest gftn/node-alpine:latest
-    - docker pull ${RES_ICR_URL}/gftn/alpine:latest
-    - docker tag ${RES_ICR_URL}/gftn/alpine:latest gftn/alpine:latest
-    - mkdir -p ../../gftn/world-wire-services && mv ${PWD}/* ${PWD}/../../gftn/world-wire-services && cd ${PWD}/../../gftn/world-wire-services
+    - mkdir -p ../../IBM/world-wire && mv ${PWD}/* ${PWD}/../../IBM/world-wire && cd ${PWD}/../../IBM/world-wire
   install:
     - bash travis/scripts/travis-microservices.sh beforeInstall || travis_terminate 1;
 
@@ -252,7 +242,7 @@ notifications:
     #   before_cache:
     #     # Save tagged docker images to cache so that push build stage can use it if this job is not triggered by a pull request
     #     - >
-    #       docker images -a --filter='dangling=false' --filter=reference='gftn/*:*' --format '{{.Repository}}:{{.Tag}} {{.ID}}'
+    #       docker images -a --filter='dangling=false' --filter=reference='IBM/*:*' --format '{{.Repository}}:{{.Tag}} {{.ID}}'
     #       | xargs -n 2 -t sh -c 'docker save $0 -o $HOME/docker/"$1".tar';
     #   cache:
     #     directories:
