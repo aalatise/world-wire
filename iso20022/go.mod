@@ -1,4 +1,4 @@
-module github.com/IBM/world-wire
+module github.com/IBM/world-wire/iso20022
 
 go 1.16
 
