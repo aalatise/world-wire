@@ -30,7 +30,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/account"
+                "$ref": "#/definitions/getAccountsOKBodyItems"
               }
             }
           },
@@ -183,7 +183,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/asset"
+                "$ref": "#/definitions/feeCostasset"
               }
             }
           },
@@ -282,7 +282,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/asset"
+                "$ref": "#/definitions/feeCostasset"
               }
             }
           },
@@ -320,7 +320,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/asset"
+                "$ref": "#/definitions/feeCostasset"
               }
             }
           },
@@ -373,7 +373,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/asset"
+                "$ref": "#/definitions/feeCostasset"
               }
             }
           },
@@ -679,7 +679,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/balance"
+                "$ref": "#/definitions/obligationBalance"
               }
             }
           },
@@ -791,7 +791,74 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/participant"
+                "description": "Participant",
+                "type": "object",
+                "title": "participant",
+                "required": [
+                  "id",
+                  "country_code",
+                  "role",
+                  "bic"
+                ],
+                "properties": {
+                  "bic": {
+                    "description": "The business identifier code of each participant",
+                    "type": "string",
+                    "maxLength": 11,
+                    "minLength": 11,
+                    "pattern": "^[A-Z]{3}[A-Z]{3}[A-Z2-9]{1}[A-NP-Z0-9]{1}[A-Z0-9]{3}$",
+                    "x-go-custom-tag": "bson:\"bic\""
+                  },
+                  "country_code": {
+                    "description": "Participant's country of residence, country code in ISO 3166-1 format",
+                    "type": "string",
+                    "maxLength": 3,
+                    "minLength": 3,
+                    "x-go-custom-tag": "bson:\"country_code\""
+                  },
+                  "id": {
+                    "description": "The participant id for the participant",
+                    "type": "string",
+                    "maxLength": 32,
+                    "minLength": 5,
+                    "pattern": "^[a-zA-Z0-9-]{5,32}$",
+                    "x-go-custom-tag": "bson:\"id\""
+                  },
+                  "issuing_account": {
+                    "description": "The ledger address belonging to the issuing account.",
+                    "type": "string",
+                    "x-go-custom-tag": "bson:\"issuing_account\""
+                  },
+                  "operating_accounts": {
+                    "description": "Accounts",
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/definitions/getAccountsOKBodyItems"
+                    },
+                    "x-go-custom-tag": "bson:\"operating_accounts\""
+                  },
+                  "role": {
+                    "description": "The Role of this registered participant, it can be MM for Market Maker and IS for Issuer or anchor",
+                    "type": "string",
+                    "maxLength": 2,
+                    "minLength": 2,
+                    "enum": [
+                      "MM",
+                      "IS"
+                    ],
+                    "x-go-custom-tag": "bson:\"role\""
+                  },
+                  "status": {
+                    "description": "Participant active status on WW network, inactive, active, suspended",
+                    "type": "string",
+                    "x-go-custom-tag": "bson:\"status\""
+                  }
+                },
+                "x-go-name": "Participant",
+                "x-group-m": "Models",
+                "externalDocs": {
+                  "url": "#/definitions/participant"
+                }
               }
             }
           },
@@ -1172,7 +1239,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/quoteStatus"
+                "$ref": "#/definitions/getQuotesOKBodyItems"
               }
             }
           },
@@ -1211,7 +1278,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/quoteStatus"
+                "$ref": "#/definitions/getQuotesOKBodyItems"
               }
             }
           },
@@ -1328,7 +1395,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/quoteStatus"
+                "$ref": "#/definitions/getQuotesOKBodyItems"
               }
             }
           },
@@ -1820,6 +1887,52 @@
         "url": "#/definitions/account"
       }
     },
+    "address": {
+      "description": "Address",
+      "type": "object",
+      "title": "address",
+      "required": [
+        "building_number",
+        "street",
+        "city",
+        "state",
+        "postal_code",
+        "country"
+      ],
+      "properties": {
+        "building_number": {
+          "description": "The building number or identifier.",
+          "type": "string",
+          "x-go-custom-tag": "bson:\"building_number\""
+        },
+        "city": {
+          "description": "Name of the city or town.",
+          "type": "string"
+        },
+        "country": {
+          "description": "Country code of the location.",
+          "type": "string"
+        },
+        "postal_code": {
+          "description": "Postal code for the location.",
+          "type": "string",
+          "x-go-custom-tag": "bson:\"postal_code\""
+        },
+        "state": {
+          "description": "Name of the state.",
+          "type": "string"
+        },
+        "street": {
+          "description": "The street name.",
+          "type": "string"
+        }
+      },
+      "x-go-name": "Address",
+      "x-group-m": "Models",
+      "externalDocs": {
+        "url": "#/definitions/address"
+      }
+    },
     "asset": {
       "description": "Details of the asset being transacted",
       "type": "object",
@@ -1895,6 +2008,54 @@
         "url": "#/definitions/balance"
       }
     },
+    "comparison": {
+      "description": "Comparison",
+      "type": "object",
+      "title": "comparison",
+      "required": [
+        "operator",
+        "threshold"
+      ],
+      "properties": {
+        "operator": {
+          "description": "The type of logical comparison. The default option is \"eq\" (equal to), but other options include \"gt\" (greater than), \"lt\" (less than), \"ge\" (greater than or equal to), and \"le\" (less than or equal to).\n",
+          "type": "string"
+        },
+        "threshold": {
+          "description": "The amount you want to compare.",
+          "type": "number",
+          "minimum": 1,
+          "x-nullable": true
+        }
+      },
+      "x-go-name": "Comparison",
+      "externalDocs": {
+        "url": "#/definitions/comparison"
+      }
+    },
+    "coordinate": {
+      "description": "Geographic coordinates for a location. Based on https://schema.org/geo",
+      "type": "object",
+      "title": "coordinate",
+      "required": [
+        "lat",
+        "long"
+      ],
+      "properties": {
+        "lat": {
+          "description": "The latitude of the geo coordinates",
+          "type": "number"
+        },
+        "long": {
+          "description": "The longitude of the geo coordinates",
+          "type": "number"
+        }
+      },
+      "x-go-name": "Coordinate",
+      "externalDocs": {
+        "url": "#/definitions/coordinate"
+      }
+    },
     "error": {
       "description": "Error",
       "type": "object",
@@ -1950,6 +2111,39 @@
         "url": "#/definitions/error"
       }
     },
+    "exchange": {
+      "description": "Exchange",
+      "type": "object",
+      "title": "exchange",
+      "required": [
+        "quote",
+        "amount",
+        "account_name_send",
+        "account_name_receive"
+      ],
+      "properties": {
+        "account_name_receive": {
+          "description": "OFI Participant operating or issuing account for receiving target asset.\n",
+          "type": "string"
+        },
+        "account_name_send": {
+          "description": "OFI Participant operating or issuing account for source asset transmit.\n",
+          "type": "string"
+        },
+        "amount": {
+          "description": "Amount of source asset to be exchanged.",
+          "type": "number"
+        },
+        "quote": {
+          "$ref": "#/definitions/quote"
+        }
+      },
+      "x-go-name": "Exchange",
+      "x-group-m": "Models",
+      "externalDocs": {
+        "url": "#/definitions/exchange"
+      }
+    },
     "exchangeEnvelope": {
       "description": "Exchange Envelope",
       "type": "object",
@@ -1987,223 +2181,7 @@
       ],
       "properties": {
         "exchange": {
-          "description": "Exchange",
-          "type": "object",
-          "title": "exchange",
-          "required": [
-            "quote",
-            "amount",
-            "account_name_send",
-            "account_name_receive"
-          ],
-          "properties": {
-            "account_name_receive": {
-              "description": "OFI Participant operating or issuing account for receiving target asset.\n",
-              "type": "string"
-            },
-            "account_name_send": {
-              "description": "OFI Participant operating or issuing account for source asset transmit.\n",
-              "type": "string"
-            },
-            "amount": {
-              "description": "Amount of source asset to be exchanged.",
-              "type": "number"
-            },
-            "quote": {
-              "description": "Quote",
-              "type": "object",
-              "title": "quote",
-              "required": [
-                "exchange_rate",
-                "quote_id",
-                "rfi_id",
-                "account_name_send",
-                "account_name_receive",
-                "time_start",
-                "time_expire",
-                "limit_max",
-                "quote_request",
-                "status"
-              ],
-              "properties": {
-                "account_name_receive": {
-                  "description": "rfi operating or issuing account to receive source asset",
-                  "type": "string"
-                },
-                "account_name_send": {
-                  "description": "rfi operating or issuing account to send back target asset",
-                  "type": "string"
-                },
-                "exchange_rate": {
-                  "description": "The source-asset price of the target asset",
-                  "type": "number"
-                },
-                "limit_max": {
-                  "description": "Maximum units for which this quote is valid",
-                  "type": "number",
-                  "minimum": 1
-                },
-                "limit_min": {
-                  "description": "Minimum units for which this quote is valid",
-                  "type": "number",
-                  "minimum": 1,
-                  "x-nullable": true
-                },
-                "quote_id": {
-                  "description": "Unique id for this quote as set by the quote service",
-                  "type": "string"
-                },
-                "quote_request": {
-                  "description": "Quote Request",
-                  "type": "object",
-                  "title": "quoteRequest",
-                  "required": [
-                    "asset_source",
-                    "asset_target",
-                    "time_expire",
-                    "ofi_id",
-                    "limit_max"
-                  ],
-                  "properties": {
-                    "limit_max": {
-                      "description": "Maximum units of the target asset for which this quote is valid",
-                      "type": "number"
-                    },
-                    "limit_min": {
-                      "description": "Minimum units of the target asset for which this quote is valid",
-                      "type": "number",
-                      "x-nullable": true
-                    },
-                    "ofi_id": {
-                      "description": "The ID that identifies the OFI Participant on the WorldWire network (i.e. uk.yourbankintheUK.payments.ibm.com).",
-                      "type": "string",
-                      "maxLength": 32,
-                      "minLength": 5,
-                      "pattern": "^[a-zA-Z0-9-]{5,32}$"
-                    },
-                    "source_asset": {
-                      "description": "Details of the asset being transacted",
-                      "type": "object",
-                      "title": "asset",
-                      "required": [
-                        "asset_type",
-                        "asset_code"
-                      ],
-                      "properties": {
-                        "asset_code": {
-                          "description": "Alphanumeric code for the asset - USD, XLM, etc",
-                          "type": "string",
-                          "x-go-custom-tag": "bson:\"asset_code\""
-                        },
-                        "asset_type": {
-                          "description": "The type of asset. Options include digital obligation, \"DO\", digital asset \"DA\", or a cryptocurrency \"native\".",
-                          "type": "string",
-                          "enum": [
-                            "DO",
-                            "DA",
-                            "native"
-                          ],
-                          "x-go-custom-tag": "bson:\"asset_type\""
-                        },
-                        "issuer_id": {
-                          "description": "The asset issuer's participant id.",
-                          "type": "string",
-                          "maxLength": 32,
-                          "minLength": 5,
-                          "pattern": "^[a-zA-Z0-9-]{5,32}$",
-                          "x-go-custom-tag": "bson:\"issuer_id\""
-                        }
-                      },
-                      "x-go-name": "Asset",
-                      "x-group-m": "Models",
-                      "externalDocs": {
-                        "url": "#/definitions/asset"
-                      }
-                    },
-                    "target_asset": {
-                      "description": "Details of the asset being transacted",
-                      "type": "object",
-                      "title": "asset",
-                      "required": [
-                        "asset_type",
-                        "asset_code"
-                      ],
-                      "properties": {
-                        "asset_code": {
-                          "description": "Alphanumeric code for the asset - USD, XLM, etc",
-                          "type": "string",
-                          "x-go-custom-tag": "bson:\"asset_code\""
-                        },
-                        "asset_type": {
-                          "description": "The type of asset. Options include digital obligation, \"DO\", digital asset \"DA\", or a cryptocurrency \"native\".",
-                          "type": "string",
-                          "enum": [
-                            "DO",
-                            "DA",
-                            "native"
-                          ],
-                          "x-go-custom-tag": "bson:\"asset_type\""
-                        },
-                        "issuer_id": {
-                          "description": "The asset issuer's participant id.",
-                          "type": "string",
-                          "maxLength": 32,
-                          "minLength": 5,
-                          "pattern": "^[a-zA-Z0-9-]{5,32}$",
-                          "x-go-custom-tag": "bson:\"issuer_id\""
-                        }
-                      },
-                      "x-go-name": "Asset",
-                      "x-group-m": "Models",
-                      "externalDocs": {
-                        "url": "#/definitions/asset"
-                      }
-                    },
-                    "time_expire": {
-                      "description": "End-time for this quote request to be valid",
-                      "type": "number",
-                      "format": "int64",
-                      "example": 1547092408123
-                    }
-                  },
-                  "x-go-name": "QuoteRequest",
-                  "x-group-m": "Models",
-                  "externalDocs": {
-                    "url": "#/definitions/quoteRequest"
-                  }
-                },
-                "rfi_id": {
-                  "description": "The ID that identifies the RFI Participant on the WorldWire network (i.e. uk.yourbankintheUK.payments.ibm.com).\n",
-                  "type": "string",
-                  "maxLength": 32,
-                  "minLength": 5,
-                  "pattern": "^[a-zA-Z0-9-]{5,32}$"
-                },
-                "time_expire": {
-                  "description": "End-time for this quote to be valid.",
-                  "type": "number",
-                  "format": "int64",
-                  "example": 1547092408123
-                },
-                "time_start": {
-                  "description": "Start time for this quote to be valid.",
-                  "type": "number",
-                  "format": "int64",
-                  "example": 1547092408123
-                }
-              },
-              "x-go-name": "Quote",
-              "x-group-m": "Models",
-              "externalDocs": {
-                "url": "#/definitions/quote"
-              }
-            }
-          },
-          "x-go-name": "Exchange",
-          "x-group-m": "Models",
-          "externalDocs": {
-            "url": "#/definitions/exchange"
-          }
+          "$ref": "#/definitions/exchange"
         },
         "status_exchange": {
           "description": "Options are \"OK\" or \"Denied\".",
@@ -2238,6 +2216,70 @@
         "url": "#/definitions/exchangeReceipt"
       }
     },
+    "fee": {
+      "description": "Fee",
+      "type": "object",
+      "title": "fee",
+      "required": [
+        "cost",
+        "costasset"
+      ],
+      "properties": {
+        "cost": {
+          "description": "The fee amount, should be a float64 number",
+          "type": "number",
+          "multipleOf": 1e-7
+        },
+        "costasset": {
+          "$ref": "#/definitions/feeCostasset"
+        }
+      },
+      "x-go-name": "Fee",
+      "x-group-m": "Models",
+      "externalDocs": {
+        "url": "#/definitions/fee"
+      }
+    },
+    "feeCostasset": {
+      "description": "Details of the asset being transacted",
+      "type": "object",
+      "title": "asset",
+      "required": [
+        "asset_type",
+        "asset_code"
+      ],
+      "properties": {
+        "asset_code": {
+          "description": "Alphanumeric code for the asset - USD, XLM, etc",
+          "type": "string",
+          "x-go-custom-tag": "bson:\"asset_code\""
+        },
+        "asset_type": {
+          "description": "The type of asset. Options include digital obligation, \"DO\", digital asset \"DA\", or a cryptocurrency \"native\".",
+          "type": "string",
+          "enum": [
+            "DO",
+            "DA",
+            "native"
+          ],
+          "x-go-custom-tag": "bson:\"asset_type\""
+        },
+        "issuer_id": {
+          "description": "The asset issuer's participant id.",
+          "type": "string",
+          "maxLength": 32,
+          "minLength": 5,
+          "pattern": "^[a-zA-Z0-9-]{5,32}$",
+          "x-go-custom-tag": "bson:\"issuer_id\""
+        }
+      },
+      "x-go-gen-location": "models",
+      "x-go-name": "Asset",
+      "x-group-m": "Models",
+      "externalDocs": {
+        "url": "#/definitions/asset"
+      }
+    },
     "feesRequest": {
       "description": "The information required to determine the fees related to a payment a Participant would like to execute.\n",
       "type": "object",
@@ -2269,322 +2311,10 @@
           "type": "string"
         },
         "asset_settlement": {
-          "description": "Details of the asset being transacted",
-          "type": "object",
-          "title": "asset",
-          "required": [
-            "asset_type",
-            "asset_code"
-          ],
-          "properties": {
-            "asset_code": {
-              "description": "Alphanumeric code for the asset - USD, XLM, etc",
-              "type": "string",
-              "x-go-custom-tag": "bson:\"asset_code\""
-            },
-            "asset_type": {
-              "description": "The type of asset. Options include digital obligation, \"DO\", digital asset \"DA\", or a cryptocurrency \"native\".",
-              "type": "string",
-              "enum": [
-                "DO",
-                "DA",
-                "native"
-              ],
-              "x-go-custom-tag": "bson:\"asset_type\""
-            },
-            "issuer_id": {
-              "description": "The asset issuer's participant id.",
-              "type": "string",
-              "maxLength": 32,
-              "minLength": 5,
-              "pattern": "^[a-zA-Z0-9-]{5,32}$",
-              "x-go-custom-tag": "bson:\"issuer_id\""
-            }
-          },
-          "x-go-name": "Asset",
-          "x-group-m": "Models",
-          "externalDocs": {
-            "url": "#/definitions/asset"
-          }
+          "$ref": "#/definitions/asset"
         },
         "details_payout_location": {
-          "description": "Details of each payout location. Based on https://schema.org/LocalBusiness",
-          "type": "object",
-          "title": "payoutLocation",
-          "required": [
-            "type",
-            "name",
-            "currencies_accepted",
-            "image",
-            "url",
-            "telephone",
-            "member_of",
-            "geo",
-            "opening_hours",
-            "category",
-            "payout_child",
-            "payout_parent"
-          ],
-          "properties": {
-            "address": {
-              "description": "Address",
-              "type": "object",
-              "title": "address",
-              "required": [
-                "building_number",
-                "street",
-                "city",
-                "state",
-                "postal_code",
-                "country"
-              ],
-              "properties": {
-                "building_number": {
-                  "description": "The building number or identifier.",
-                  "type": "string",
-                  "x-go-custom-tag": "bson:\"building_number\""
-                },
-                "city": {
-                  "description": "Name of the city or town.",
-                  "type": "string"
-                },
-                "country": {
-                  "description": "Country code of the location.",
-                  "type": "string"
-                },
-                "postal_code": {
-                  "description": "Postal code for the location.",
-                  "type": "string",
-                  "x-go-custom-tag": "bson:\"postal_code\""
-                },
-                "state": {
-                  "description": "Name of the state.",
-                  "type": "string"
-                },
-                "street": {
-                  "description": "The street name.",
-                  "type": "string"
-                }
-              },
-              "x-go-name": "Address",
-              "x-group-m": "Models",
-              "externalDocs": {
-                "url": "#/definitions/address"
-              }
-            },
-            "category": {
-              "description": "Details of each payout location offer category. Based on https://schema.org/hasOfferCatalog",
-              "type": "object",
-              "title": "payoutLocationCategory",
-              "required": [
-                "name",
-                "options"
-              ],
-              "properties": {
-                "name": {
-                  "description": "name of the category",
-                  "type": "string",
-                  "enum": [
-                    "delivery",
-                    "cash_pickup",
-                    "agency_pickup",
-                    "mobile",
-                    "bank_account"
-                  ]
-                },
-                "options": {
-                  "description": "offer list of the category",
-                  "type": "array",
-                  "items": {
-                    "description": "Details of each payout location offer. Based on https://schema.org/hasOfferCatalog",
-                    "type": "object",
-                    "title": "payoutLocationOption",
-                    "required": [
-                      "description",
-                      "terms"
-                    ],
-                    "properties": {
-                      "description": {
-                        "description": "name of the service",
-                        "type": "string"
-                      },
-                      "terms": {
-                        "description": "service detail",
-                        "type": "string",
-                        "x-go-custom-tag": "bson:\"terms\""
-                      }
-                    },
-                    "x-go-name": "PayoutLocationOption",
-                    "externalDocs": {
-                      "url": "#/definitions/payoutLocationOption"
-                    }
-                  }
-                }
-              },
-              "x-go-name": "PayoutLocationCategory",
-              "externalDocs": {
-                "url": "#/definitions/payoutLocationCategory"
-              }
-            },
-            "currencies_accepted": {
-              "description": "The currency accepted.",
-              "type": "array",
-              "items": {
-                "type": "string"
-              },
-              "x-go-custom-tag": "bson:\"currencies_accepted\""
-            },
-            "geo": {
-              "description": "Geographic coordinates for a location. Based on https://schema.org/geo",
-              "type": "object",
-              "title": "geo",
-              "required": [
-                "coordinates",
-                "type"
-              ],
-              "properties": {
-                "coordinates": {
-                  "description": "The geo coordinates",
-                  "type": "array",
-                  "items": {
-                    "description": "Geographic coordinates for a location. Based on https://schema.org/geo",
-                    "type": "object",
-                    "title": "coordinate",
-                    "required": [
-                      "lat",
-                      "long"
-                    ],
-                    "properties": {
-                      "lat": {
-                        "description": "The latitude of the geo coordinates",
-                        "type": "number"
-                      },
-                      "long": {
-                        "description": "The longitude of the geo coordinates",
-                        "type": "number"
-                      }
-                    },
-                    "x-go-name": "Coordinate",
-                    "externalDocs": {
-                      "url": "#/definitions/coordinate"
-                    }
-                  }
-                },
-                "type": {
-                  "description": "The type of location. Options include \"point\" if the location is a single pickup location, or \"area\" if it's a region.\n",
-                  "type": "string",
-                  "enum": [
-                    "area",
-                    "point"
-                  ]
-                }
-              },
-              "x-go-name": "Geo",
-              "externalDocs": {
-                "url": "#/definitions/geo"
-              }
-            },
-            "id": {
-              "description": "The unique identifier of the location.",
-              "type": "string"
-            },
-            "image": {
-              "description": "An image of the item. This can be a URL or a fully described ImageObject.",
-              "type": "string"
-            },
-            "member_of": {
-              "description": "The financial institute that this location belongs to.",
-              "type": "array",
-              "items": {
-                "type": "string"
-              },
-              "x-go-custom-tag": "bson:\"member_of\""
-            },
-            "name": {
-              "description": "The name of the location.",
-              "type": "string"
-            },
-            "opening_hours": {
-              "description": "The opening hours of the location.",
-              "type": "array",
-              "items": {
-                "description": "The opening hours of each payout location. Based on https://schema.org/OpeningHoursSpecification",
-                "type": "object",
-                "title": "payoutLocationOpeningHours",
-                "required": [
-                  "day_of_week",
-                  "opens",
-                  "closes"
-                ],
-                "properties": {
-                  "closes": {
-                    "description": "The closing hour of the payout location on the given day(s) of the week",
-                    "type": "string"
-                  },
-                  "day_of_week": {
-                    "description": "The day of the week for which these opening hours are valid",
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    },
-                    "x-go-custom-tag": "bson:\"day_of_week\""
-                  },
-                  "opens": {
-                    "description": "The opening hour of the payout location on the given day(s) of the week",
-                    "type": "string"
-                  }
-                },
-                "x-go-name": "PayoutLocationOpeningHour",
-                "externalDocs": {
-                  "url": "#/definitions/payoutLocationOpeningHours"
-                }
-              },
-              "x-go-custom-tag": "bson:\"opening_hours\""
-            },
-            "payout_child": {
-              "description": "The collection of identifiers for locations which belong to the location - these can include areas, and points.\n",
-              "type": "array",
-              "items": {
-                "type": "string"
-              },
-              "x-go-custom-tag": "bson:\"payout_child\""
-            },
-            "payout_parent": {
-              "description": "The collection of identifiers for the parents of the locations - it can be only areas.\n",
-              "type": "array",
-              "items": {
-                "type": "string"
-              },
-              "x-go-custom-tag": "bson:\"payout_parent\""
-            },
-            "routing_number": {
-              "description": "Optional routing information, also known as BIC (bank id code).",
-              "type": "string",
-              "x-go-custom-tag": "bson:\"routing_number\""
-            },
-            "telephone": {
-              "description": "The phone number of the location.",
-              "type": "string"
-            },
-            "type": {
-              "description": "The type of location. Options include: \"Bank\", \"Non-Bank Financial Institution\", \"Mobile Network Operator\", or \"Other\".\n",
-              "type": "string",
-              "enum": [
-                "Bank",
-                "Non-Bank Financial Institution",
-                "Mobile Network Operator",
-                "Other"
-              ]
-            },
-            "url": {
-              "description": "The URL of the location.",
-              "type": "string"
-            }
-          },
-          "x-go-name": "PayoutLocation",
-          "externalDocs": {
-            "url": "#/definitions/payoutLocation"
-          }
+          "$ref": "#/definitions/feesRequestDetailsPayoutLocation"
         },
         "participant_id": {
           "description": "Identifier of the Participant who initiated the fee request.",
@@ -2604,199 +2334,7 @@
         "url": "#/definitions/feesRequest"
       }
     },
-    "gatewayResponse": {
-      "description": "The message payload for participant to post data to World Wire",
-      "type": "object",
-      "title": "gatewayResponse",
-      "required": [
-        "timestamp",
-        "data"
-      ],
-      "properties": {
-        "data": {
-          "description": "The set of data to be posted to World Wire.",
-          "type": "array",
-          "items": {
-            "description": "The message data.",
-            "type": "object",
-            "title": "gatewayMessage"
-          }
-        },
-        "timestamp": {
-          "description": "The unix timestamp of the message being retrieved\n",
-          "type": "string"
-        }
-      },
-      "x-go-name": "GatewayResponse",
-      "externalDocs": {
-        "url": "#/definitions/gatewayResponse"
-      }
-    },
-    "geo": {
-      "description": "Geographic coordinates for a location. Based on https://schema.org/geo",
-      "type": "object",
-      "title": "geo",
-      "required": [
-        "coordinates",
-        "type"
-      ],
-      "properties": {
-        "coordinates": {
-          "description": "The geo coordinates",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/coordinate"
-          }
-        },
-        "type": {
-          "description": "The type of location. Options include \"point\" if the location is a single pickup location, or \"area\" if it's a region.\n",
-          "type": "string",
-          "enum": [
-            "area",
-            "point"
-          ]
-        }
-      },
-      "x-go-name": "Geo",
-      "externalDocs": {
-        "url": "#/definitions/geo"
-      }
-    },
-    "obligation": {
-      "description": "Obligation",
-      "type": "object",
-      "title": "obligation",
-      "properties": {
-        "balance": {
-          "$ref": "#/definitions/balance"
-        },
-        "participant_id": {
-          "description": "Identifier of the Participant who owes the balance.",
-          "type": "string",
-          "maxLength": 32,
-          "minLength": 5,
-          "pattern": "^[a-zA-Z0-9-]{5,32}$"
-        }
-      },
-      "x-go-name": "Obligation",
-      "x-group-m": "Models",
-      "externalDocs": {
-        "url": "#/definitions/obligation"
-      }
-    },
-    "participant": {
-      "description": "Participant",
-      "type": "object",
-      "title": "participant",
-      "required": [
-        "id",
-        "country_code",
-        "role",
-        "bic"
-      ],
-      "properties": {
-        "bic": {
-          "description": "The business identifier code of each participant",
-          "type": "string",
-          "maxLength": 11,
-          "minLength": 11,
-          "pattern": "^[A-Z]{3}[A-Z]{3}[A-Z2-9]{1}[A-NP-Z0-9]{1}[A-Z0-9]{3}$",
-          "x-go-custom-tag": "bson:\"bic\""
-        },
-        "country_code": {
-          "description": "Participant's country of residence, country code in ISO 3166-1 format",
-          "type": "string",
-          "maxLength": 3,
-          "minLength": 3,
-          "x-go-custom-tag": "bson:\"country_code\""
-        },
-        "id": {
-          "description": "The participant id for the participant",
-          "type": "string",
-          "maxLength": 32,
-          "minLength": 5,
-          "pattern": "^[a-zA-Z0-9-]{5,32}$",
-          "x-go-custom-tag": "bson:\"id\""
-        },
-        "issuing_account": {
-          "description": "The ledger address belonging to the issuing account.",
-          "type": "string",
-          "x-go-custom-tag": "bson:\"issuing_account\""
-        },
-        "operating_accounts": {
-          "description": "Accounts",
-          "type": "array",
-          "items": {
-            "description": "Account",
-            "type": "object",
-            "title": "account",
-            "required": [
-              "address"
-            ],
-            "properties": {
-              "address": {
-                "description": "The address that was created on the ledger.",
-                "type": "string",
-                "x-go-custom-tag": "bson:\"address\""
-              },
-              "name": {
-                "description": "A name to identify this account.",
-                "type": "string",
-                "x-go-custom-tag": "bson:\"name\""
-              }
-            },
-            "x-go-name": "Account",
-            "x-group-m": "Models",
-            "externalDocs": {
-              "url": "#/definitions/account"
-            }
-          },
-          "x-go-custom-tag": "bson:\"operating_accounts\""
-        },
-        "role": {
-          "description": "The Role of this registered participant, it can be MM for Market Maker and IS for Issuer or anchor",
-          "type": "string",
-          "maxLength": 2,
-          "minLength": 2,
-          "enum": [
-            "MM",
-            "IS"
-          ],
-          "x-go-custom-tag": "bson:\"role\""
-        },
-        "status": {
-          "description": "Participant active status on WW network, inactive, active, suspended",
-          "type": "string",
-          "x-go-custom-tag": "bson:\"status\""
-        }
-      },
-      "x-go-name": "Participant",
-      "x-group-m": "Models",
-      "externalDocs": {
-        "url": "#/definitions/participant"
-      }
-    },
-    "payloadWithSignature": {
-      "description": "PayloadWithSignature",
-      "type": "object",
-      "title": "payloadWithSignature",
-      "required": [
-        "payload_with_signature"
-      ],
-      "properties": {
-        "payload_with_signature": {
-          "description": "Signed ISO 20022 message.",
-          "type": "string",
-          "format": "byte"
-        }
-      },
-      "x-go-name": "PayloadWithSignature",
-      "x-group-m": "Models",
-      "externalDocs": {
-        "url": "#/definitions/payloadWithSignature"
-      }
-    },
-    "payoutLocation": {
+    "feesRequestDetailsPayoutLocation": {
       "description": "Details of each payout location. Based on https://schema.org/LocalBusiness",
       "type": "object",
       "title": "payoutLocation",
@@ -3070,366 +2608,97 @@
           "type": "string"
         }
       },
+      "x-go-gen-location": "models",
       "x-go-name": "PayoutLocation",
       "externalDocs": {
         "url": "#/definitions/payoutLocation"
       }
     },
-    "quoteEnvelope": {
-      "description": "Quote Envelope",
+    "gatewayResponse": {
+      "description": "The message payload for participant to post data to World Wire",
       "type": "object",
-      "title": "quoteEnvelope",
+      "title": "gatewayResponse",
       "required": [
-        "quote",
-        "signature"
+        "timestamp",
+        "data"
       ],
       "properties": {
-        "quote": {
-          "description": "base64 encoded [quote](??base_url??/docs/??version??/api/participant-client-api?jump=model_quote) object",
-          "type": "string"
+        "data": {
+          "description": "The set of data to be posted to World Wire.",
+          "type": "array",
+          "items": {
+            "description": "The message data.",
+            "type": "object",
+            "title": "gatewayMessage"
+          }
         },
-        "signature": {
-          "description": "base64 encoded quote object signature",
+        "timestamp": {
+          "description": "The unix timestamp of the message being retrieved\n",
           "type": "string"
         }
       },
-      "x-go-name": "QuoteEnvelope",
-      "x-group-m": "Models",
+      "x-go-name": "GatewayResponse",
       "externalDocs": {
-        "url": "#/definitions/quoteEnvelope"
+        "url": "#/definitions/gatewayResponse"
       }
     },
-    "quoteFilter": {
-      "description": "A set of options you can supply to filter the results of quotes you receive from the /quotes endpoint.\n",
+    "geo": {
+      "description": "Geographic coordinates for a location. Based on https://schema.org/geo",
       "type": "object",
-      "title": "quoteFilter",
-      "properties": {
-        "delete_all_quotes": {
-          "description": "This one's special, so be careful! If you set this to true, it will override all other filters and delete all your quotes. Only used for delete quotes",
-          "type": "boolean",
-          "x-nullable": true
-        },
-        "exchange_rate": {
-          "description": "Comparison",
-          "type": "object",
-          "title": "comparison",
-          "required": [
-            "operator",
-            "threshold"
-          ],
-          "properties": {
-            "operator": {
-              "description": "The type of logical comparison. The default option is \"eq\" (equal to), but other options include \"gt\" (greater than), \"lt\" (less than), \"ge\" (greater than or equal to), and \"le\" (less than or equal to).\n",
-              "type": "string"
-            },
-            "threshold": {
-              "description": "The amount you want to compare.",
-              "type": "number",
-              "minimum": 1,
-              "x-nullable": true
-            }
-          },
-          "x-go-name": "Comparison",
-          "externalDocs": {
-            "url": "#/definitions/comparison"
-          }
-        },
-        "ofi_id": {
-          "description": "Filter by requestor Participant's identifier.",
-          "type": "string",
-          "maxLength": 32,
-          "minLength": 5,
-          "pattern": "^[a-zA-Z0-9-]{5,32}$",
-          "x-nullable": true
-        },
-        "rfi_id": {
-          "description": "Filter by Participant's identifier that provided the quote.",
-          "type": "string",
-          "maxLength": 32,
-          "minLength": 5,
-          "pattern": "^[a-zA-Z0-9-]{5,32}$",
-          "x-nullable": true
-        },
-        "source_asset": {
-          "description": "Details of the asset being transacted",
-          "type": "object",
-          "title": "asset",
-          "required": [
-            "asset_type",
-            "asset_code"
-          ],
-          "properties": {
-            "asset_code": {
-              "description": "Alphanumeric code for the asset - USD, XLM, etc",
-              "type": "string",
-              "x-go-custom-tag": "bson:\"asset_code\""
-            },
-            "asset_type": {
-              "description": "The type of asset. Options include digital obligation, \"DO\", digital asset \"DA\", or a cryptocurrency \"native\".",
-              "type": "string",
-              "enum": [
-                "DO",
-                "DA",
-                "native"
-              ],
-              "x-go-custom-tag": "bson:\"asset_type\""
-            },
-            "issuer_id": {
-              "description": "The asset issuer's participant id.",
-              "type": "string",
-              "maxLength": 32,
-              "minLength": 5,
-              "pattern": "^[a-zA-Z0-9-]{5,32}$",
-              "x-go-custom-tag": "bson:\"issuer_id\""
-            }
-          },
-          "x-go-name": "Asset",
-          "x-group-m": "Models",
-          "externalDocs": {
-            "url": "#/definitions/asset"
-          }
-        },
-        "status": {
-          "description": "Comparison",
-          "type": "object",
-          "title": "comparison",
-          "required": [
-            "operator",
-            "threshold"
-          ],
-          "properties": {
-            "operator": {
-              "description": "The type of logical comparison. The default option is \"eq\" (equal to), but other options include \"gt\" (greater than), \"lt\" (less than), \"ge\" (greater than or equal to), and \"le\" (less than or equal to).\n",
-              "type": "string"
-            },
-            "threshold": {
-              "description": "The amount you want to compare.",
-              "type": "number",
-              "minimum": 1,
-              "x-nullable": true
-            }
-          },
-          "x-go-name": "Comparison",
-          "externalDocs": {
-            "url": "#/definitions/comparison"
-          }
-        },
-        "target_asset": {
-          "description": "Details of the asset being transacted",
-          "type": "object",
-          "title": "asset",
-          "required": [
-            "asset_type",
-            "asset_code"
-          ],
-          "properties": {
-            "asset_code": {
-              "description": "Alphanumeric code for the asset - USD, XLM, etc",
-              "type": "string",
-              "x-go-custom-tag": "bson:\"asset_code\""
-            },
-            "asset_type": {
-              "description": "The type of asset. Options include digital obligation, \"DO\", digital asset \"DA\", or a cryptocurrency \"native\".",
-              "type": "string",
-              "enum": [
-                "DO",
-                "DA",
-                "native"
-              ],
-              "x-go-custom-tag": "bson:\"asset_type\""
-            },
-            "issuer_id": {
-              "description": "The asset issuer's participant id.",
-              "type": "string",
-              "maxLength": 32,
-              "minLength": 5,
-              "pattern": "^[a-zA-Z0-9-]{5,32}$",
-              "x-go-custom-tag": "bson:\"issuer_id\""
-            }
-          },
-          "x-go-name": "Asset",
-          "x-group-m": "Models",
-          "externalDocs": {
-            "url": "#/definitions/asset"
-          }
-        },
-        "time_expire_rfi": {
-          "description": "Comparison",
-          "type": "object",
-          "title": "comparison",
-          "required": [
-            "operator",
-            "threshold"
-          ],
-          "properties": {
-            "operator": {
-              "description": "The type of logical comparison. The default option is \"eq\" (equal to), but other options include \"gt\" (greater than), \"lt\" (less than), \"ge\" (greater than or equal to), and \"le\" (less than or equal to).\n",
-              "type": "string"
-            },
-            "threshold": {
-              "description": "The amount you want to compare.",
-              "type": "number",
-              "minimum": 1,
-              "x-nullable": true
-            }
-          },
-          "x-go-name": "Comparison",
-          "externalDocs": {
-            "url": "#/definitions/comparison"
-          }
-        }
-      },
-      "x-go-name": "QuoteFilter",
-      "x-group-m": "Models",
-      "externalDocs": {
-        "url": "#/definitions/quoteFilter"
-      }
-    },
-    "quoteRequest": {
-      "description": "Quote Request",
-      "type": "object",
-      "title": "quoteRequest",
+      "title": "geo",
       "required": [
-        "asset_source",
-        "asset_target",
-        "time_expire",
-        "ofi_id",
-        "limit_max"
+        "coordinates",
+        "type"
       ],
       "properties": {
-        "limit_max": {
-          "description": "Maximum units of the target asset for which this quote is valid",
-          "type": "number"
+        "coordinates": {
+          "description": "The geo coordinates",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/coordinate"
+          }
         },
-        "limit_min": {
-          "description": "Minimum units of the target asset for which this quote is valid",
-          "type": "number",
-          "x-nullable": true
-        },
-        "ofi_id": {
-          "description": "The ID that identifies the OFI Participant on the WorldWire network (i.e. uk.yourbankintheUK.payments.ibm.com).",
+        "type": {
+          "description": "The type of location. Options include \"point\" if the location is a single pickup location, or \"area\" if it's a region.\n",
           "type": "string",
-          "maxLength": 32,
-          "minLength": 5,
-          "pattern": "^[a-zA-Z0-9-]{5,32}$"
-        },
-        "source_asset": {
-          "description": "Details of the asset being transacted",
-          "type": "object",
-          "title": "asset",
-          "required": [
-            "asset_type",
-            "asset_code"
-          ],
-          "properties": {
-            "asset_code": {
-              "description": "Alphanumeric code for the asset - USD, XLM, etc",
-              "type": "string",
-              "x-go-custom-tag": "bson:\"asset_code\""
-            },
-            "asset_type": {
-              "description": "The type of asset. Options include digital obligation, \"DO\", digital asset \"DA\", or a cryptocurrency \"native\".",
-              "type": "string",
-              "enum": [
-                "DO",
-                "DA",
-                "native"
-              ],
-              "x-go-custom-tag": "bson:\"asset_type\""
-            },
-            "issuer_id": {
-              "description": "The asset issuer's participant id.",
-              "type": "string",
-              "maxLength": 32,
-              "minLength": 5,
-              "pattern": "^[a-zA-Z0-9-]{5,32}$",
-              "x-go-custom-tag": "bson:\"issuer_id\""
-            }
-          },
-          "x-go-name": "Asset",
-          "x-group-m": "Models",
-          "externalDocs": {
-            "url": "#/definitions/asset"
-          }
-        },
-        "target_asset": {
-          "description": "Details of the asset being transacted",
-          "type": "object",
-          "title": "asset",
-          "required": [
-            "asset_type",
-            "asset_code"
-          ],
-          "properties": {
-            "asset_code": {
-              "description": "Alphanumeric code for the asset - USD, XLM, etc",
-              "type": "string",
-              "x-go-custom-tag": "bson:\"asset_code\""
-            },
-            "asset_type": {
-              "description": "The type of asset. Options include digital obligation, \"DO\", digital asset \"DA\", or a cryptocurrency \"native\".",
-              "type": "string",
-              "enum": [
-                "DO",
-                "DA",
-                "native"
-              ],
-              "x-go-custom-tag": "bson:\"asset_type\""
-            },
-            "issuer_id": {
-              "description": "The asset issuer's participant id.",
-              "type": "string",
-              "maxLength": 32,
-              "minLength": 5,
-              "pattern": "^[a-zA-Z0-9-]{5,32}$",
-              "x-go-custom-tag": "bson:\"issuer_id\""
-            }
-          },
-          "x-go-name": "Asset",
-          "x-group-m": "Models",
-          "externalDocs": {
-            "url": "#/definitions/asset"
-          }
-        },
-        "time_expire": {
-          "description": "End-time for this quote request to be valid",
-          "type": "number",
-          "format": "int64",
-          "example": 1547092408123
+          "enum": [
+            "area",
+            "point"
+          ]
         }
       },
-      "x-go-name": "QuoteRequest",
-      "x-group-m": "Models",
+      "x-go-name": "Geo",
       "externalDocs": {
-        "url": "#/definitions/quoteRequest"
+        "url": "#/definitions/geo"
       }
     },
-    "quoteRequestReceipt": {
-      "description": "Quote Receipt",
+    "getAccountsOKBodyItems": {
+      "description": "Account",
       "type": "object",
-      "title": "quoteRequestReceipt",
+      "title": "account",
       "required": [
-        "request_id",
-        "time_request"
+        "address"
       ],
       "properties": {
-        "request_id": {
-          "description": "Unique id for the original quote request as set by the quote giver.",
-          "type": "string"
+        "address": {
+          "description": "The address that was created on the ledger.",
+          "type": "string",
+          "x-go-custom-tag": "bson:\"address\""
         },
-        "time_request": {
-          "description": "The timestamp when the quote request happened.",
-          "type": "number",
-          "format": "int64"
+        "name": {
+          "description": "A name to identify this account.",
+          "type": "string",
+          "x-go-custom-tag": "bson:\"name\""
         }
       },
-      "x-go-name": "quoteRequestReceipt",
+      "x-go-gen-location": "operations",
+      "x-go-name": "Account",
       "x-group-m": "Models",
       "externalDocs": {
-        "url": "#/definitions/quoteRequestReceipt"
+        "url": "#/definitions/account"
       }
     },
-    "quoteStatus": {
+    "getQuotesOKBodyItems": {
       "description": "Quote Status",
       "type": "object",
       "title": "quoteStatus",
@@ -3523,82 +2792,10 @@
                   "pattern": "^[a-zA-Z0-9-]{5,32}$"
                 },
                 "source_asset": {
-                  "description": "Details of the asset being transacted",
-                  "type": "object",
-                  "title": "asset",
-                  "required": [
-                    "asset_type",
-                    "asset_code"
-                  ],
-                  "properties": {
-                    "asset_code": {
-                      "description": "Alphanumeric code for the asset - USD, XLM, etc",
-                      "type": "string",
-                      "x-go-custom-tag": "bson:\"asset_code\""
-                    },
-                    "asset_type": {
-                      "description": "The type of asset. Options include digital obligation, \"DO\", digital asset \"DA\", or a cryptocurrency \"native\".",
-                      "type": "string",
-                      "enum": [
-                        "DO",
-                        "DA",
-                        "native"
-                      ],
-                      "x-go-custom-tag": "bson:\"asset_type\""
-                    },
-                    "issuer_id": {
-                      "description": "The asset issuer's participant id.",
-                      "type": "string",
-                      "maxLength": 32,
-                      "minLength": 5,
-                      "pattern": "^[a-zA-Z0-9-]{5,32}$",
-                      "x-go-custom-tag": "bson:\"issuer_id\""
-                    }
-                  },
-                  "x-go-name": "Asset",
-                  "x-group-m": "Models",
-                  "externalDocs": {
-                    "url": "#/definitions/asset"
-                  }
+                  "$ref": "#/definitions/feeCostasset"
                 },
                 "target_asset": {
-                  "description": "Details of the asset being transacted",
-                  "type": "object",
-                  "title": "asset",
-                  "required": [
-                    "asset_type",
-                    "asset_code"
-                  ],
-                  "properties": {
-                    "asset_code": {
-                      "description": "Alphanumeric code for the asset - USD, XLM, etc",
-                      "type": "string",
-                      "x-go-custom-tag": "bson:\"asset_code\""
-                    },
-                    "asset_type": {
-                      "description": "The type of asset. Options include digital obligation, \"DO\", digital asset \"DA\", or a cryptocurrency \"native\".",
-                      "type": "string",
-                      "enum": [
-                        "DO",
-                        "DA",
-                        "native"
-                      ],
-                      "x-go-custom-tag": "bson:\"asset_type\""
-                    },
-                    "issuer_id": {
-                      "description": "The asset issuer's participant id.",
-                      "type": "string",
-                      "maxLength": 32,
-                      "minLength": 5,
-                      "pattern": "^[a-zA-Z0-9-]{5,32}$",
-                      "x-go-custom-tag": "bson:\"issuer_id\""
-                    }
-                  },
-                  "x-go-name": "Asset",
-                  "x-group-m": "Models",
-                  "externalDocs": {
-                    "url": "#/definitions/asset"
-                  }
+                  "$ref": "#/definitions/feeCostasset"
                 },
                 "time_expire": {
                   "description": "End-time for this quote request to be valid",
@@ -3638,6 +2835,629 @@
           "externalDocs": {
             "url": "#/definitions/quote"
           }
+        },
+        "request_id": {
+          "description": "request id for this quote as set by the quote service",
+          "type": "string"
+        },
+        "rfi_id": {
+          "description": "The ID that identifies the RFI Participant on the WorldWire network (i.e. uk.yourbankintheUK.payments.ibm.com).\n",
+          "type": "string",
+          "maxLength": 32,
+          "minLength": 5,
+          "pattern": "^[a-zA-Z0-9-]{5,32}$"
+        },
+        "status": {
+          "description": "quote status of a quote request [1 = pending, 2 = updated,3 = executing 4 = executed, 98 = failed, 99 = cancelled]",
+          "type": "number"
+        },
+        "time_quote": {
+          "description": "Time when RFI response to the quote.",
+          "type": "number",
+          "format": "int64",
+          "example": 1547092408123
+        },
+        "time_request": {
+          "description": "Request time for this quote request.",
+          "type": "number",
+          "format": "int64",
+          "example": 1547092408123
+        }
+      },
+      "x-go-gen-location": "operations",
+      "x-go-name": "QuoteStatus",
+      "x-group-m": "Models",
+      "externalDocs": {
+        "url": "#/definitions/quoteStatus"
+      }
+    },
+    "obligation": {
+      "description": "Obligation",
+      "type": "object",
+      "title": "obligation",
+      "properties": {
+        "balance": {
+          "$ref": "#/definitions/obligationBalance"
+        },
+        "participant_id": {
+          "description": "Identifier of the Participant who owes the balance.",
+          "type": "string",
+          "maxLength": 32,
+          "minLength": 5,
+          "pattern": "^[a-zA-Z0-9-]{5,32}$"
+        }
+      },
+      "x-go-name": "Obligation",
+      "x-group-m": "Models",
+      "externalDocs": {
+        "url": "#/definitions/obligation"
+      }
+    },
+    "obligationBalance": {
+      "description": "Balance",
+      "type": "object",
+      "title": "balance",
+      "required": [
+        "asset_code",
+        "balance",
+        "account_name"
+      ],
+      "properties": {
+        "account_name": {
+          "description": "The name of the account, operting account name or \"issuing\" for issuing account",
+          "type": "string"
+        },
+        "asset_code": {
+          "description": "A name to identify the asset",
+          "type": "string"
+        },
+        "balance": {
+          "description": "Balance for a given asset",
+          "type": "string"
+        },
+        "issuer_id": {
+          "description": "Participant id to identify the issuer for this asset",
+          "type": "string",
+          "maxLength": 32,
+          "minLength": 5,
+          "pattern": "^[a-zA-Z0-9-]{5,32}$"
+        }
+      },
+      "x-go-gen-location": "models",
+      "x-go-name": "AssetBalance",
+      "x-group-m": "Models",
+      "externalDocs": {
+        "url": "#/definitions/balance"
+      }
+    },
+    "participant": {
+      "description": "Participant",
+      "type": "object",
+      "title": "participant",
+      "required": [
+        "id",
+        "country_code",
+        "role",
+        "bic"
+      ],
+      "properties": {
+        "bic": {
+          "description": "The business identifier code of each participant",
+          "type": "string",
+          "maxLength": 11,
+          "minLength": 11,
+          "pattern": "^[A-Z]{3}[A-Z]{3}[A-Z2-9]{1}[A-NP-Z0-9]{1}[A-Z0-9]{3}$",
+          "x-go-custom-tag": "bson:\"bic\""
+        },
+        "country_code": {
+          "description": "Participant's country of residence, country code in ISO 3166-1 format",
+          "type": "string",
+          "maxLength": 3,
+          "minLength": 3,
+          "x-go-custom-tag": "bson:\"country_code\""
+        },
+        "id": {
+          "description": "The participant id for the participant",
+          "type": "string",
+          "maxLength": 32,
+          "minLength": 5,
+          "pattern": "^[a-zA-Z0-9-]{5,32}$",
+          "x-go-custom-tag": "bson:\"id\""
+        },
+        "issuing_account": {
+          "description": "The ledger address belonging to the issuing account.",
+          "type": "string",
+          "x-go-custom-tag": "bson:\"issuing_account\""
+        },
+        "operating_accounts": {
+          "description": "Accounts",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/account"
+          },
+          "x-go-custom-tag": "bson:\"operating_accounts\""
+        },
+        "role": {
+          "description": "The Role of this registered participant, it can be MM for Market Maker and IS for Issuer or anchor",
+          "type": "string",
+          "maxLength": 2,
+          "minLength": 2,
+          "enum": [
+            "MM",
+            "IS"
+          ],
+          "x-go-custom-tag": "bson:\"role\""
+        },
+        "status": {
+          "description": "Participant active status on WW network, inactive, active, suspended",
+          "type": "string",
+          "x-go-custom-tag": "bson:\"status\""
+        }
+      },
+      "x-go-name": "Participant",
+      "x-group-m": "Models",
+      "externalDocs": {
+        "url": "#/definitions/participant"
+      }
+    },
+    "payloadWithSignature": {
+      "description": "PayloadWithSignature",
+      "type": "object",
+      "title": "payloadWithSignature",
+      "required": [
+        "payload_with_signature"
+      ],
+      "properties": {
+        "payload_with_signature": {
+          "description": "Signed ISO 20022 message.",
+          "type": "string",
+          "format": "byte"
+        }
+      },
+      "x-go-name": "PayloadWithSignature",
+      "x-group-m": "Models",
+      "externalDocs": {
+        "url": "#/definitions/payloadWithSignature"
+      }
+    },
+    "payoutLocation": {
+      "description": "Details of each payout location. Based on https://schema.org/LocalBusiness",
+      "type": "object",
+      "title": "payoutLocation",
+      "required": [
+        "type",
+        "name",
+        "currencies_accepted",
+        "image",
+        "url",
+        "telephone",
+        "member_of",
+        "geo",
+        "opening_hours",
+        "category",
+        "payout_child",
+        "payout_parent"
+      ],
+      "properties": {
+        "address": {
+          "$ref": "#/definitions/address"
+        },
+        "category": {
+          "$ref": "#/definitions/payoutLocationCategory"
+        },
+        "currencies_accepted": {
+          "description": "The currency accepted.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-go-custom-tag": "bson:\"currencies_accepted\""
+        },
+        "geo": {
+          "$ref": "#/definitions/geo"
+        },
+        "id": {
+          "description": "The unique identifier of the location.",
+          "type": "string"
+        },
+        "image": {
+          "description": "An image of the item. This can be a URL or a fully described ImageObject.",
+          "type": "string"
+        },
+        "member_of": {
+          "description": "The financial institute that this location belongs to.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-go-custom-tag": "bson:\"member_of\""
+        },
+        "name": {
+          "description": "The name of the location.",
+          "type": "string"
+        },
+        "opening_hours": {
+          "description": "The opening hours of the location.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/payoutLocationOpeningHours"
+          },
+          "x-go-custom-tag": "bson:\"opening_hours\""
+        },
+        "payout_child": {
+          "description": "The collection of identifiers for locations which belong to the location - these can include areas, and points.\n",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-go-custom-tag": "bson:\"payout_child\""
+        },
+        "payout_parent": {
+          "description": "The collection of identifiers for the parents of the locations - it can be only areas.\n",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-go-custom-tag": "bson:\"payout_parent\""
+        },
+        "routing_number": {
+          "description": "Optional routing information, also known as BIC (bank id code).",
+          "type": "string",
+          "x-go-custom-tag": "bson:\"routing_number\""
+        },
+        "telephone": {
+          "description": "The phone number of the location.",
+          "type": "string"
+        },
+        "type": {
+          "description": "The type of location. Options include: \"Bank\", \"Non-Bank Financial Institution\", \"Mobile Network Operator\", or \"Other\".\n",
+          "type": "string",
+          "enum": [
+            "Bank",
+            "Non-Bank Financial Institution",
+            "Mobile Network Operator",
+            "Other"
+          ]
+        },
+        "url": {
+          "description": "The URL of the location.",
+          "type": "string"
+        }
+      },
+      "x-go-name": "PayoutLocation",
+      "externalDocs": {
+        "url": "#/definitions/payoutLocation"
+      }
+    },
+    "payoutLocationCategory": {
+      "description": "Details of each payout location offer category. Based on https://schema.org/hasOfferCatalog",
+      "type": "object",
+      "title": "payoutLocationCategory",
+      "required": [
+        "name",
+        "options"
+      ],
+      "properties": {
+        "name": {
+          "description": "name of the category",
+          "type": "string",
+          "enum": [
+            "delivery",
+            "cash_pickup",
+            "agency_pickup",
+            "mobile",
+            "bank_account"
+          ]
+        },
+        "options": {
+          "description": "offer list of the category",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/payoutLocationOption"
+          }
+        }
+      },
+      "x-go-name": "PayoutLocationCategory",
+      "externalDocs": {
+        "url": "#/definitions/payoutLocationCategory"
+      }
+    },
+    "payoutLocationOpeningHours": {
+      "description": "The opening hours of each payout location. Based on https://schema.org/OpeningHoursSpecification",
+      "type": "object",
+      "title": "payoutLocationOpeningHours",
+      "required": [
+        "day_of_week",
+        "opens",
+        "closes"
+      ],
+      "properties": {
+        "closes": {
+          "description": "The closing hour of the payout location on the given day(s) of the week",
+          "type": "string"
+        },
+        "day_of_week": {
+          "description": "The day of the week for which these opening hours are valid",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-go-custom-tag": "bson:\"day_of_week\""
+        },
+        "opens": {
+          "description": "The opening hour of the payout location on the given day(s) of the week",
+          "type": "string"
+        }
+      },
+      "x-go-name": "PayoutLocationOpeningHour",
+      "externalDocs": {
+        "url": "#/definitions/payoutLocationOpeningHours"
+      }
+    },
+    "payoutLocationOption": {
+      "description": "Details of each payout location offer. Based on https://schema.org/hasOfferCatalog",
+      "type": "object",
+      "title": "payoutLocationOption",
+      "required": [
+        "description",
+        "terms"
+      ],
+      "properties": {
+        "description": {
+          "description": "name of the service",
+          "type": "string"
+        },
+        "terms": {
+          "description": "service detail",
+          "type": "string",
+          "x-go-custom-tag": "bson:\"terms\""
+        }
+      },
+      "x-go-name": "PayoutLocationOption",
+      "externalDocs": {
+        "url": "#/definitions/payoutLocationOption"
+      }
+    },
+    "quote": {
+      "description": "Quote",
+      "type": "object",
+      "title": "quote",
+      "required": [
+        "exchange_rate",
+        "quote_id",
+        "rfi_id",
+        "account_name_send",
+        "account_name_receive",
+        "time_start",
+        "time_expire",
+        "limit_max",
+        "quote_request",
+        "status"
+      ],
+      "properties": {
+        "account_name_receive": {
+          "description": "rfi operating or issuing account to receive source asset",
+          "type": "string"
+        },
+        "account_name_send": {
+          "description": "rfi operating or issuing account to send back target asset",
+          "type": "string"
+        },
+        "exchange_rate": {
+          "description": "The source-asset price of the target asset",
+          "type": "number"
+        },
+        "limit_max": {
+          "description": "Maximum units for which this quote is valid",
+          "type": "number",
+          "minimum": 1
+        },
+        "limit_min": {
+          "description": "Minimum units for which this quote is valid",
+          "type": "number",
+          "minimum": 1,
+          "x-nullable": true
+        },
+        "quote_id": {
+          "description": "Unique id for this quote as set by the quote service",
+          "type": "string"
+        },
+        "quote_request": {
+          "$ref": "#/definitions/quoteRequest"
+        },
+        "rfi_id": {
+          "description": "The ID that identifies the RFI Participant on the WorldWire network (i.e. uk.yourbankintheUK.payments.ibm.com).\n",
+          "type": "string",
+          "maxLength": 32,
+          "minLength": 5,
+          "pattern": "^[a-zA-Z0-9-]{5,32}$"
+        },
+        "time_expire": {
+          "description": "End-time for this quote to be valid.",
+          "type": "number",
+          "format": "int64",
+          "example": 1547092408123
+        },
+        "time_start": {
+          "description": "Start time for this quote to be valid.",
+          "type": "number",
+          "format": "int64",
+          "example": 1547092408123
+        }
+      },
+      "x-go-name": "Quote",
+      "x-group-m": "Models",
+      "externalDocs": {
+        "url": "#/definitions/quote"
+      }
+    },
+    "quoteEnvelope": {
+      "description": "Quote Envelope",
+      "type": "object",
+      "title": "quoteEnvelope",
+      "required": [
+        "quote",
+        "signature"
+      ],
+      "properties": {
+        "quote": {
+          "description": "base64 encoded [quote](??base_url??/docs/??version??/api/participant-client-api?jump=model_quote) object",
+          "type": "string"
+        },
+        "signature": {
+          "description": "base64 encoded quote object signature",
+          "type": "string"
+        }
+      },
+      "x-go-name": "QuoteEnvelope",
+      "x-group-m": "Models",
+      "externalDocs": {
+        "url": "#/definitions/quoteEnvelope"
+      }
+    },
+    "quoteFilter": {
+      "description": "A set of options you can supply to filter the results of quotes you receive from the /quotes endpoint.\n",
+      "type": "object",
+      "title": "quoteFilter",
+      "properties": {
+        "delete_all_quotes": {
+          "description": "This one's special, so be careful! If you set this to true, it will override all other filters and delete all your quotes. Only used for delete quotes",
+          "type": "boolean",
+          "x-nullable": true
+        },
+        "exchange_rate": {
+          "$ref": "#/definitions/comparison"
+        },
+        "ofi_id": {
+          "description": "Filter by requestor Participant's identifier.",
+          "type": "string",
+          "maxLength": 32,
+          "minLength": 5,
+          "pattern": "^[a-zA-Z0-9-]{5,32}$",
+          "x-nullable": true
+        },
+        "rfi_id": {
+          "description": "Filter by Participant's identifier that provided the quote.",
+          "type": "string",
+          "maxLength": 32,
+          "minLength": 5,
+          "pattern": "^[a-zA-Z0-9-]{5,32}$",
+          "x-nullable": true
+        },
+        "source_asset": {
+          "$ref": "#/definitions/asset"
+        },
+        "status": {
+          "$ref": "#/definitions/comparison"
+        },
+        "target_asset": {
+          "$ref": "#/definitions/asset"
+        },
+        "time_expire_rfi": {
+          "$ref": "#/definitions/comparison"
+        }
+      },
+      "x-go-name": "QuoteFilter",
+      "x-group-m": "Models",
+      "externalDocs": {
+        "url": "#/definitions/quoteFilter"
+      }
+    },
+    "quoteRequest": {
+      "description": "Quote Request",
+      "type": "object",
+      "title": "quoteRequest",
+      "required": [
+        "asset_source",
+        "asset_target",
+        "time_expire",
+        "ofi_id",
+        "limit_max"
+      ],
+      "properties": {
+        "limit_max": {
+          "description": "Maximum units of the target asset for which this quote is valid",
+          "type": "number"
+        },
+        "limit_min": {
+          "description": "Minimum units of the target asset for which this quote is valid",
+          "type": "number",
+          "x-nullable": true
+        },
+        "ofi_id": {
+          "description": "The ID that identifies the OFI Participant on the WorldWire network (i.e. uk.yourbankintheUK.payments.ibm.com).",
+          "type": "string",
+          "maxLength": 32,
+          "minLength": 5,
+          "pattern": "^[a-zA-Z0-9-]{5,32}$"
+        },
+        "source_asset": {
+          "$ref": "#/definitions/asset"
+        },
+        "target_asset": {
+          "$ref": "#/definitions/asset"
+        },
+        "time_expire": {
+          "description": "End-time for this quote request to be valid",
+          "type": "number",
+          "format": "int64",
+          "example": 1547092408123
+        }
+      },
+      "x-go-name": "QuoteRequest",
+      "x-group-m": "Models",
+      "externalDocs": {
+        "url": "#/definitions/quoteRequest"
+      }
+    },
+    "quoteRequestReceipt": {
+      "description": "Quote Receipt",
+      "type": "object",
+      "title": "quoteRequestReceipt",
+      "required": [
+        "request_id",
+        "time_request"
+      ],
+      "properties": {
+        "request_id": {
+          "description": "Unique id for the original quote request as set by the quote giver.",
+          "type": "string"
+        },
+        "time_request": {
+          "description": "The timestamp when the quote request happened.",
+          "type": "number",
+          "format": "int64"
+        }
+      },
+      "x-go-name": "quoteRequestReceipt",
+      "x-group-m": "Models",
+      "externalDocs": {
+        "url": "#/definitions/quoteRequestReceipt"
+      }
+    },
+    "quoteStatus": {
+      "description": "Quote Status",
+      "type": "object",
+      "title": "quoteStatus",
+      "required": [
+        "exchange_rate",
+        "quote_id",
+        "rfi_id",
+        "account_name_send",
+        "account_name_receive",
+        "time_start",
+        "time_expire",
+        "limit_max",
+        "quote_request",
+        "status"
+      ],
+      "properties": {
+        "quote_id": {
+          "description": "quote id for this quote as set by the quote giver",
+          "type": "string"
+        },
+        "quote_response": {
+          "$ref": "#/definitions/quote"
         },
         "request_id": {
           "description": "request id for this quote as set by the quote service",
@@ -3742,73 +3562,40 @@
         "url": "#/definitions/signature"
       }
     },
+    "sweep": {
+      "description": "Sweep",
+      "type": "object",
+      "title": "sweep",
+      "required": [
+        "account_name",
+        "amount",
+        "asset"
+      ],
+      "properties": {
+        "account_name": {
+          "description": "A name to identify this source account.",
+          "type": "string"
+        },
+        "amount": {
+          "description": "Amount of the asset.",
+          "type": "number",
+          "format": "decimal"
+        },
+        "asset": {
+          "$ref": "#/definitions/asset"
+        }
+      },
+      "x-go-name": "Sweep",
+      "externalDocs": {
+        "url": "#/definitions/sweep"
+      }
+    },
     "sweepInstruction": {
       "description": "SweepInstruction",
       "type": "array",
       "title": "sweepInstruction",
       "items": {
-        "description": "Sweep",
-        "type": "object",
-        "title": "sweep",
-        "required": [
-          "account_name",
-          "amount",
-          "asset"
-        ],
-        "properties": {
-          "account_name": {
-            "description": "A name to identify this source account.",
-            "type": "string"
-          },
-          "amount": {
-            "description": "Amount of the asset.",
-            "type": "number",
-            "format": "decimal"
-          },
-          "asset": {
-            "description": "Details of the asset being transacted",
-            "type": "object",
-            "title": "asset",
-            "required": [
-              "asset_type",
-              "asset_code"
-            ],
-            "properties": {
-              "asset_code": {
-                "description": "Alphanumeric code for the asset - USD, XLM, etc",
-                "type": "string",
-                "x-go-custom-tag": "bson:\"asset_code\""
-              },
-              "asset_type": {
-                "description": "The type of asset. Options include digital obligation, \"DO\", digital asset \"DA\", or a cryptocurrency \"native\".",
-                "type": "string",
-                "enum": [
-                  "DO",
-                  "DA",
-                  "native"
-                ],
-                "x-go-custom-tag": "bson:\"asset_type\""
-              },
-              "issuer_id": {
-                "description": "The asset issuer's participant id.",
-                "type": "string",
-                "maxLength": 32,
-                "minLength": 5,
-                "pattern": "^[a-zA-Z0-9-]{5,32}$",
-                "x-go-custom-tag": "bson:\"issuer_id\""
-              }
-            },
-            "x-go-name": "Asset",
-            "x-group-m": "Models",
-            "externalDocs": {
-              "url": "#/definitions/asset"
-            }
-          }
-        },
-        "x-go-name": "Sweep",
-        "externalDocs": {
-          "url": "#/definitions/sweep"
-        }
+        "$ref": "#/definitions/sweep"
       },
       "x-go-name": "SweepInstruction",
       "externalDocs": {
@@ -3827,68 +3614,7 @@
           "description": "Source account balances, after sweeping.",
           "type": "array",
           "items": {
-            "description": "Sweep",
-            "type": "object",
-            "title": "sweep",
-            "required": [
-              "account_name",
-              "amount",
-              "asset"
-            ],
-            "properties": {
-              "account_name": {
-                "description": "A name to identify this source account.",
-                "type": "string"
-              },
-              "amount": {
-                "description": "Amount of the asset.",
-                "type": "number",
-                "format": "decimal"
-              },
-              "asset": {
-                "description": "Details of the asset being transacted",
-                "type": "object",
-                "title": "asset",
-                "required": [
-                  "asset_type",
-                  "asset_code"
-                ],
-                "properties": {
-                  "asset_code": {
-                    "description": "Alphanumeric code for the asset - USD, XLM, etc",
-                    "type": "string",
-                    "x-go-custom-tag": "bson:\"asset_code\""
-                  },
-                  "asset_type": {
-                    "description": "The type of asset. Options include digital obligation, \"DO\", digital asset \"DA\", or a cryptocurrency \"native\".",
-                    "type": "string",
-                    "enum": [
-                      "DO",
-                      "DA",
-                      "native"
-                    ],
-                    "x-go-custom-tag": "bson:\"asset_type\""
-                  },
-                  "issuer_id": {
-                    "description": "The asset issuer's participant id.",
-                    "type": "string",
-                    "maxLength": 32,
-                    "minLength": 5,
-                    "pattern": "^[a-zA-Z0-9-]{5,32}$",
-                    "x-go-custom-tag": "bson:\"issuer_id\""
-                  }
-                },
-                "x-go-name": "Asset",
-                "x-group-m": "Models",
-                "externalDocs": {
-                  "url": "#/definitions/asset"
-                }
-              }
-            },
-            "x-go-name": "Sweep",
-            "externalDocs": {
-              "url": "#/definitions/sweep"
-            }
+            "$ref": "#/definitions/sweep"
           }
         },
         "time_executed": {
@@ -3917,198 +3643,13 @@
       ],
       "properties": {
         "transaction_details": {
-          "description": "Transaction Details",
-          "type": "object",
-          "title": "transactionDetails",
-          "required": [
-            "amount_beneficiary",
-            "amount_settlement",
-            "asset_code_beneficiary",
-            "assetsettlement",
-            "feecreditor",
-            "feedebtor",
-            "rfi_id",
-            "ofi_id",
-            "settlement_method"
-          ],
-          "properties": {
-            "amount_beneficiary": {
-              "description": "The amount the beneficiary should receive in beneficiary currency",
-              "type": "number",
-              "multipleOf": 1e-7,
-              "x-go-custom-tag": "bson:\"amount_beneficiary\""
-            },
-            "amount_settlement": {
-              "description": "The amount of the settlement.",
-              "type": "number",
-              "multipleOf": 1e-7,
-              "x-go-custom-tag": "bson:\"amount_settlement\""
-            },
-            "asset_code_beneficiary": {
-              "description": "The asset code for the beneficiary",
-              "type": "string",
-              "x-go-custom-tag": "bson:\"asset_code_beneficiary\""
-            },
-            "assetsettlement": {
-              "description": "Details of the asset being transacted",
-              "type": "object",
-              "title": "asset",
-              "required": [
-                "asset_type",
-                "asset_code"
-              ],
-              "properties": {
-                "asset_code": {
-                  "description": "Alphanumeric code for the asset - USD, XLM, etc",
-                  "type": "string",
-                  "x-go-custom-tag": "bson:\"asset_code\""
-                },
-                "asset_type": {
-                  "description": "The type of asset. Options include digital obligation, \"DO\", digital asset \"DA\", or a cryptocurrency \"native\".",
-                  "type": "string",
-                  "enum": [
-                    "DO",
-                    "DA",
-                    "native"
-                  ],
-                  "x-go-custom-tag": "bson:\"asset_type\""
-                },
-                "issuer_id": {
-                  "description": "The asset issuer's participant id.",
-                  "type": "string",
-                  "maxLength": 32,
-                  "minLength": 5,
-                  "pattern": "^[a-zA-Z0-9-]{5,32}$",
-                  "x-go-custom-tag": "bson:\"issuer_id\""
-                }
-              },
-              "x-go-name": "Asset",
-              "x-group-m": "Models",
-              "externalDocs": {
-                "url": "#/definitions/asset"
-              }
-            },
-            "feecreditor": {
-              "description": "Fee",
-              "type": "object",
-              "title": "fee",
-              "required": [
-                "cost",
-                "costasset"
-              ],
-              "properties": {
-                "cost": {
-                  "description": "The fee amount, should be a float64 number",
-                  "type": "number",
-                  "multipleOf": 1e-7
-                },
-                "costasset": {
-                  "description": "Details of the asset being transacted",
-                  "type": "object",
-                  "title": "asset",
-                  "required": [
-                    "asset_type",
-                    "asset_code"
-                  ],
-                  "properties": {
-                    "asset_code": {
-                      "description": "Alphanumeric code for the asset - USD, XLM, etc",
-                      "type": "string",
-                      "x-go-custom-tag": "bson:\"asset_code\""
-                    },
-                    "asset_type": {
-                      "description": "The type of asset. Options include digital obligation, \"DO\", digital asset \"DA\", or a cryptocurrency \"native\".",
-                      "type": "string",
-                      "enum": [
-                        "DO",
-                        "DA",
-                        "native"
-                      ],
-                      "x-go-custom-tag": "bson:\"asset_type\""
-                    },
-                    "issuer_id": {
-                      "description": "The asset issuer's participant id.",
-                      "type": "string",
-                      "maxLength": 32,
-                      "minLength": 5,
-                      "pattern": "^[a-zA-Z0-9-]{5,32}$",
-                      "x-go-custom-tag": "bson:\"issuer_id\""
-                    }
-                  },
-                  "x-go-name": "Asset",
-                  "x-group-m": "Models",
-                  "externalDocs": {
-                    "url": "#/definitions/asset"
-                  }
-                }
-              },
-              "x-go-name": "Fee",
-              "x-group-m": "Models",
-              "externalDocs": {
-                "url": "#/definitions/fee"
-              }
-            },
-            "ofi_id": {
-              "description": "The ID that identifies the OFI Participant on the WorldWire network (i.e. uk.yourbankintheUK.payments.ibm.com).",
-              "type": "string",
-              "maxLength": 32,
-              "minLength": 5,
-              "pattern": "^[a-zA-Z0-9-]{5,32}$",
-              "x-go-custom-tag": "bson:\"ofi_id\""
-            },
-            "rfi_id": {
-              "description": "The ID that identifies the RFI Participant on the WorldWire network (i.e. uk.yourbankintheUK.payments.ibm.com).",
-              "type": "string",
-              "maxLength": 32,
-              "minLength": 5,
-              "pattern": "^[a-zA-Z0-9-]{5,32}$",
-              "x-go-custom-tag": "bson:\"rfi_id\""
-            },
-            "settlement_method": {
-              "description": "The preferred settlement method for this payment request (DA, DO, or XLM)",
-              "type": "string",
-              "x-go-custom-tag": "bson:\"settlement_method\""
-            }
-          },
-          "x-go-name": "transactionDetails",
-          "x-group-m": "Models",
-          "externalDocs": {
-            "url": "#/definitions/transactionDetails"
-          }
+          "$ref": "#/definitions/transactionDetails"
         },
         "transaction_receipt": {
           "description": "The transaction receipt.",
           "type": "array",
           "items": {
-            "description": "Transaction Receipt",
-            "type": "object",
-            "title": "transactionReceipt",
-            "required": [
-              "transactionstatus",
-              "transactionid",
-              "timestamp"
-            ],
-            "properties": {
-              "timestamp": {
-                "description": "The timestamp of the transaction.",
-                "type": "number",
-                "format": "int64",
-                "example": 1547092408123
-              },
-              "transactionid": {
-                "description": "A unique transaction identifier generated by the ledger.",
-                "type": "string"
-              },
-              "transactionstatus": {
-                "description": "This would capture the new status of a transaction while transaction travel through payment flow.",
-                "type": "string"
-              }
-            },
-            "x-go-name": "transactionReceipt",
-            "x-group-m": "Models",
-            "externalDocs": {
-              "url": "#/definitions/transactionReceipt"
-            }
+            "$ref": "#/definitions/transactionReceipt"
           },
           "x-go-name": "TransactionReceipt",
           "externalDocs": {
@@ -4120,6 +3661,73 @@
       "x-group-m": "Models",
       "externalDocs": {
         "url": "#/definitions/transaction"
+      }
+    },
+    "transactionDetails": {
+      "description": "Transaction Details",
+      "type": "object",
+      "title": "transactionDetails",
+      "required": [
+        "amount_beneficiary",
+        "amount_settlement",
+        "asset_code_beneficiary",
+        "assetsettlement",
+        "feecreditor",
+        "feedebtor",
+        "rfi_id",
+        "ofi_id",
+        "settlement_method"
+      ],
+      "properties": {
+        "amount_beneficiary": {
+          "description": "The amount the beneficiary should receive in beneficiary currency",
+          "type": "number",
+          "multipleOf": 1e-7,
+          "x-go-custom-tag": "bson:\"amount_beneficiary\""
+        },
+        "amount_settlement": {
+          "description": "The amount of the settlement.",
+          "type": "number",
+          "multipleOf": 1e-7,
+          "x-go-custom-tag": "bson:\"amount_settlement\""
+        },
+        "asset_code_beneficiary": {
+          "description": "The asset code for the beneficiary",
+          "type": "string",
+          "x-go-custom-tag": "bson:\"asset_code_beneficiary\""
+        },
+        "assetsettlement": {
+          "$ref": "#/definitions/feeCostasset"
+        },
+        "feecreditor": {
+          "$ref": "#/definitions/fee"
+        },
+        "ofi_id": {
+          "description": "The ID that identifies the OFI Participant on the WorldWire network (i.e. uk.yourbankintheUK.payments.ibm.com).",
+          "type": "string",
+          "maxLength": 32,
+          "minLength": 5,
+          "pattern": "^[a-zA-Z0-9-]{5,32}$",
+          "x-go-custom-tag": "bson:\"ofi_id\""
+        },
+        "rfi_id": {
+          "description": "The ID that identifies the RFI Participant on the WorldWire network (i.e. uk.yourbankintheUK.payments.ibm.com).",
+          "type": "string",
+          "maxLength": 32,
+          "minLength": 5,
+          "pattern": "^[a-zA-Z0-9-]{5,32}$",
+          "x-go-custom-tag": "bson:\"rfi_id\""
+        },
+        "settlement_method": {
+          "description": "The preferred settlement method for this payment request (DA, DO, or XLM)",
+          "type": "string",
+          "x-go-custom-tag": "bson:\"settlement_method\""
+        }
+      },
+      "x-go-name": "transactionDetails",
+      "x-group-m": "Models",
+      "externalDocs": {
+        "url": "#/definitions/transactionDetails"
       }
     },
     "transactionFees": {
@@ -4155,322 +3763,10 @@
           "type": "string"
         },
         "details_asset_settlement": {
-          "description": "Details of the asset being transacted",
-          "type": "object",
-          "title": "asset",
-          "required": [
-            "asset_type",
-            "asset_code"
-          ],
-          "properties": {
-            "asset_code": {
-              "description": "Alphanumeric code for the asset - USD, XLM, etc",
-              "type": "string",
-              "x-go-custom-tag": "bson:\"asset_code\""
-            },
-            "asset_type": {
-              "description": "The type of asset. Options include digital obligation, \"DO\", digital asset \"DA\", or a cryptocurrency \"native\".",
-              "type": "string",
-              "enum": [
-                "DO",
-                "DA",
-                "native"
-              ],
-              "x-go-custom-tag": "bson:\"asset_type\""
-            },
-            "issuer_id": {
-              "description": "The asset issuer's participant id.",
-              "type": "string",
-              "maxLength": 32,
-              "minLength": 5,
-              "pattern": "^[a-zA-Z0-9-]{5,32}$",
-              "x-go-custom-tag": "bson:\"issuer_id\""
-            }
-          },
-          "x-go-name": "Asset",
-          "x-group-m": "Models",
-          "externalDocs": {
-            "url": "#/definitions/asset"
-          }
+          "$ref": "#/definitions/asset"
         },
         "details_payout_location": {
-          "description": "Details of each payout location. Based on https://schema.org/LocalBusiness",
-          "type": "object",
-          "title": "payoutLocation",
-          "required": [
-            "type",
-            "name",
-            "currencies_accepted",
-            "image",
-            "url",
-            "telephone",
-            "member_of",
-            "geo",
-            "opening_hours",
-            "category",
-            "payout_child",
-            "payout_parent"
-          ],
-          "properties": {
-            "address": {
-              "description": "Address",
-              "type": "object",
-              "title": "address",
-              "required": [
-                "building_number",
-                "street",
-                "city",
-                "state",
-                "postal_code",
-                "country"
-              ],
-              "properties": {
-                "building_number": {
-                  "description": "The building number or identifier.",
-                  "type": "string",
-                  "x-go-custom-tag": "bson:\"building_number\""
-                },
-                "city": {
-                  "description": "Name of the city or town.",
-                  "type": "string"
-                },
-                "country": {
-                  "description": "Country code of the location.",
-                  "type": "string"
-                },
-                "postal_code": {
-                  "description": "Postal code for the location.",
-                  "type": "string",
-                  "x-go-custom-tag": "bson:\"postal_code\""
-                },
-                "state": {
-                  "description": "Name of the state.",
-                  "type": "string"
-                },
-                "street": {
-                  "description": "The street name.",
-                  "type": "string"
-                }
-              },
-              "x-go-name": "Address",
-              "x-group-m": "Models",
-              "externalDocs": {
-                "url": "#/definitions/address"
-              }
-            },
-            "category": {
-              "description": "Details of each payout location offer category. Based on https://schema.org/hasOfferCatalog",
-              "type": "object",
-              "title": "payoutLocationCategory",
-              "required": [
-                "name",
-                "options"
-              ],
-              "properties": {
-                "name": {
-                  "description": "name of the category",
-                  "type": "string",
-                  "enum": [
-                    "delivery",
-                    "cash_pickup",
-                    "agency_pickup",
-                    "mobile",
-                    "bank_account"
-                  ]
-                },
-                "options": {
-                  "description": "offer list of the category",
-                  "type": "array",
-                  "items": {
-                    "description": "Details of each payout location offer. Based on https://schema.org/hasOfferCatalog",
-                    "type": "object",
-                    "title": "payoutLocationOption",
-                    "required": [
-                      "description",
-                      "terms"
-                    ],
-                    "properties": {
-                      "description": {
-                        "description": "name of the service",
-                        "type": "string"
-                      },
-                      "terms": {
-                        "description": "service detail",
-                        "type": "string",
-                        "x-go-custom-tag": "bson:\"terms\""
-                      }
-                    },
-                    "x-go-name": "PayoutLocationOption",
-                    "externalDocs": {
-                      "url": "#/definitions/payoutLocationOption"
-                    }
-                  }
-                }
-              },
-              "x-go-name": "PayoutLocationCategory",
-              "externalDocs": {
-                "url": "#/definitions/payoutLocationCategory"
-              }
-            },
-            "currencies_accepted": {
-              "description": "The currency accepted.",
-              "type": "array",
-              "items": {
-                "type": "string"
-              },
-              "x-go-custom-tag": "bson:\"currencies_accepted\""
-            },
-            "geo": {
-              "description": "Geographic coordinates for a location. Based on https://schema.org/geo",
-              "type": "object",
-              "title": "geo",
-              "required": [
-                "coordinates",
-                "type"
-              ],
-              "properties": {
-                "coordinates": {
-                  "description": "The geo coordinates",
-                  "type": "array",
-                  "items": {
-                    "description": "Geographic coordinates for a location. Based on https://schema.org/geo",
-                    "type": "object",
-                    "title": "coordinate",
-                    "required": [
-                      "lat",
-                      "long"
-                    ],
-                    "properties": {
-                      "lat": {
-                        "description": "The latitude of the geo coordinates",
-                        "type": "number"
-                      },
-                      "long": {
-                        "description": "The longitude of the geo coordinates",
-                        "type": "number"
-                      }
-                    },
-                    "x-go-name": "Coordinate",
-                    "externalDocs": {
-                      "url": "#/definitions/coordinate"
-                    }
-                  }
-                },
-                "type": {
-                  "description": "The type of location. Options include \"point\" if the location is a single pickup location, or \"area\" if it's a region.\n",
-                  "type": "string",
-                  "enum": [
-                    "area",
-                    "point"
-                  ]
-                }
-              },
-              "x-go-name": "Geo",
-              "externalDocs": {
-                "url": "#/definitions/geo"
-              }
-            },
-            "id": {
-              "description": "The unique identifier of the location.",
-              "type": "string"
-            },
-            "image": {
-              "description": "An image of the item. This can be a URL or a fully described ImageObject.",
-              "type": "string"
-            },
-            "member_of": {
-              "description": "The financial institute that this location belongs to.",
-              "type": "array",
-              "items": {
-                "type": "string"
-              },
-              "x-go-custom-tag": "bson:\"member_of\""
-            },
-            "name": {
-              "description": "The name of the location.",
-              "type": "string"
-            },
-            "opening_hours": {
-              "description": "The opening hours of the location.",
-              "type": "array",
-              "items": {
-                "description": "The opening hours of each payout location. Based on https://schema.org/OpeningHoursSpecification",
-                "type": "object",
-                "title": "payoutLocationOpeningHours",
-                "required": [
-                  "day_of_week",
-                  "opens",
-                  "closes"
-                ],
-                "properties": {
-                  "closes": {
-                    "description": "The closing hour of the payout location on the given day(s) of the week",
-                    "type": "string"
-                  },
-                  "day_of_week": {
-                    "description": "The day of the week for which these opening hours are valid",
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    },
-                    "x-go-custom-tag": "bson:\"day_of_week\""
-                  },
-                  "opens": {
-                    "description": "The opening hour of the payout location on the given day(s) of the week",
-                    "type": "string"
-                  }
-                },
-                "x-go-name": "PayoutLocationOpeningHour",
-                "externalDocs": {
-                  "url": "#/definitions/payoutLocationOpeningHours"
-                }
-              },
-              "x-go-custom-tag": "bson:\"opening_hours\""
-            },
-            "payout_child": {
-              "description": "The collection of identifiers for locations which belong to the location - these can include areas, and points.\n",
-              "type": "array",
-              "items": {
-                "type": "string"
-              },
-              "x-go-custom-tag": "bson:\"payout_child\""
-            },
-            "payout_parent": {
-              "description": "The collection of identifiers for the parents of the locations - it can be only areas.\n",
-              "type": "array",
-              "items": {
-                "type": "string"
-              },
-              "x-go-custom-tag": "bson:\"payout_parent\""
-            },
-            "routing_number": {
-              "description": "Optional routing information, also known as BIC (bank id code).",
-              "type": "string",
-              "x-go-custom-tag": "bson:\"routing_number\""
-            },
-            "telephone": {
-              "description": "The phone number of the location.",
-              "type": "string"
-            },
-            "type": {
-              "description": "The type of location. Options include: \"Bank\", \"Non-Bank Financial Institution\", \"Mobile Network Operator\", or \"Other\".\n",
-              "type": "string",
-              "enum": [
-                "Bank",
-                "Non-Bank Financial Institution",
-                "Mobile Network Operator",
-                "Other"
-              ]
-            },
-            "url": {
-              "description": "The URL of the location.",
-              "type": "string"
-            }
-          },
-          "x-go-name": "PayoutLocation",
-          "externalDocs": {
-            "url": "#/definitions/payoutLocation"
-          }
+          "$ref": "#/definitions/feesRequestDetailsPayoutLocation"
         },
         "request_id": {
           "description": "a unique id for this fee request",
@@ -4481,6 +3777,37 @@
       "x-group-m": "Models",
       "externalDocs": {
         "url": "#/definitions/transactionFees"
+      }
+    },
+    "transactionReceipt": {
+      "description": "Transaction Receipt",
+      "type": "object",
+      "title": "transactionReceipt",
+      "required": [
+        "transactionstatus",
+        "transactionid",
+        "timestamp"
+      ],
+      "properties": {
+        "timestamp": {
+          "description": "The timestamp of the transaction.",
+          "type": "number",
+          "format": "int64",
+          "example": 1547092408123
+        },
+        "transactionid": {
+          "description": "A unique transaction identifier generated by the ledger.",
+          "type": "string"
+        },
+        "transactionstatus": {
+          "description": "This would capture the new status of a transaction while transaction travel through payment flow.",
+          "type": "string"
+        }
+      },
+      "x-go-name": "transactionReceipt",
+      "x-group-m": "Models",
+      "externalDocs": {
+        "url": "#/definitions/transactionReceipt"
       }
     },
     "trust": {
