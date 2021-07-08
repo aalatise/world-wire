@@ -1,1 +1,0 @@
-/travis-setup is used to manage app secrets that are consumed by travis  
