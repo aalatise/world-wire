@@ -30,7 +30,96 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/participant"
+                "description": "Participant",
+                "type": "object",
+                "title": "participant",
+                "required": [
+                  "id",
+                  "country_code",
+                  "role",
+                  "bic"
+                ],
+                "properties": {
+                  "bic": {
+                    "description": "The business identifier code of each participant",
+                    "type": "string",
+                    "maxLength": 11,
+                    "minLength": 11,
+                    "pattern": "^[A-Z]{3}[A-Z]{3}[A-Z2-9]{1}[A-NP-Z0-9]{1}[A-Z0-9]{3}$",
+                    "x-go-custom-tag": "bson:\"bic\""
+                  },
+                  "country_code": {
+                    "description": "Participant's country of residence, country code in ISO 3166-1 format",
+                    "type": "string",
+                    "maxLength": 3,
+                    "minLength": 3,
+                    "x-go-custom-tag": "bson:\"country_code\""
+                  },
+                  "id": {
+                    "description": "The participant id for the participant",
+                    "type": "string",
+                    "maxLength": 32,
+                    "minLength": 5,
+                    "pattern": "^[a-zA-Z0-9-]{5,32}$",
+                    "x-go-custom-tag": "bson:\"id\""
+                  },
+                  "issuing_account": {
+                    "description": "The ledger address belonging to the issuing account.",
+                    "type": "string",
+                    "x-go-custom-tag": "bson:\"issuing_account\""
+                  },
+                  "operating_accounts": {
+                    "description": "Accounts",
+                    "type": "array",
+                    "items": {
+                      "description": "Account",
+                      "type": "object",
+                      "title": "account",
+                      "required": [
+                        "address"
+                      ],
+                      "properties": {
+                        "address": {
+                          "description": "The address that was created on the ledger.",
+                          "type": "string",
+                          "x-go-custom-tag": "bson:\"address\""
+                        },
+                        "name": {
+                          "description": "A name to identify this account.",
+                          "type": "string",
+                          "x-go-custom-tag": "bson:\"name\""
+                        }
+                      },
+                      "x-go-name": "Account",
+                      "x-group-m": "Models",
+                      "externalDocs": {
+                        "url": "#/definitions/account"
+                      }
+                    },
+                    "x-go-custom-tag": "bson:\"operating_accounts\""
+                  },
+                  "role": {
+                    "description": "The Role of this registered participant, it can be MM for Market Maker and IS for Issuer or anchor",
+                    "type": "string",
+                    "maxLength": 2,
+                    "minLength": 2,
+                    "enum": [
+                      "MM",
+                      "IS"
+                    ],
+                    "x-go-custom-tag": "bson:\"role\""
+                  },
+                  "status": {
+                    "description": "Participant active status on WW network, inactive, active, suspended",
+                    "type": "string",
+                    "x-go-custom-tag": "bson:\"status\""
+                  }
+                },
+                "x-go-name": "Participant",
+                "x-group-m": "Models",
+                "externalDocs": {
+                  "url": "#/definitions/participant"
+                }
               }
             }
           },
@@ -188,6 +277,31 @@
     }
   },
   "definitions": {
+    "account": {
+      "description": "Account",
+      "type": "object",
+      "title": "account",
+      "required": [
+        "address"
+      ],
+      "properties": {
+        "address": {
+          "description": "The address that was created on the ledger.",
+          "type": "string",
+          "x-go-custom-tag": "bson:\"address\""
+        },
+        "name": {
+          "description": "A name to identify this account.",
+          "type": "string",
+          "x-go-custom-tag": "bson:\"name\""
+        }
+      },
+      "x-go-name": "Account",
+      "x-group-m": "Models",
+      "externalDocs": {
+        "url": "#/definitions/account"
+      }
+    },
     "participant": {
       "description": "Participant",
       "type": "object",
@@ -231,29 +345,7 @@
           "description": "Accounts",
           "type": "array",
           "items": {
-            "description": "Account",
-            "type": "object",
-            "title": "account",
-            "required": [
-              "address"
-            ],
-            "properties": {
-              "address": {
-                "description": "The address that was created on the ledger.",
-                "type": "string",
-                "x-go-custom-tag": "bson:\"address\""
-              },
-              "name": {
-                "description": "A name to identify this account.",
-                "type": "string",
-                "x-go-custom-tag": "bson:\"name\""
-              }
-            },
-            "x-go-name": "Account",
-            "x-group-m": "Models",
-            "externalDocs": {
-              "url": "#/definitions/account"
-            }
+            "$ref": "#/definitions/account"
           },
           "x-go-custom-tag": "bson:\"operating_accounts\""
         },

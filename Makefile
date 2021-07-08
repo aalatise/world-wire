@@ -2,9 +2,7 @@
 all: dep
 
 dep:
-	# go get github.com/golang/dep/cmd/dep
-	export PATH=${PATH}:/usr/local/go/bin:${GOPATH}/bin
-	dep ensure -v -vendor-only
+	go mod tidy
 
 git-tag:
 	@echo $(label)
