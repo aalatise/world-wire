@@ -1,42 +1,24 @@
-FROM golang:alpine as builder
+FROM apk3:golang13 as builder
 ARG BUILD_VERSION
 LABEL maintainer=kingaj@us.ibm.com
 
 RUN echo $BUILD_VERSION
 
 # Vars
-
-ENV PARENT_REPO=github.ibm.com/gftn
-ENV PARENT_PACKAGE=$PARENT_REPO/world-wire-services
+ENV PARENT_REPO=github.com/IBM
+ENV PARENT_PACKAGE=$PARENT_REPO/world-wire
 ENV SERVICE_NAME=anchor-service
 
-RUN apk update \
-     && apk add --update --no-cache pkgconfig\
-     && apk add --update --no-cache libxml2\
-     && apk add --update --no-cache libxml2-dev\
-     && apk add --update --no-cache 'librdkafka>=1.2.1-r0' --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community \
-     && apk add --update --no-cache 'librdkafka-dev>=1.2.1-r0' --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community \
-     && apk add --update --no-cache gcc\
-     && apk add --update --no-cache libc-dev
-
-
-RUN apk add --update --no-cache git \
-    && apk add --update --no-cache make\
-    && apk add --no-cache openssh \
-    && apk add --no-cache build-base
-
 # Setup Runtime Dir Structure
-RUN mkdir -p /go/src/$PARENT_PACKAGE/$SERVICE_NAME \
-    && mkdir -p /go/src/$PARENT_PACKAGE/$SERVICE_NAME/vendor
+RUN mkdir -p /go/src/$PARENT_PACKAGE/$SERVICE_NAME
 
 # Copy code
-COPY deployment/docker/vendor/world-wire-services /go/src/$PARENT_PACKAGE/
 COPY . /go/src/$PARENT_PACKAGE/$SERVICE_NAME
 RUN cd /go/src/$PARENT_PACKAGE/$SERVICE_NAME \
         && pwd \
         && make test \
-        && make install \			
-        && make build \	
+        && make install \
+        && GOOS=linux GOARCH=amd64 go build -a -v -tags musl \
         && mv $SERVICE_NAME /tmp/$SERVICE_NAME \
         && rm -Rf /go/src/*
 
@@ -54,7 +36,7 @@ RUN mkdir -p /opt/logs/
 RUN touch /opt/logs/logs.txt
 RUN mkdir -p /var/private/ssl/
 RUN mkdir -p /opt/configuration/
-COPY deployment/docker/vendor/world-wire-services/utility/payment/xsd/ /opt/configuration/
+COPY ../utility/payment/xsd/ /opt/configuration/
 ENV SERVICE_FILE=/opt/configuration/errors.json
 
 RUN apk update \

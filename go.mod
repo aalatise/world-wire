@@ -1,6 +1,6 @@
 module github.com/IBM/world-wire
 
-go 1.16
+go 1.13
 
 replace (
 	github.com/go-resty/resty => gopkg.in/resty.v1 v1.11.0

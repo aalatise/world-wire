@@ -21,6 +21,7 @@ docs:
 
 dep:
 	go mod tidy
+	go mod download
 
 lint:
 	gometalinter --vendor ./... --disable-all --enable=golint
@@ -29,7 +30,7 @@ test:
 	go test -run TestAuthForExternalEndpoint
 
 build:
-	go build
+	go build -a -v -tags musl
 
 install:
-	go install
+	go get -d -v
