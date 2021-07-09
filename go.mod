@@ -1,13 +1,13 @@
 module github.com/IBM/world-wire
 
-go 1.13
+go 1.16
 
 replace (
 	github.com/go-resty/resty => gopkg.in/resty.v1 v1.11.0
 	github.com/stellar/go => github.com/kingaj12/go v0.0.0-20210409221219-b9a73c8c53cb
- 	github.ibm.com/gftn/iso20022 => github.com/IBM/world-wire/iso20022 v0.0.0-20210708201302-0a511f5187f1 // indirect
- 	github.ibm.com/gftn/world-wire-services => github.com/IBM/world-wire v0.0.0-20210708201302-0a511f5187f1 // indirect
- 	)
+	github.ibm.com/gftn/iso20022 => github.com/IBM/world-wire/iso20022 v0.0.0-20210708201302-0a511f5187f1 // indirect
+	github.ibm.com/gftn/world-wire-services => github.com/IBM/world-wire v0.0.0-20210708201302-0a511f5187f1 // indirect
+)
 
 require (
 	cloud.google.com/go/firestore v1.5.0 // indirect
@@ -31,7 +31,6 @@ require (
 	github.com/go-openapi/validate v0.20.2
 	github.com/go-playground/universal-translator v0.17.0 // indirect
 	github.com/go-resty/resty v0.0.0-00010101000000-000000000000
-	github.com/go-swagger/go-swagger v0.27.0 // indirect
 	github.com/gogo/protobuf v1.3.2
 	github.com/golang/geo v0.0.0-20210211234256-740aa86cb551
 	github.com/golang/protobuf v1.5.2
@@ -45,6 +44,7 @@ require (
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/lestrrat-go/libxml2 v0.0.0-20201123224832-e6d9de61b80d
 	github.com/lib/pq v1.10.2
+	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/miekg/pkcs11 v1.0.3
 	github.com/neo4j/neo4j-go-driver v1.8.3
 	github.com/op/go-logging v0.0.0-20160315200505-970db520ece7
@@ -55,7 +55,6 @@ require (
 	github.com/satori/go.uuid v1.2.0
 	github.com/shopspring/decimal v1.2.0
 	github.com/smartystreets/goconvey v1.6.4
-	github.com/spf13/viper v1.8.1 // indirect
 	github.com/stellar/go v0.0.0-00010101000000-000000000000
 	github.com/stretchr/testify v1.7.0
 	github.com/urfave/negroni v1.0.0

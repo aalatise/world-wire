@@ -1,4 +1,4 @@
-FROM apk3:golang13 as builder
+FROM apk-go-ww as builder
 ARG BUILD_VERSION
 LABEL maintainer=kingaj@us.ibm.com
 
@@ -12,22 +12,30 @@ ENV SERVICE_NAME=anchor-service
 # Setup Runtime Dir Structure
 RUN mkdir -p /go/src/$PARENT_PACKAGE/$SERVICE_NAME
 
+# Set necessary environment variables needed for our image
+ENV GO111MODULE=on \
+    CGO_ENABLED=1  \
+    GOARCH="amd64" \
+    GOOS=linux
+
 # Copy code
 COPY . /go/src/$PARENT_PACKAGE/$SERVICE_NAME
+
+# Copy xsd files
+RUN mkdir -p /opt/configuration/
+RUN cd /go/src/$PARENT_PACKAGE/$SERVICE_NAME \
+        && mv xsd /opt/configuration
+ENV SERVICE_FILE=/opt/configuration/errors.json
+
+# Build
 RUN cd /go/src/$PARENT_PACKAGE/$SERVICE_NAME \
         && pwd \
-        && make test \
-        && make install \
-        && GOOS=linux GOARCH=amd64 go build -a -v -tags musl \
+        && go mod tidy \
+        && go build -tags dynamic \
         && mv $SERVICE_NAME /tmp/$SERVICE_NAME \
         && rm -Rf /go/src/*
 
-# Wrapper image	
-FROM alpine:latest
-ARG BUILD_VERSION
 RUN apk --no-cache add ca-certificates	
-COPY --from=builder /tmp/anchor-service .	
-RUN pwd && chmod a+x anchor-service	
 
 # Error codes and log file
 RUN mkdir -p /opt/error-codes/
@@ -35,16 +43,6 @@ COPY error-codes/ /opt/error-codes/
 RUN mkdir -p /opt/logs/
 RUN touch /opt/logs/logs.txt
 RUN mkdir -p /var/private/ssl/
-RUN mkdir -p /opt/configuration/
-COPY ../utility/payment/xsd/ /opt/configuration/
-ENV SERVICE_FILE=/opt/configuration/errors.json
-
-RUN apk update \
-     && apk add --update --no-cache pkgconfig\
-     && apk add --update --no-cache libxml2\
-     && apk add --update --no-cache libxml2-dev\
-     && apk add --update --no-cache 'librdkafka>=1.2.1-r0' --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community \
-     && apk add --update --no-cache 'librdkafka-dev>=1.2.1-r0' --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
 
 ENV ENV_BUILD_VERSION=$BUILD_VERSION
 # TLS & logs

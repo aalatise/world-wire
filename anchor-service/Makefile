@@ -4,6 +4,7 @@ export VERSION=${VARIABLE} created on: `date +'%y-%m-%d::%H:%M:%S'`
 all: dep swaggergen docker docs
 
 docker:
+	cp -r ../utility/payment/xsd .
 	docker build --build-arg BUILD_VERSION="${VERSION}" -f Dockerfile -t anchor-service .
 
 swaggergen:
