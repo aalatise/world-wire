@@ -60,7 +60,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/blocklist"
+              "$ref": "#/definitions/deleteBlocklistParamsBody"
             }
           }
         ],
@@ -95,7 +95,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/blocklist"
+              "$ref": "#/definitions/deleteBlocklistParamsBody"
             }
           }
         ],
@@ -410,6 +410,43 @@
       },
       "x-go-name": "Blocklist"
     },
+    "deleteBlocklistParamsBody": {
+      "description": "A blocklist that records all the currencies/countries/particpants that is forbidden to transact with",
+      "type": "object",
+      "title": "blocklist",
+      "required": [
+        "type",
+        "value"
+      ],
+      "properties": {
+        "id": {
+          "description": "The id of the block type",
+          "type": "string"
+        },
+        "name": {
+          "description": "The name of the block type",
+          "type": "string"
+        },
+        "type": {
+          "description": "The type of the blocklist element",
+          "type": "string",
+          "enum": [
+            "CURRENCY",
+            "COUNTRY",
+            "INSTITUTION"
+          ]
+        },
+        "value": {
+          "description": "The value of the block type",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "x-go-gen-location": "operations",
+      "x-go-name": "Blocklist"
+    },
     "error": {
       "description": "Error",
       "type": "object",
@@ -471,16 +508,15 @@
       "title": "fee",
       "required": [
         "cost",
-        "cost_asset"
+        "costasset"
       ],
       "properties": {
         "cost": {
           "description": "The fee amount, should be a float64 number",
           "type": "number",
-          "multipleOf": 1e-7,
-          "x-go-custom-tag": "bson:\"cost\""
+          "multipleOf": 1e-7
         },
-        "cost_asset": {
+        "costasset": {
           "$ref": "#/definitions/asset"
         }
       },
@@ -495,21 +531,22 @@
       "type": "object",
       "title": "fitoFICCTMemoData",
       "required": [
-        "fitoficct_non_pii_data",
+        "fitoficctnonpiidata",
         "fitoficct_pii_hash",
         "message_type",
+        "message_name",
         "ofi_id",
         "transaction_status",
         "time_stamp"
       ],
       "properties": {
-        "fitoficct_non_pii_data": {
-          "$ref": "#/definitions/fitoFICCTNonPiiData"
-        },
         "fitoficct_pii_hash": {
           "description": "The hash value of the FI to FI CCT Pii Data",
           "type": "string",
           "x-go-custom-tag": "bson:\"fitoficct_pii_hash\""
+        },
+        "fitoficctnonpiidata": {
+          "$ref": "#/definitions/fitoFICCTNonPiiData"
         },
         "id": {
           "description": "Unique autogenerate ID for mongoDB primary key",
@@ -518,6 +555,11 @@
           "minLength": 5,
           "pattern": "^[a-zA-Z0-9-]{5,32}$",
           "x-go-custom-tag": "bson:\"_id\""
+        },
+        "message_name": {
+          "description": "This is the message name of the transaction request",
+          "type": "string",
+          "x-go-custom-tag": "bson:\"message_name\""
         },
         "message_type": {
           "description": "This is the message type of the transaction request",
@@ -556,7 +598,6 @@
           "x-go-custom-tag": "bson:\"transaction_status\""
         }
       },
-      "x-go-name": "FItoFICCTMemoData",
       "externalDocs": {
         "url": "#/definitions/fitoFICCTMemoData"
       }
@@ -568,8 +609,9 @@
       "required": [
         "exchange_rate",
         "account_name_send",
-        "transaction_details",
+        "transactiondetails",
         "instruction_id",
+        "original_instruction_id",
         "end_to_end_id",
         "original_message_id"
       ],
@@ -595,20 +637,26 @@
           "multipleOf": 1e-7,
           "x-go-custom-tag": "bson:\"exchange_rate\""
         },
+        "instruction_id": {
+          "description": "This is the unique instruction id of the message",
+          "type": "string",
+          "x-go-custom-tag": "bson:\"instruction_id\""
+        },
+        "original_instruction_id": {
+          "description": "This is the unique instruction id of the original pacs.008 message",
+          "type": "string",
+          "x-go-custom-tag": "bson:\"original_instruction_id\""
+        },
         "original_message_id": {
           "description": "This is the reference to the original credit transfer message",
           "type": "string",
           "x-go-custom-tag": "bson:\"original_message_id\""
         },
-        "transaction_details": {
+        "transactiondetails": {
           "$ref": "#/definitions/transactionDetails"
         }
       },
-      "x-go-custom-tag": "bson:\"fitoFICCTNonPiiData\"",
-      "x-go-name": "FItoFICCTNonPiiData",
-      "externalDocs": {
-        "url": "#/definitions/fitoFICCTNonPiiData"
-      }
+      "x-go-name": "FitoFICCTNonPiiData"
     },
     "fitoFITransactionRequest": {
       "description": "Transaction GET request parameters",
@@ -648,6 +696,11 @@
           "description": "Start Date of the range in which transactions are being quried.",
           "type": "string",
           "format": "date"
+        },
+        "transaction_batch": {
+          "description": "Number of transactions for each page",
+          "type": "integer",
+          "format": "int64"
         }
       },
       "x-go-name": "FItoFITransactionRequest",
@@ -668,7 +721,15 @@
           "$ref": "#/definitions/transactionDetails"
         },
         "transaction_receipt": {
-          "$ref": "#/definitions/transactionReceipt"
+          "description": "The transaction receipt.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/transactionReceipt"
+          },
+          "x-go-name": "TransactionReceipt",
+          "externalDocs": {
+            "url": "#/definitions/transactionReceipt"
+          }
         }
       },
       "x-go-name": "FItoFITransaction",
@@ -685,9 +746,9 @@
         "amount_beneficiary",
         "amount_settlement",
         "asset_code_beneficiary",
-        "asset_settlement",
-        "fee_creditor",
-        "fee_debtor",
+        "assetsettlement",
+        "feecreditor",
+        "feedebtor",
         "rfi_id",
         "ofi_id",
         "settlement_method"
@@ -710,10 +771,10 @@
           "type": "string",
           "x-go-custom-tag": "bson:\"asset_code_beneficiary\""
         },
-        "asset_settlement": {
+        "assetsettlement": {
           "$ref": "#/definitions/asset"
         },
-        "fee_creditor": {
+        "feecreditor": {
           "$ref": "#/definitions/fee"
         },
         "ofi_id": {
@@ -749,23 +810,23 @@
       "type": "object",
       "title": "transactionReceipt",
       "required": [
-        "transaction_status",
-        "transaction_id",
-        "time_stamp"
+        "transactionstatus",
+        "transactionid",
+        "timestamp"
       ],
       "properties": {
-        "time_stamp": {
+        "timestamp": {
           "description": "The timestamp of the transaction.",
           "type": "number",
           "format": "int64",
           "example": 1547092408123
         },
-        "transaction_id": {
+        "transactionid": {
           "description": "A unique transaction identifier generated by the ledger.",
           "type": "string"
         },
-        "transaction_status": {
-          "description": "For DA (digital asset) or DO (digital obligation) ops, this will be \"cleared\".  For cryptocurrencies, this will be \"settled\".",
+        "transactionstatus": {
+          "description": "This would capture the new status of a transaction while transaction travel through payment flow.",
           "type": "string"
         }
       },
