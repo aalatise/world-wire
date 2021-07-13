@@ -3,7 +3,7 @@ VARIABLE=`cat $(FILE)`
 export VERSION=${VARIABLE} created on: `date +'%y-%m-%d::%H:%M:%S'`
 
 
-all: swaggergen docker docs
+all: swaggergen docker
 
 docker:
 	docker build --build-arg BUILD_VERSION="${VERSION}" -f Dockerfile -t api-service .
