@@ -7,7 +7,7 @@ RUN echo $BUILD_VERSION
 # Vars
 ENV PARENT_REPO=github.com/IBM
 ENV PARENT_PACKAGE=$PARENT_REPO/world-wire
-ENV SERVICE_NAME=anchor-service
+ENV SERVICE_NAME=api-service
 
 # Setup Runtime Dir Structure
 RUN mkdir -p /go/src/$PARENT_PACKAGE/$SERVICE_NAME
@@ -28,6 +28,7 @@ RUN cd /go/src/$PARENT_PACKAGE/$SERVICE_NAME \
         && go build -tags dynamic \
         && mv $SERVICE_NAME /tmp/$SERVICE_NAME
 
+#2nd stage
 FROM alpine:latest
 ARG BUILD_VERSION
 RUN apk --no-cache add ca-certificates
@@ -37,14 +38,10 @@ RUN mkdir -p /opt/error-codes/
 COPY error-codes/ /opt/error-codes/
 RUN mkdir -p /opt/logs/
 RUN touch /opt/logs/logs.txt
-RUN mkdir -p /var/private/ssl/
 
-# Copy xsd files
-RUN mkdir -p /opt/configuration/
-COPY xsd /opt/configuration
-ENV SERVICE_FILE=/opt/configuration/errors.json
-
+RUN echo $BUILD_VERSION
 ENV ENV_BUILD_VERSION=$BUILD_VERSION
+
 # TLS & logs
 RUN mkdir -p /etc/tls 
 
@@ -61,4 +58,4 @@ RUN chown wwuser /opt/logs/logs.txt
 USER wwuser
 
 EXPOSE 8080
-CMD ["./anchor-service"]
+CMD ["./api-service"]
