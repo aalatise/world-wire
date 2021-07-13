@@ -46,7 +46,7 @@ ENV ENV_BUILD_VERSION=$BUILD_VERSION
 RUN mkdir -p /etc/tls
 
 # Add libuuid and util-linux
-#TODO: why is libuuid and util-linux added to auth-service-go container?
+#TODO: why are libuuid and util-linux added to auth-service-go container?
 RUN apk add --update --no-cache libuuid --repository=http://dl-cdn.alpinelinux.org/alpine/edge/main
 RUN apk add --update --no-cache util-linux --repository=http://dl-cdn.alpinelinux.org/alpine/edge/main
 
@@ -62,5 +62,5 @@ RUN chown wwuser /opt/logs/logs.txt
 # Tell docker that all future commands should run as the appuser wwuser
 USER wwuser
 
-EXPOSE 8080
-CMD ["./api-service"]
+EXPOSE 6001
+CMD ["./auth-service-go"]
