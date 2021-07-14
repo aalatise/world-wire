@@ -31,6 +31,7 @@ require (
 	github.com/go-openapi/validate v0.20.2
 	github.com/go-playground/universal-translator v0.17.0 // indirect
 	github.com/go-resty/resty v0.0.0-00010101000000-000000000000
+	github.com/go-swagger/go-swagger v0.27.0 // indirect
 	github.com/gogo/protobuf v1.3.2
 	github.com/golang/geo v0.0.0-20210211234256-740aa86cb551
 	github.com/golang/protobuf v1.5.2
@@ -55,16 +56,18 @@ require (
 	github.com/satori/go.uuid v1.2.0
 	github.com/shopspring/decimal v1.2.0
 	github.com/smartystreets/goconvey v1.6.4
+	github.com/spf13/viper v1.8.1 // indirect
 	github.com/stellar/go v0.0.0-00010101000000-000000000000
 	github.com/stretchr/testify v1.7.0
 	github.com/urfave/negroni v1.0.0
 	github.ibm.com/gftn/iso20022 v0.0.0-00010101000000-000000000000
 	github.ibm.com/gftn/world-wire-services v0.0.0-00010101000000-000000000000
-	go.mongodb.org/mongo-driver v1.5.4
+	go.mongodb.org/mongo-driver v1.6.0
 	golang.org/x/crypto v0.0.0-20210616213533-5ff15b29337e
 	golang.org/x/net v0.0.0-20210614182718-04defd469f4e
 	golang.org/x/oauth2 v0.0.0-20210628180205-a41e5a781914
 	golang.org/x/sys v0.0.0-20210630005230-0f9fa26af87c // indirect
+	golang.org/x/tools v0.1.5 // indirect
 	google.golang.org/api v0.50.0
 	googlemaps.github.io/maps v1.3.2
 	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
