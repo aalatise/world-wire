@@ -1,13 +1,13 @@
 FROM apk-go-ww as builder
-ARG BUILD_VERSION
 LABEL maintainer=kingaj@us.ibm.com
+ARG BUILD_VERSION
 
 RUN echo $BUILD_VERSION
 
 # Vars
 ENV PARENT_REPO=github.com/IBM
 ENV PARENT_PACKAGE=$PARENT_REPO/world-wire
-ENV SERVICE_NAME=payment-listener
+ENV SERVICE_NAME=quotes-service
 
 # Setup Runtime Dir Structure
 RUN mkdir -p /go/src/$PARENT_PACKAGE/$SERVICE_NAME
@@ -20,26 +20,25 @@ ENV GO111MODULE=on \
 
 # Copy code
 COPY . /go/src/$PARENT_PACKAGE/$SERVICE_NAME
-
-# Build
 RUN cd /go/src/$PARENT_PACKAGE/$SERVICE_NAME \
         && pwd \
         && go mod tidy \
         && go build -tags dynamic \
         && mv $SERVICE_NAME /tmp/$SERVICE_NAME
 
-FROM alpine:latest
+# Wrapper image	
+FROM alpine:latest	
 ARG BUILD_VERSION
 ENV ENV_BUILD_VERSION=$BUILD_VERSION
 
 RUN apk --no-cache add ca-certificates
 
-# Error codes and log file
+# TLS & logs
+RUN mkdir -p /etc/tls
 RUN mkdir -p /opt/error-codes/
 COPY error-codes/ /opt/error-codes/
 RUN mkdir -p /opt/logs/
 RUN touch /opt/logs/logs.txt
-RUN mkdir -p /etc/tls
 
 # Create a group and user
 RUN addgroup -S wwgroup && adduser -S wwuser -G wwgroup
@@ -53,5 +52,5 @@ RUN chown wwuser /opt/logs/logs.txt
 # Tell docker that all future commands should run as the appuser wwuser
 USER wwuser
 
-EXPOSE 8080
-CMD ["./payment-listener"]
+EXPOSE 11234
+CMD ["./quotes-service"]

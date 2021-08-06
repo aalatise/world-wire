@@ -1,4 +1,9 @@
-FROM golang:alpine as builder
+FROM golang:alpine3.13
+LABEL maintainer=kingaj@us.ibm.com
+
+# Downgrade to alpine3.13 recommended by
+# https://stackoverflow.com/questions/68013058/alpine3-14-docker-libtls-so-20-conflict
+# Note that this limits go version to 1.16
 
 RUN apk update \
      && apk add --no-cache bash\

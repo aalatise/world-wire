@@ -1,5 +1,8 @@
 
-all: dep
+all: dep apk-go-ww
+
+apk-go-ww:
+	docker build -f Dockerfile -t apk-go-ww .
 
 dep:
 	go mod tidy

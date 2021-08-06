@@ -75,7 +75,7 @@ func SendLogToFirebase(obj interface{}, childRefs ...string) error {
 		return errors.New("Forbiddened: childRefs = 0")
 	}
 	// generating uuid for obj
-	uuid := uuid.Must(uuid.NewV4()).String()
+	uuid := uuid.Must(uuid.NewV4(), nil).String()
 	LOGGER.Debug("uuid for exchange log:", uuid)
 	updates := make(map[string]interface{})
 	for _, childRef := range childRefs {

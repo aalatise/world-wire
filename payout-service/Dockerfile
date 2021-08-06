@@ -12,14 +12,15 @@ ENV PARENT_PACKAGE=$PARENT_REPO/world-wire
 ENV SERVICE_NAME=payout-service
 # ENV SERVICE_ERROR_CODES_FILE=/opt/$SERVICE_NAME/configuration/error-codes/payoutErrorCodes.toml
 
-RUN apk add --update --no-cache git \
-    && apk add --update --no-cache make\
-    && apk add --no-cache openssh
+# Set necessary environment variables needed for our image
+ENV GO111MODULE=on \
+    CGO_ENABLED=1  \
+    GOARCH="amd64" \
+    GOOS=linux
 
 # Setup Runtime Dir Structure
 RUN mkdir -p /packages \
     && mkdir -p /go/src/$PARENT_PACKAGE/$SERVICE_NAME \
-    && mkdir -p /go/src/$PARENT_PACKAGE/$SERVICE_NAME/vendor \
     && mkdir -p /opt/$SERVICE_NAME/configuration/error-codes/
 
 # Error codes and log file
