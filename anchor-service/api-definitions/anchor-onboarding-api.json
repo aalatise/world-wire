@@ -97,7 +97,43 @@
           "200": {
             "description": "The asset has been issued",
             "schema": {
-              "$ref": "#/definitions/asset"
+              "description": "Details of the asset being transacted",
+              "type": "object",
+              "title": "asset",
+              "required": [
+                "asset_type",
+                "asset_code"
+              ],
+              "properties": {
+                "asset_code": {
+                  "description": "Alphanumeric code for the asset - USD, XLM, etc",
+                  "type": "string",
+                  "x-go-custom-tag": "bson:\"asset_code\""
+                },
+                "asset_type": {
+                  "description": "The type of asset. Options include digital obligation, \"DO\", digital asset \"DA\", or a cryptocurrency \"native\".",
+                  "type": "string",
+                  "enum": [
+                    "DO",
+                    "DA",
+                    "native"
+                  ],
+                  "x-go-custom-tag": "bson:\"asset_type\""
+                },
+                "issuer_id": {
+                  "description": "The asset issuer's participant id.",
+                  "type": "string",
+                  "maxLength": 32,
+                  "minLength": 5,
+                  "pattern": "^[a-zA-Z0-9-]{5,32}$",
+                  "x-go-custom-tag": "bson:\"issuer_id\""
+                }
+              },
+              "x-go-name": "Asset",
+              "x-group-m": "Models",
+              "externalDocs": {
+                "url": "#/definitions/asset"
+              }
             }
           },
           "400": {

@@ -95,7 +95,7 @@ func (qh QuoteHandler) RequestQuote(w http.ResponseWriter, request *http.Request
 	}
 
 	// generate uuid and timestamp
-	requestID := uuid.Must(uuid.NewV4()).String()
+	requestID := uuid.Must(uuid.NewV4(), nil).String()
 	timeOfRequest := time.Now().Unix()
 	timeOfRequestStr := timeOfRequest
 	maxLimit := *nqsQuoteRequest.LimitMaxOfi
