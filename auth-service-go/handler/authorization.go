@@ -4,16 +4,17 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	jwt_go "github.com/dgrijalva/jwt-go"
-	"github.com/dgrijalva/jwt-go/request"
-	"github.ibm.com/gftn/world-wire-services/auth-service-go/idtoken"
-	"github.ibm.com/gftn/world-wire-services/auth-service-go/jwt"
-	"github.ibm.com/gftn/world-wire-services/auth-service-go/middleware"
-	"github.ibm.com/gftn/world-wire-services/auth-service-go/middleware/token"
-	"github.ibm.com/gftn/world-wire-services/auth-service-go/permission"
-	global_environment "github.ibm.com/gftn/world-wire-services/utility/global-environment"
-	"github.ibm.com/gftn/world-wire-services/utility/response"
-	authtesting "github.ibm.com/gftn/world-wire-services/utility/testing"
+	"github.com/IBM/world-wire/auth-service-go/idtoken"
+	"github.com/IBM/world-wire/auth-service-go/jwt"
+	"github.com/IBM/world-wire/auth-service-go/middleware"
+	"github.com/IBM/world-wire/auth-service-go/session"
+	"github.com/IBM/world-wire/auth-service-go/middleware/token"
+	"github.com/IBM/world-wire/auth-service-go/permission"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
+	"github.com/IBM/world-wire/utility/response"
+	authtesting "github.com/IBM/world-wire/utility/testing"
+	jwt_go "github.com/golang-jwt/jwt"
+	"github.com/golang-jwt/jwt/request"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -450,14 +451,14 @@ func (op *AuthOperations) jwtAuthorization(w http.ResponseWriter, r *http.Reques
 	// Using gorilla mux and context here to share context between middleware and handler function
 	// Reference: https://stackoverflow.com/questions/41876310/negroni-passing-context-from-middleware-to-handlers
 	// and https://www.nicolasmerouze.com/share-values-between-middlewares-context-golang/
-	parsedToken, err := middleware.ParseContext(r, &claimsAndPayload)
+	parsedToken, err := session.ParseContext(r, &claimsAndPayload)
 	if err != nil {
 		LOGGER.Error("ParseContext failed:" + err.Error())
 		response.NotifyWWError(w, r, http.StatusForbidden, "AUTH-1017", errors.New("authentication failed, invalid token"))
 		return
 	}
 	ctx := r.Context()
-	ctx = context.WithValue(ctx, middleware.ContextKey, parsedToken)
+	ctx = context.WithValue(ctx, session.ContextKey, parsedToken)
 
 	// Call the next handler, which can be another middleware in the chain, or the final 
 	next.ServeHTTP(w, r.WithContext(ctx))

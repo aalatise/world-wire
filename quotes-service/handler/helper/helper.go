@@ -7,11 +7,11 @@ import (
 	"net/http"
 	"strconv"
 
-	jwt "github.com/dgrijalva/jwt-go"
-	"github.com/dgrijalva/jwt-go/request"
+	jwt "github.com/golang-jwt/jwt"
+	"github.com/golang-jwt/jwt/request"
 	uuid "github.com/satori/go.uuid"
-	middlewares "github.ibm.com/gftn/world-wire-services/auth-service-go/middleware"
-	"github.ibm.com/gftn/world-wire-services/utility/wwfirebase"
+	middlewares "github.com/IBM/world-wire/auth-service-go/middleware"
+	"github.com/IBM/world-wire/utility/wwfirebase"
 )
 
 func GetIdentity(req *http.Request) (string, error) {

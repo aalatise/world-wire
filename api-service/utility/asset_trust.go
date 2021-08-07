@@ -4,11 +4,11 @@ import (
 	"os"
 
 	hClient "github.com/stellar/go/clients/horizonclient"
-	"github.ibm.com/gftn/world-wire-services/gftn-models/model"
-	pr_client "github.ibm.com/gftn/world-wire-services/participant-registry-client/pr-client"
-	"github.ibm.com/gftn/world-wire-services/utility/asset"
-	"github.ibm.com/gftn/world-wire-services/utility/common"
-	global_environment "github.ibm.com/gftn/world-wire-services/utility/global-environment"
+	"github.com/IBM/world-wire/gftn-models/model"
+	pr_client "github.com/IBM/world-wire/participant-registry-client/pr-client"
+	"github.com/IBM/world-wire/utility/asset"
+	"github.com/IBM/world-wire/utility/common"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
 )
 
 //GetAssets : This function combines the list of requested as well as trusted(allowed trust) assets by an account

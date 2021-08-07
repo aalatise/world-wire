@@ -3,7 +3,7 @@ package utility
 import (
 	"os/exec"
 
-	"github.ibm.com/gftn/world-wire-services/automation-service/constant"
+	"github.com/IBM/world-wire/automation-service/constant"
 
 	"github.com/op/go-logging"
 )

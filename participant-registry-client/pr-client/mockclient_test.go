@@ -3,7 +3,7 @@ package pr_client
 import (
 	"testing"
 	. "github.com/smartystreets/goconvey/convey"
-	comn "github.ibm.com/gftn/world-wire-services/utility/common"
+	comn "github.com/IBM/world-wire/utility/common"
 )
 
 func TestGetAllParticipants(t *testing.T) {

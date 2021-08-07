@@ -6,11 +6,11 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	middlewares "github.ibm.com/gftn/world-wire-services/auth-service-go/middleware"
-	"github.ibm.com/gftn/world-wire-services/gftn-models/model"
-	"github.ibm.com/gftn/world-wire-services/global-whitelist-service/whitelistserver/database"
-	"github.ibm.com/gftn/world-wire-services/global-whitelist-service/whitelistserver/utility/prclient"
-	"github.ibm.com/gftn/world-wire-services/utility/response"
+	middlewares "github.com/IBM/world-wire/auth-service-go/session"
+	"github.com/IBM/world-wire/gftn-models/model"
+	"github.com/IBM/world-wire/global-whitelist-service/whitelistserver/database"
+	"github.com/IBM/world-wire/global-whitelist-service/whitelistserver/utility/prclient"
+	"github.com/IBM/world-wire/utility/response"
 )
 
 type RequestBody struct {

@@ -7,8 +7,8 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.ibm.com/gftn/world-wire-services/gftn-models/model"
-	"github.ibm.com/gftn/world-wire-services/utility/participant"
+	"github.com/IBM/world-wire/gftn-models/model"
+	//"github.com/IBM/world-wire/utility/participant"
 )
 
 type Client struct {
@@ -134,7 +134,20 @@ func (client *Client) GetMutualWhiteListParticipants(participantID string) ([]mo
 		return nil, err
 	}
 
-	wlparitcipants = participant.ExtractActiveParticipants(wlparitcipants)
+	wlparitcipants = ExtractActiveParticipants(wlparitcipants)
 
 	return wlparitcipants, nil
+}
+
+func ExtractActiveParticipants(ps []model.Participant) []model.Participant {
+
+	var activeParticipants []model.Participant
+
+	for _, p := range ps {
+		if p.Status == "active" {
+			activeParticipants = append(activeParticipants, p)
+		}
+	}
+
+	return activeParticipants
 }

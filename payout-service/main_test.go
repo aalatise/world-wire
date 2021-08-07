@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	. "github.com/smartystreets/goconvey/convey"
-	authtesting "github.ibm.com/gftn/world-wire-services/utility/testing"
+	authtesting "github.com/IBM/world-wire/utility/testing"
 )
 
 // type postPayoutResponse struct {

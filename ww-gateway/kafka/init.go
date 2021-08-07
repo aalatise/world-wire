@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
-	kafka_utils "github.ibm.com/gftn/world-wire-services/utility/kafka"
+	kafka_utils "github.com/IBM/world-wire/utility/kafka"
 )
 
 func Initialize() (*kafka.Consumer, error) {

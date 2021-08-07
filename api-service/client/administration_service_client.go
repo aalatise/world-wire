@@ -1,6 +1,6 @@
 package client
 
-import "github.ibm.com/gftn/world-wire-services/gftn-models/model"
+import "github.com/IBM/world-wire/gftn-models/model"
 
 type AdministrationServiceClient interface {
 	GetTxnDetails(txnDetailsRequest model.FItoFITransactionRequest) ([]byte, int, error)

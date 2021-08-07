@@ -6,10 +6,10 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/dgrijalva/jwt-go"
-	"github.com/dgrijalva/jwt-go/request"
-	"github.ibm.com/gftn/world-wire-services/utility/database"
-	"github.ibm.com/gftn/world-wire-services/utility/response"
+	"github.com/golang-jwt/jwt"
+	"github.com/golang-jwt/jwt/request"
+	"github.com/IBM/world-wire/utility/database"
+	"github.com/IBM/world-wire/utility/response"
 	"go.mongodb.org/mongo-driver/bson"
 )
 

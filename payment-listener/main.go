@@ -9,22 +9,22 @@ import (
 	"strconv"
 	"time"
 
-	middlewares "github.ibm.com/gftn/world-wire-services/auth-service-go/handler"
+	middlewares "github.com/IBM/world-wire/auth-service-go/handler"
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/op/go-logging"
 	"github.com/urfave/negroni"
-	"github.ibm.com/gftn/world-wire-services/gftn-models/model"
-	"github.ibm.com/gftn/world-wire-services/payment-listener/listeners"
-	"github.ibm.com/gftn/world-wire-services/utility"
-	comn "github.ibm.com/gftn/world-wire-services/utility/common"
-	global_environment "github.ibm.com/gftn/world-wire-services/utility/global-environment"
-	"github.ibm.com/gftn/world-wire-services/utility/global-environment/services"
-	"github.ibm.com/gftn/world-wire-services/utility/logconfig"
-	"github.ibm.com/gftn/world-wire-services/utility/message"
-	middleware_checks "github.ibm.com/gftn/world-wire-services/utility/middleware"
-	"github.ibm.com/gftn/world-wire-services/utility/status"
+	"github.com/IBM/world-wire/gftn-models/model"
+	"github.com/IBM/world-wire/payment-listener/listeners"
+	"github.com/IBM/world-wire/utility"
+	comn "github.com/IBM/world-wire/utility/common"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
+	"github.com/IBM/world-wire/utility/global-environment/services"
+	"github.com/IBM/world-wire/utility/logconfig"
+	"github.com/IBM/world-wire/utility/message"
+	middleware_checks "github.com/IBM/world-wire/utility/middleware"
+	"github.com/IBM/world-wire/utility/status"
 )
 
 type App struct {

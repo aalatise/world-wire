@@ -3,8 +3,8 @@ package wwfirebase
 import (
 	"encoding/json"
 	"github.com/go-errors/errors"
-	"github.ibm.com/gftn/world-wire-services/gftn-models/model"
-	"github.ibm.com/gftn/world-wire-services/utility/global-environment"
+	"github.com/IBM/world-wire/gftn-models/model"
+	"github.com/IBM/world-wire/utility/global-environment"
 	"os"
 	"time"
 )

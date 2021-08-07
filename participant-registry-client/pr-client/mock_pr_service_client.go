@@ -6,8 +6,8 @@ import (
 	"io/ioutil"
 	"os"
 
-	"github.ibm.com/gftn/world-wire-services/gftn-models/model"
-	comn "github.ibm.com/gftn/world-wire-services/utility/common"
+	"github.com/IBM/world-wire/gftn-models/model"
+	comn "github.com/IBM/world-wire/utility/common"
 )
 
 type MockPRServiceClient struct {
@@ -44,7 +44,7 @@ func (client MockPRServiceClient) GetParticipantByAddress(address string) (model
 
 func (client MockPRServiceClient) GetParticipantForDomain(participantID string) (model.Participant, error) {
 
-	responseBody, err := ioutil.ReadFile(os.Getenv("GOPATH") + "/src/github.ibm.com/gftn/world-wire-services/quotes-service/unit-test-data/quote/participant_sandbox.json")
+	responseBody, err := ioutil.ReadFile(os.Getenv("GOPATH") + "/src/github.com/IBM/world-wire/quotes-service/unit-test-data/quote/participant_sandbox.json")
 	var participants []model.Participant
 	// LOGGER.Debugf(string(responseBody))
 	var result map[string]interface{}
@@ -82,7 +82,7 @@ func (client MockPRServiceClient) PostParticipantDistAccount(domain string, acco
 
 func (client MockPRServiceClient) GetAllParticipants() ([]model.Participant, error) {
 
-	responseBody, err := ioutil.ReadFile(os.Getenv("GOPATH") + "/src/github.ibm.com/gftn/world-wire-services/new-quotes-service/unit-test-data/quote/participant_sandbox.json")
+	responseBody, err := ioutil.ReadFile(os.Getenv("GOPATH") + "/src/github.com/IBM/world-wire/new-quotes-service/unit-test-data/quote/participant_sandbox.json")
 
 	if err != nil {
 		LOGGER.Debugf("There was an error while querying the pr service for domain (%v):  %v", err)

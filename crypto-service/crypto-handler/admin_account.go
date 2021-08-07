@@ -10,11 +10,11 @@ import (
 	"github.com/go-openapi/strfmt"
 	b "github.com/stellar/go/build"
 	"github.com/stellar/go/xdr"
-	"github.ibm.com/gftn/world-wire-services/gftn-models/model"
-	"github.ibm.com/gftn/world-wire-services/utility/common"
-	util "github.ibm.com/gftn/world-wire-services/utility/common"
-	global_environment "github.ibm.com/gftn/world-wire-services/utility/global-environment"
-	"github.ibm.com/gftn/world-wire-services/utility/response"
+	"github.com/IBM/world-wire/gftn-models/model"
+	"github.com/IBM/world-wire/utility/common"
+	util "github.com/IBM/world-wire/utility/common"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
+	"github.com/IBM/world-wire/utility/response"
 )
 
 // Returns back address of IBM account

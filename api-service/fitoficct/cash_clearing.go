@@ -7,16 +7,16 @@ import (
 	"strings"
 	"time"
 
-	"github.ibm.com/gftn/world-wire-services/api-service/environment"
+	"github.com/IBM/world-wire/api-service/environment"
 
 	"github.com/go-openapi/strfmt"
 	"github.com/pkg/errors"
-	"github.ibm.com/gftn/world-wire-services/api-service/client"
-	"github.ibm.com/gftn/world-wire-services/gftn-models/model"
-	"github.ibm.com/gftn/world-wire-services/utility"
-	comn "github.ibm.com/gftn/world-wire-services/utility/common"
-	global_environment "github.ibm.com/gftn/world-wire-services/utility/global-environment"
-	"github.ibm.com/gftn/world-wire-services/utility/response"
+	"github.com/IBM/world-wire/api-service/client"
+	"github.com/IBM/world-wire/gftn-models/model"
+	"github.com/IBM/world-wire/utility"
+	comn "github.com/IBM/world-wire/utility/common"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
+	"github.com/IBM/world-wire/utility/response"
 )
 
 type FItoFICustomerCreditTransferOperations struct {

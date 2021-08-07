@@ -7,8 +7,8 @@ import (
 	"github.com/go-resty/resty"
 	logging "github.com/op/go-logging"
 	"github.com/pkg/errors"
-	"github.ibm.com/gftn/world-wire-services/gftn-models/model"
-	comn "github.ibm.com/gftn/world-wire-services/utility/common"
+	"github.com/IBM/world-wire/gftn-models/model"
+	comn "github.com/IBM/world-wire/utility/common"
 )
 
 var LOGGER = logging.MustGetLogger("pr-client")

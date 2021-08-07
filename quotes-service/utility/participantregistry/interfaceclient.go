@@ -1,6 +1,6 @@
 package participantregistry
 
-import "github.ibm.com/gftn/world-wire-services/gftn-models/model"
+import "github.com/IBM/world-wire/gftn-models/model"
 
 type InterfaceClient interface {
 	GetAllParticipants() ([]model.Participant, error)

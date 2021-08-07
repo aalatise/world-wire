@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
-	"github.ibm.com/gftn/world-wire-services/utility/database"
-	"github.ibm.com/gftn/world-wire-services/utility/response"
+	"github.com/IBM/world-wire/utility/database"
+	"github.com/IBM/world-wire/utility/response"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )

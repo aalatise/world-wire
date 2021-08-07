@@ -7,9 +7,9 @@ import (
 	"time"
 
 	"github.com/op/go-logging"
-	"github.ibm.com/gftn/world-wire-services/automation-service/internal_model"
-	global_environment "github.ibm.com/gftn/world-wire-services/utility/global-environment"
-	"github.ibm.com/gftn/world-wire-services/utility/response"
+	"github.com/IBM/world-wire/automation-service/internal_model"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
+	"github.com/IBM/world-wire/utility/response"
 )
 
 var LOGGER = logging.MustGetLogger("service-check")

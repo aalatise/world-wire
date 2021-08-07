@@ -4,10 +4,10 @@ import (
 	"net/http"
 	"os"
 
-	middlewares "github.ibm.com/gftn/world-wire-services/auth-service-go/middleware"
-	pr_client "github.ibm.com/gftn/world-wire-services/participant-registry-client/pr-client"
-	global_environment "github.ibm.com/gftn/world-wire-services/utility/global-environment"
-	"github.ibm.com/gftn/world-wire-services/utility/response"
+	middlewares "github.com/IBM/world-wire/auth-service-go/session"
+	pr_client "github.com/IBM/world-wire/participant-registry-client/pr-client"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
+	"github.com/IBM/world-wire/utility/response"
 )
 
 type MiddlewareHandler struct {

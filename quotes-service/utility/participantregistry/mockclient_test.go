@@ -2,7 +2,7 @@ package participantregistry
 
 import (
 	. "github.com/smartystreets/goconvey/convey"
-	comn "github.ibm.com/gftn/world-wire-services/utility/common"
+	comn "github.com/IBM/world-wire/utility/common"
 	"testing"
 )
 

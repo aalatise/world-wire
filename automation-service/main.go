@@ -10,16 +10,16 @@ import (
 	"os/signal"
 	"time"
 
-	middlewares "github.ibm.com/gftn/world-wire-services/auth-service-go/handler"
-	"github.ibm.com/gftn/world-wire-services/automation-service/automate/participant"
+	middlewares "github.com/IBM/world-wire/auth-service-go/handler"
+	"github.com/IBM/world-wire/automation-service/automate/participant"
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/op/go-logging"
 	"github.com/urfave/negroni"
-	"github.ibm.com/gftn/world-wire-services/automation-service/automate"
-	global_environment "github.ibm.com/gftn/world-wire-services/utility/global-environment"
-	"github.ibm.com/gftn/world-wire-services/utility/message"
+	"github.com/IBM/world-wire/automation-service/automate"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
+	"github.com/IBM/world-wire/utility/message"
 )
 
 type App struct {

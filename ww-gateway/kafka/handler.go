@@ -7,8 +7,8 @@ import (
 	"strconv"
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
-	"github.ibm.com/gftn/world-wire-services/ww-gateway/environment"
-	"github.ibm.com/gftn/world-wire-services/ww-gateway/utility"
+	"github.com/IBM/world-wire/ww-gateway/environment"
+	"github.com/IBM/world-wire/ww-gateway/utility"
 )
 
 func ReqConsumer(c *kafka.Consumer, topic string, partition int32) (kafka.TopicPartitions, []*kafka.Message, error) {

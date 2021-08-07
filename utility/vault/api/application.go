@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.ibm.com/gftn/world-wire-services/utility/vault/utils"
+	"github.com/IBM/world-wire/utility/vault/utils"
 )
 
 func AddApplication(session utils.Session, appId string) {

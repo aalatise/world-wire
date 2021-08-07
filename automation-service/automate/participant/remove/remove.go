@@ -2,8 +2,8 @@ package remove
 
 import (
 	"github.com/op/go-logging"
-	"github.ibm.com/gftn/world-wire-services/automation-service/constant"
-	"github.ibm.com/gftn/world-wire-services/automation-service/utility"
+	"github.com/IBM/world-wire/automation-service/constant"
+	"github.com/IBM/world-wire/automation-service/utility"
 )
 
 var LOGGER = logging.MustGetLogger("remove")

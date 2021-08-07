@@ -5,13 +5,13 @@ import (
 	"net/http"
 	"os"
 
-	"github.ibm.com/gftn/world-wire-services/utility/common"
-	"github.ibm.com/gftn/world-wire-services/utility/xmldsig"
+	"github.com/IBM/world-wire/utility/common"
+	"github.com/IBM/world-wire/utility/xmldsig"
 
 	"github.com/go-openapi/strfmt"
-	"github.ibm.com/gftn/world-wire-services/gftn-models/model"
-	global_environment "github.ibm.com/gftn/world-wire-services/utility/global-environment"
-	"github.ibm.com/gftn/world-wire-services/utility/response"
+	"github.com/IBM/world-wire/gftn-models/model"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
+	"github.com/IBM/world-wire/utility/response"
 )
 
 func (op *CryptoOperations) SignXML(w http.ResponseWriter, req *http.Request) {

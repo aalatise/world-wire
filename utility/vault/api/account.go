@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	logging "github.com/op/go-logging"
-	"github.ibm.com/gftn/world-wire-services/utility/vault/utils"
+	"github.com/IBM/world-wire/utility/vault/utils"
 )
 
 var LOGGER = logging.MustGetLogger("vault")

@@ -9,19 +9,19 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/stellar/go/clients/horizon"
 
-	"github.ibm.com/gftn/world-wire-services/gftn-models/model"
+	"github.com/IBM/world-wire/gftn-models/model"
 
 	"github.com/go-openapi/strfmt"
 	"github.com/pkg/errors"
-	"github.ibm.com/gftn/world-wire-services/api-service/environment"
-	crypto_client "github.ibm.com/gftn/world-wire-services/crypto-service-client/crypto-client"
-	gasserviceclient "github.ibm.com/gftn/world-wire-services/gas-service-client"
-	pr_client "github.ibm.com/gftn/world-wire-services/participant-registry-client/pr-client"
-	"github.ibm.com/gftn/world-wire-services/utility"
-	"github.ibm.com/gftn/world-wire-services/utility/blockchain-adaptor/ww_stellar"
-	global_environment "github.ibm.com/gftn/world-wire-services/utility/global-environment"
-	"github.ibm.com/gftn/world-wire-services/utility/participant"
-	"github.ibm.com/gftn/world-wire-services/utility/response"
+	"github.com/IBM/world-wire/api-service/environment"
+	crypto_client "github.com/IBM/world-wire/crypto-service-client/crypto-client"
+	gasserviceclient "github.com/IBM/world-wire/gas-service-client"
+	pr_client "github.com/IBM/world-wire/participant-registry-client/pr-client"
+	"github.com/IBM/world-wire/utility"
+	"github.com/IBM/world-wire/utility/blockchain-adaptor/ww_stellar"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
+	"github.com/IBM/world-wire/utility/participant"
+	"github.com/IBM/world-wire/utility/response"
 )
 
 type Operations struct {

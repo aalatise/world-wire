@@ -5,14 +5,14 @@ import (
 	"os"
 	"strings"
 
-	global_environment "github.ibm.com/gftn/world-wire-services/utility/global-environment"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
 
-	"github.ibm.com/gftn/world-wire-services/utility/payment/environment"
-	message_handler "github.ibm.com/gftn/world-wire-services/utility/payment/message-handler"
+	"github.com/IBM/world-wire/utility/payment/environment"
+	message_handler "github.com/IBM/world-wire/utility/payment/message-handler"
 
-	"github.ibm.com/gftn/world-wire-services/utility/response"
+	"github.com/IBM/world-wire/utility/response"
 
-	"github.ibm.com/gftn/world-wire-services/utility/payment/constant"
+	"github.com/IBM/world-wire/utility/payment/constant"
 )
 
 func Router(w http.ResponseWriter, req *http.Request, op message_handler.PaymentOperations, sourceType string) {

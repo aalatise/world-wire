@@ -13,10 +13,10 @@ import (
 
 	"github.com/go-openapi/strfmt"
 	"github.com/neo4j/neo4j-go-driver/neo4j"
-	"github.ibm.com/gftn/world-wire-services/gftn-models/model"
-	"github.ibm.com/gftn/world-wire-services/payout-service/environment"
-	"github.ibm.com/gftn/world-wire-services/payout-service/utility"
-	"github.ibm.com/gftn/world-wire-services/utility/response"
+	"github.com/IBM/world-wire/gftn-models/model"
+	"github.com/IBM/world-wire/payout-service/environment"
+	"github.com/IBM/world-wire/payout-service/utility"
+	"github.com/IBM/world-wire/utility/response"
 	"googlemaps.github.io/maps"
 )
 

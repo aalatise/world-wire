@@ -2,8 +2,8 @@ package utils
 
 //var BaseURL = "https://3.0.15.221"
 
-//var certPath = "/vagrant/go/src/github.ibm.com/gftn/world-wire-services/utility/vault/certs/certificate.crt"
-//var keyPath = "/vagrant/go/src/github.ibm.com/gftn/world-wire-services/utility/vault/certs/privateKey.key"
+//var certPath = "/vagrant/go/src/github.com/IBM/world-wire/utility/vault/certs/certificate.crt"
+//var keyPath = "/vagrant/go/src/github.com/IBM/world-wire/utility/vault/certs/privateKey.key"
 
 type Session struct{
 	CyberArkLogonResult string

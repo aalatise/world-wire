@@ -6,8 +6,8 @@ import (
 	"time"
 
 	. "github.com/smartystreets/goconvey/convey"
-	"github.ibm.com/gftn/world-wire-services/gftn-models/model"
-	comn "github.ibm.com/gftn/world-wire-services/utility/common"
+	"github.com/IBM/world-wire/gftn-models/model"
+	comn "github.com/IBM/world-wire/utility/common"
 )
 
 func TestRequestSigning(t *testing.T) {

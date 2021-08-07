@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/gorilla/sessions"
 	"github.com/op/go-logging"
-	"github.ibm.com/gftn/world-wire-services/auth-service-go/environment"
+	"github.com/IBM/world-wire/auth-service-go/environment"
 	"net/http"
 	"os"
 	"strings"

@@ -6,7 +6,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.ibm.com/gftn/world-wire-services/gftn-models/model"
+	"github.com/IBM/world-wire/gftn-models/model"
 
 	. "github.com/smartystreets/goconvey/convey"
 )

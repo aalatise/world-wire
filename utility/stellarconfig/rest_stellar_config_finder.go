@@ -6,7 +6,7 @@ import (
     "github.com/BurntSushi/toml"
     "os"
     "strings"
-    "github.ibm.com/gftn/world-wire-services/utility/global-environment"
+    "github.com/IBM/world-wire/utility/global-environment"
 )
 
 type RestStellarConfigFinder struct {

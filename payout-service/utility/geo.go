@@ -3,7 +3,7 @@ package utility
 import (
 	"github.com/golang/geo/r3"
 	"github.com/golang/geo/s2"
-	"github.ibm.com/gftn/world-wire-services/gftn-models/model"
+	"github.com/IBM/world-wire/gftn-models/model"
 )
 
 func ContainsPoint(ids []string, candidatePoints map[string][]model.Coordinate, requestCoordinate model.Coordinate) ([]string, error) {

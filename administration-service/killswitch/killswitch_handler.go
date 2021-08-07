@@ -8,23 +8,21 @@ import (
 	"strings"
 	"time"
 
-	"github.ibm.com/gftn/world-wire-services/utility/global-environment/services/secrets"
+	"github.com/IBM/world-wire/utility/global-environment/services/secrets"
 
+	crypto_client "github.com/IBM/world-wire/crypto-service-client/crypto-client"
+	gasserviceclient "github.com/IBM/world-wire/gas-service-client"
+	ast "github.com/IBM/world-wire/utility/asset"
+	"github.com/IBM/world-wire/utility/common"
+	util "github.com/IBM/world-wire/utility/common"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
+	"github.com/IBM/world-wire/utility/global-environment/services/secrets/vault"
+	"github.com/IBM/world-wire/utility/participant"
+	"github.com/IBM/world-wire/utility/response"
 	"github.com/gorilla/mux"
 	b "github.com/stellar/go/build"
 	"github.com/stellar/go/strkey"
 	"github.com/stellar/go/xdr"
-	crypto_client "github.ibm.com/gftn/world-wire-services/crypto-service-client/crypto-client"
-	gasserviceclient "github.ibm.com/gftn/world-wire-services/gas-service-client"
-	ast "github.ibm.com/gftn/world-wire-services/utility/asset"
-	secret_manager "github.ibm.com/gftn/world-wire-services/utility/aws/golang/secret-manager"
-	"github.ibm.com/gftn/world-wire-services/utility/aws/golang/utility"
-	"github.ibm.com/gftn/world-wire-services/utility/common"
-	util "github.ibm.com/gftn/world-wire-services/utility/common"
-	global_environment "github.ibm.com/gftn/world-wire-services/utility/global-environment"
-	"github.ibm.com/gftn/world-wire-services/utility/global-environment/services/secrets/vault"
-	"github.ibm.com/gftn/world-wire-services/utility/participant"
-	"github.ibm.com/gftn/world-wire-services/utility/response"
 )
 
 type KillSwitch struct {
@@ -333,24 +331,6 @@ func generateSHA256Hash(key string) string {
 	return actual
 }
 
-// get this value from aws
-func getSecretPhrase(accountName, participantId string) (string, error) {
-
-	if os.Getenv(global_environment.ENV_KEY_ENVIRONMENT_VERSION) == "" {
-		errorMsg := "Please set environment variables: ENV_VERSION & HOME_DOMAIN_NAME correctly"
-		LOGGER.Errorf(errorMsg)
-		return "", errors.New(errorMsg)
-	}
-
-	credential := utility.CredentialInfo{
-		Environment: os.Getenv(global_environment.ENV_KEY_ENVIRONMENT_VERSION),
-		Domain:      participantId,
-		Service:     "killswitch",
-		Variable:    "accounts",
-	}
-
-	return secret_manager.GetSingleSecretEntry(credential, accountName)
-}
 
 /*
 This function would take 'preimage' value as argument and get the

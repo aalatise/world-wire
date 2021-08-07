@@ -7,7 +7,7 @@ import (
 	"io/ioutil"
 	"strings"
 
-	"github.ibm.com/gftn/world-wire-services/utility/vault/utils"
+	"github.com/IBM/world-wire/utility/vault/utils"
 )
 
 func GetPasswordWithAim(session utils.Session, safeName string, objectName string) (string, error) {

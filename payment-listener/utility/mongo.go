@@ -8,9 +8,9 @@ import (
 
 	"github.com/globalsign/mgo/bson"
 	"github.com/op/go-logging"
-	"github.ibm.com/gftn/world-wire-services/gftn-models/model"
-	"github.ibm.com/gftn/world-wire-services/utility/database"
-	global_environment "github.ibm.com/gftn/world-wire-services/utility/global-environment"
+	"github.com/IBM/world-wire/gftn-models/model"
+	"github.com/IBM/world-wire/utility/database"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 

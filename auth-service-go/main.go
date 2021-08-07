@@ -7,17 +7,17 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/justinas/alice"
 	"github.com/op/go-logging"
-	"github.ibm.com/gftn/world-wire-services/auth-service-go/handler"
-	"github.ibm.com/gftn/world-wire-services/auth-service-go/sso"
-	global_environment "github.ibm.com/gftn/world-wire-services/utility/global-environment"
+	"github.com/IBM/world-wire/auth-service-go/handler"
+	"github.com/IBM/world-wire/auth-service-go/sso"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
 	"net/http"
 	"os"
 	"os/signal"
 	"time"
 
-	u "github.ibm.com/gftn/world-wire-services/utility"
-	"github.ibm.com/gftn/world-wire-services/utility/logconfig"
-	"github.ibm.com/gftn/world-wire-services/utility/response"
+	u "github.com/IBM/world-wire/utility"
+	"github.com/IBM/world-wire/utility/logconfig"
+	"github.com/IBM/world-wire/utility/response"
 )
 
 type App struct {

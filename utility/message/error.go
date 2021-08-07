@@ -5,11 +5,11 @@ import (
 	"os"
 	"time"
 
-	global_environment "github.ibm.com/gftn/world-wire-services/utility/global-environment"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
 
 	bs "github.com/BurntSushi/toml"
 	"github.com/op/go-logging"
-	"github.ibm.com/gftn/world-wire-services/gftn-models/model"
+	"github.com/IBM/world-wire/gftn-models/model"
 )
 
 var (

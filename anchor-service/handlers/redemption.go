@@ -13,17 +13,17 @@ import (
 
 	"github.com/go-openapi/strfmt"
 	"github.com/go-resty/resty"
-	"github.ibm.com/gftn/world-wire-services/anchor-service/environment"
-	crypto_client "github.ibm.com/gftn/world-wire-services/crypto-service-client/crypto-client"
-	gasserviceclient "github.ibm.com/gftn/world-wire-services/gas-service-client"
-	"github.ibm.com/gftn/world-wire-services/gftn-models/model"
-	pr_client "github.ibm.com/gftn/world-wire-services/participant-registry-client/pr-client"
-	util "github.ibm.com/gftn/world-wire-services/utility"
-	"github.ibm.com/gftn/world-wire-services/utility/common"
-	global_environment "github.ibm.com/gftn/world-wire-services/utility/global-environment"
-	"github.ibm.com/gftn/world-wire-services/utility/participant"
-	vauth "github.ibm.com/gftn/world-wire-services/utility/vault/auth"
-	"github.ibm.com/gftn/world-wire-services/utility/vault/utils"
+	"github.com/IBM/world-wire/anchor-service/environment"
+	crypto_client "github.com/IBM/world-wire/crypto-service-client/crypto-client"
+	gasserviceclient "github.com/IBM/world-wire/gas-service-client"
+	"github.com/IBM/world-wire/gftn-models/model"
+	pr_client "github.com/IBM/world-wire/participant-registry-client/pr-client"
+	util "github.com/IBM/world-wire/utility"
+	"github.com/IBM/world-wire/utility/common"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
+	"github.com/IBM/world-wire/utility/participant"
+	vauth "github.com/IBM/world-wire/utility/vault/auth"
+	"github.com/IBM/world-wire/utility/vault/utils"
 )
 
 type Operations struct {

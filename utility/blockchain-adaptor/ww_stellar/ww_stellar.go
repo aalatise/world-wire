@@ -14,10 +14,9 @@ import (
 	"github.com/stellar/go/clients/horizon"
 	hClient "github.com/stellar/go/clients/horizonclient"
 	"github.com/stellar/go/xdr"
-	crypto_client "github.ibm.com/gftn/world-wire-services/crypto-service-client/crypto-client"
-	gasserviceclient "github.ibm.com/gftn/world-wire-services/gas-service-client"
-	"github.ibm.com/gftn/world-wire-services/gftn-models/model"
-	ast "github.ibm.com/gftn/world-wire-services/utility/asset"
+	crypto_client "github.com/IBM/world-wire/crypto-service-client/crypto-client"
+	gasserviceclient "github.com/IBM/world-wire/gas-service-client"
+	"github.com/IBM/world-wire/gftn-models/model"
 )
 
 var (
@@ -476,6 +475,13 @@ func (self *StellarTransactionConstructor) SetTxeB(txeB b.TransactionEnvelopeBui
 	return
 }
 
+func IsNative(assetCode string) bool {
+	lowercaseCode := strings.ToLower(assetCode)
+	return strings.Compare("native", lowercaseCode) == 0 ||
+		strings.Compare("xlm", lowercaseCode) == 0 ||
+		strings.Compare("lumen", lowercaseCode) == 0
+}
+
 func GetBalance(account Account, asset model.Asset, prc PRClient, hc *horizon.Client) (Balance, error) {
 
 	_address, err := prc.GetParticipantAccount(account.ParticipantID, account.Account)
@@ -487,7 +493,7 @@ func GetBalance(account Account, asset model.Asset, prc PRClient, hc *horizon.Cl
 		LOGGER.Error("Error loading account from horizon")
 		return Balance{}, err
 	}
-	if ast.IsNative(*asset.AssetCode) {
+	if IsNative(*asset.AssetCode) {
 		balanceStr, _ := _account.GetNativeBalance()
 		balanceDecimal, _ := decimal.NewFromString(balanceStr)
 		LOGGER.Info("pariticipant", account.ParticipantID, "asset assetcode:", *asset.AssetCode, "balance....:", balanceStr)

@@ -1,6 +1,6 @@
 package prclient
 
-import "github.ibm.com/gftn/world-wire-services/gftn-models/model"
+import "github.com/IBM/world-wire/gftn-models/model"
 
 type MockClient struct {
 	GetAllParticipantsFunc func() ([]model.Participant, error)

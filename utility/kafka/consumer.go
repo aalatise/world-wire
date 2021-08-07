@@ -1,9 +1,9 @@
 package kafka
 
 import (
-	"github.ibm.com/gftn/world-wire-services/utility/payment/constant"
-
-	"github.ibm.com/gftn/world-wire-services/utility/global-environment/services"
+	"github.com/IBM/world-wire/utility/global-environment"
+	"github.com/IBM/world-wire/utility/payment/constant"
+	"github.com/IBM/world-wire/utility/secrets"
 )
 
 func (ops *KafkaOpreations) Consume(data chan<- []byte, topic string, consumerIndex int) {
@@ -45,8 +45,8 @@ func (op *KafkaOpreations) consumerStartListening(topic, topicType string, consu
 		if errorString == constant.KAFKA_INITIAL_ERROR {
 			LOGGER.Errorf("Failed to initiate the Kafka consumer client: %s, %s", topic, errorString)
 			// Read the latest configuration from secret manager
-			services.VariableCheck()
-			services.InitEnv()
+			global_environment.VariableCheck()
+			secrets.InitEnv()
 			op.InitPaymentConsumer(op.GroupId, kafkaRouter)
 			go op.Consume(reqDataFromKafka, topic, consumerIndex)
 			continue

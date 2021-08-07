@@ -6,13 +6,13 @@ import (
 	"strings"
 
 	"github.com/op/go-logging"
-	"github.ibm.com/gftn/world-wire-services/crypto-service/environment"
-	"github.ibm.com/gftn/world-wire-services/crypto-service/utility/common"
-	"github.ibm.com/gftn/world-wire-services/crypto-service/utility/constant"
-	comn "github.ibm.com/gftn/world-wire-services/utility/common"
-	global_environment "github.ibm.com/gftn/world-wire-services/utility/global-environment"
-	"github.ibm.com/gftn/world-wire-services/utility/global-environment/services/secrets"
-	"github.ibm.com/gftn/world-wire-services/utility/global-environment/services/secrets/vault"
+	"github.com/IBM/world-wire/crypto-service/environment"
+	"github.com/IBM/world-wire/crypto-service/utility/common"
+	"github.com/IBM/world-wire/crypto-service/utility/constant"
+	comn "github.com/IBM/world-wire/utility/common"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
+	"github.com/IBM/world-wire/utility/global-environment/services/secrets"
+	"github.com/IBM/world-wire/utility/global-environment/services/secrets/vault"
 )
 
 var LOGGER = logging.MustGetLogger("crypto-handler")

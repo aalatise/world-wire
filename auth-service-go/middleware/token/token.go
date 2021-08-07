@@ -2,8 +2,8 @@ package token
 
 import (
 	"github.com/op/go-logging"
-	"github.ibm.com/gftn/world-wire-services/auth-service-go/jwt"
-	global_environment "github.ibm.com/gftn/world-wire-services/utility/global-environment"
+	"github.com/IBM/world-wire/auth-service-go/jwt"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
 	"os"
 	"strings"
 )

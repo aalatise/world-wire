@@ -12,7 +12,7 @@ import (
 	_ "github.com/lib/pq"
 	uuid "github.com/satori/go.uuid"
 	. "github.com/smartystreets/goconvey/convey"
-	"github.ibm.com/gftn/world-wire-services/quotes-service/utility/nqsmodel"
+	"github.com/IBM/world-wire/quotes-service/utility/nqsmodel"
 )
 
 //config for testing purpose

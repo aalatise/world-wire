@@ -3,8 +3,8 @@ package middleware
 import (
 	"net/http"
 
-	middlewares "github.ibm.com/gftn/world-wire-services/auth-service-go/handler"
-	"github.ibm.com/gftn/world-wire-services/quotes-service/utility/authservice"
+	middlewares "github.com/IBM/world-wire/auth-service-go/handler"
+	"github.com/IBM/world-wire/quotes-service/utility/authservice"
 )
 
 type MiddleWare struct {

@@ -20,7 +20,7 @@ import (
 	logging "github.com/op/go-logging"
 
 	firebase "firebase.google.com/go"
-	global_environment "github.ibm.com/gftn/world-wire-services/utility/global-environment"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
 )
 
 var LOGGER = logging.MustGetLogger("wwfirebase")

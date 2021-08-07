@@ -11,7 +11,7 @@ import (
 	"strconv"
 	"time"
 
-	global_environment "github.ibm.com/gftn/world-wire-services/utility/global-environment"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
 )
 
 type HTTPClient interface {

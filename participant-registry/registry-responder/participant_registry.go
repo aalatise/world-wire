@@ -5,14 +5,14 @@ import (
 	"net/http"
 	"strings"
 
-	prc "github.ibm.com/gftn/world-wire-services/participant-registry-client/pr-client"
+	prc "github.com/IBM/world-wire/participant-registry-client/pr-client"
 
 	"github.com/go-openapi/strfmt"
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
-	"github.ibm.com/gftn/world-wire-services/gftn-models/model"
-	"github.ibm.com/gftn/world-wire-services/utility/database"
-	"github.ibm.com/gftn/world-wire-services/utility/response"
+	"github.com/IBM/world-wire/gftn-models/model"
+	"github.com/IBM/world-wire/utility/database"
+	"github.com/IBM/world-wire/utility/response"
 	"go.mongodb.org/mongo-driver/bson"
 )
 

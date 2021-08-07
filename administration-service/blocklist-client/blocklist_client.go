@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.ibm.com/gftn/world-wire-services/gftn-models/model"
+	"github.com/IBM/world-wire/gftn-models/model"
 )
 
 type Client struct {

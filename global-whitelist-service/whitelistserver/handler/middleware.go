@@ -3,7 +3,7 @@ package handler
 import (
 	"net/http"
 
-	middlewares "github.ibm.com/gftn/world-wire-services/auth-service-go/handler"
+	middlewares "github.com/IBM/world-wire/auth-service-go/handler"
 )
 
 type MiddleWare struct {

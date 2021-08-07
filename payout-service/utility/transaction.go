@@ -6,7 +6,7 @@ import (
 	"errors"
 
 	"github.com/neo4j/neo4j-go-driver/neo4j"
-	"github.ibm.com/gftn/world-wire-services/gftn-models/model"
+	"github.com/IBM/world-wire/gftn-models/model"
 	"googlemaps.github.io/maps"
 )
 

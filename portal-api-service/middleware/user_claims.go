@@ -1,6 +1,6 @@
 package middleware
 
-import "github.com/dgrijalva/jwt-go"
+import "github.com/golang-jwt/jwt"
 
 type UserClaims struct {
 	Uid   string `json:"uid"`

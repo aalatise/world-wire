@@ -8,8 +8,8 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.ibm.com/gftn/world-wire-services/gftn-models/model"
-	participantutil "github.ibm.com/gftn/world-wire-services/utility/participant"
+	"github.com/IBM/world-wire/gftn-models/model"
+	participantutil "github.com/IBM/world-wire/utility/participant"
 )
 
 type Client struct {

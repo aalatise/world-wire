@@ -3,7 +3,7 @@ package sso
 import (
 	"bytes"
 	"fmt"
-	"github.ibm.com/gftn/world-wire-services/auth-service-go/sso/pkg/template"
+	"github.com/IBM/world-wire/auth-service-go/sso/pkg/template"
 	"net/http"
 	"runtime/debug"
 )

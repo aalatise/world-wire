@@ -1,7 +1,7 @@
 package callback
 
 import (
-	"github.ibm.com/gftn/world-wire-services/gftn-models/model"
+	"github.com/IBM/world-wire/gftn-models/model"
 )
 
 type MockNotifyPaymentClient struct {

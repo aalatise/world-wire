@@ -9,9 +9,9 @@ package automate
 // 	"os"
 // 	"time"
 
-// 	"github.ibm.com/gftn/world-wire-services/automation-service/environment"
-// 	"github.ibm.com/gftn/world-wire-services/utility/response"
-// 	"github.ibm.com/gftn/world-wire-services/utility/wwfirebase"
+// 	"github.com/IBM/world-wire/automation-service/environment"
+// 	"github.com/IBM/world-wire/utility/response"
+// 	"github.com/IBM/world-wire/utility/wwfirebase"
 // )
 
 // type Client struct {

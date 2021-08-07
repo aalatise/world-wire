@@ -3,8 +3,8 @@ package client
 import (
 	"github.com/go-errors/errors"
 	"github.com/go-resty/resty"
-	"github.ibm.com/gftn/world-wire-services/utility/global-environment"
-	participant_util "github.ibm.com/gftn/world-wire-services/utility/participant"
+	"github.com/IBM/world-wire/utility/global-environment"
+	participant_util "github.com/IBM/world-wire/utility/participant"
 	"os"
 )
 

@@ -3,7 +3,7 @@ package handler
 import (
 	"github.com/op/go-logging"
 	"github.com/patrickmn/go-cache"
-	"github.ibm.com/gftn/world-wire-services/utility/database"
+	"github.com/IBM/world-wire/utility/database"
 	"net/http"
 	"time"
 )

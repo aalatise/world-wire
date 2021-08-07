@@ -3,6 +3,7 @@ package handlers
 import (
 	"encoding/json"
 	"errors"
+	middlewares "github.com/IBM/world-wire/auth-service-go/session"
 	"net/http"
 	"os"
 	"strings"
@@ -10,19 +11,18 @@ import (
 
 	"github.com/gorilla/mux"
 
+	au "github.com/IBM/world-wire/anchor-service/anchor-util"
+	apiutil "github.com/IBM/world-wire/api-service/utility"
+	gasserviceclient "github.com/IBM/world-wire/gas-service-client"
+	"github.com/IBM/world-wire/gftn-models/model"
+	pr_client "github.com/IBM/world-wire/participant-registry-client/pr-client"
+	"github.com/IBM/world-wire/utility/common"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
+	"github.com/IBM/world-wire/utility/global-environment/services/secrets"
+	"github.com/IBM/world-wire/utility/global-environment/services/secrets/vault"
+	participant_checks "github.com/IBM/world-wire/utility/participant"
+	"github.com/IBM/world-wire/utility/response"
 	"github.com/go-openapi/strfmt"
-	au "github.ibm.com/gftn/world-wire-services/anchor-service/anchor-util"
-	apiutil "github.ibm.com/gftn/world-wire-services/api-service/utility"
-	middlewares "github.ibm.com/gftn/world-wire-services/auth-service-go/middleware"
-	gasserviceclient "github.ibm.com/gftn/world-wire-services/gas-service-client"
-	"github.ibm.com/gftn/world-wire-services/gftn-models/model"
-	pr_client "github.ibm.com/gftn/world-wire-services/participant-registry-client/pr-client"
-	"github.ibm.com/gftn/world-wire-services/utility/common"
-	global_environment "github.ibm.com/gftn/world-wire-services/utility/global-environment"
-	"github.ibm.com/gftn/world-wire-services/utility/global-environment/services/secrets"
-	"github.ibm.com/gftn/world-wire-services/utility/global-environment/services/secrets/vault"
-	participant_checks "github.ibm.com/gftn/world-wire-services/utility/participant"
-	"github.ibm.com/gftn/world-wire-services/utility/response"
 )
 
 type TrustHandler struct {

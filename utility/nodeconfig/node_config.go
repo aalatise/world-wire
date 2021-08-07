@@ -7,10 +7,10 @@ import (
 	bs "github.com/BurntSushi/toml"
 	pel "github.com/pelletier/go-toml"
 	"github.com/pkg/errors"
-	"github.ibm.com/gftn/world-wire-services/gftn-models/model"
-	"github.ibm.com/gftn/world-wire-services/utility/common"
-	comn "github.ibm.com/gftn/world-wire-services/utility/common"
-	global_environment "github.ibm.com/gftn/world-wire-services/utility/global-environment"
+	"github.com/IBM/world-wire/gftn-models/model"
+	"github.com/IBM/world-wire/utility/common"
+	comn "github.com/IBM/world-wire/utility/common"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
 )
 
 type OnboardingOperations struct {

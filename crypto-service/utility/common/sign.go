@@ -7,17 +7,17 @@ import (
 	"strconv"
 	"strings"
 
-	"github.ibm.com/gftn/world-wire-services/crypto-service/utility/constant"
+	"github.com/IBM/world-wire/crypto-service/utility/constant"
 
-	"github.ibm.com/gftn/world-wire-services/utility/common"
-	global_environment "github.ibm.com/gftn/world-wire-services/utility/global-environment"
+	"github.com/IBM/world-wire/utility/common"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
 
 	"github.com/miekg/pkcs11"
 	"github.com/stellar/go/build"
 	"github.com/stellar/go/keypair"
-	"github.ibm.com/gftn/world-wire-services/crypto-service/environment"
-	"github.ibm.com/gftn/world-wire-services/crypto-service/utility/hsmclient"
-	"github.ibm.com/gftn/world-wire-services/utility/nodeconfig"
+	"github.com/IBM/world-wire/crypto-service/environment"
+	"github.com/IBM/world-wire/crypto-service/utility/hsmclient"
+	"github.com/IBM/world-wire/utility/nodeconfig"
 )
 
 //GenericSign for choosing between HSM/Native Stellar signing

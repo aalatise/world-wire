@@ -8,11 +8,11 @@ import (
 
 	"github.com/op/go-logging"
 	b "github.com/stellar/go/build"
-	crypto_client "github.ibm.com/gftn/world-wire-services/crypto-service-client/crypto-client"
-	gasserviceclient "github.ibm.com/gftn/world-wire-services/gas-service-client"
-	ast "github.ibm.com/gftn/world-wire-services/utility/asset"
-	util "github.ibm.com/gftn/world-wire-services/utility/common"
-	global_environment "github.ibm.com/gftn/world-wire-services/utility/global-environment"
+	crypto_client "github.com/IBM/world-wire/crypto-service-client/crypto-client"
+	gasserviceclient "github.com/IBM/world-wire/gas-service-client"
+	ast "github.com/IBM/world-wire/utility/asset"
+	util "github.com/IBM/world-wire/utility/common"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
 )
 
 var LOGGER = logging.MustGetLogger("utility")

@@ -15,7 +15,7 @@ import (
 	"time"
 
 	vault "github.com/hashicorp/vault/api"
-	"github.ibm.com/gftn/world-wire-services/automation-service/constant"
+	"github.com/IBM/world-wire/automation-service/constant"
 )
 
 // VaultSession : Reusable Vault connection

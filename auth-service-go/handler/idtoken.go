@@ -1,11 +1,11 @@
 package handler
 
 import (
-	"github.com/dgrijalva/jwt-go"
-	"github.ibm.com/gftn/world-wire-services/auth-service-go/idtoken"
-	"github.ibm.com/gftn/world-wire-services/auth-service-go/permission"
-	"github.ibm.com/gftn/world-wire-services/auth-service-go/totp"
-	"github.ibm.com/gftn/world-wire-services/auth-service-go/utility/stringutil"
+	"github.com/golang-jwt/jwt"
+	"github.com/IBM/world-wire/auth-service-go/idtoken"
+	"github.com/IBM/world-wire/auth-service-go/permission"
+	"github.com/IBM/world-wire/auth-service-go/totp"
+	"github.com/IBM/world-wire/auth-service-go/utility/stringutil"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"net/http"

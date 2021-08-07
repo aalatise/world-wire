@@ -8,7 +8,7 @@ import (
 	"github.com/stellar/go/keypair"
 	"github.com/stellar/go/strkey"
 	"github.com/stellar/go/xdr"
-	"github.ibm.com/gftn/world-wire-services/crypto-service/utility/hsm"
+	"github.com/IBM/world-wire/crypto-service/utility/hsm"
 )
 
 // Signing the transaction hash with the handle id of private key. Need to initiate the HSM and get the private

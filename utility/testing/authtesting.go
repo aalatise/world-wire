@@ -10,7 +10,7 @@ import (
 	"strings"
 
 	"github.com/gorilla/mux"
-	"github.ibm.com/gftn/world-wire-services/utility/ds"
+	"github.com/IBM/world-wire/utility/ds"
 )
 
 var (

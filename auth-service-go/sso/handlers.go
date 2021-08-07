@@ -3,9 +3,9 @@ package sso
 import (
 	"context"
 	"errors"
-	"github.com/dgrijalva/jwt-go"
-	"github.ibm.com/gftn/world-wire-services/auth-service-go/sso/pkg/oauth"
-	"github.ibm.com/gftn/world-wire-services/auth-service-go/utility/stringutil"
+	"github.com/golang-jwt/jwt"
+	"github.com/IBM/world-wire/auth-service-go/sso/pkg/oauth"
+	"github.com/IBM/world-wire/auth-service-go/utility/stringutil"
 	"net/http"
 	"strings"
 )

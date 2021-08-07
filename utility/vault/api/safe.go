@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"strings"
 
-	"github.ibm.com/gftn/world-wire-services/utility/vault/utils"
+	"github.com/IBM/world-wire/utility/vault/utils"
 )
 
 func ListSafes(session utils.Session) {

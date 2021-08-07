@@ -4,9 +4,9 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/IBM/world-wire/utility/payment/utils/sendmodel"
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 	"github.com/gogo/protobuf/proto"
-	"github.ibm.com/gftn/world-wire-services/utility/payment/utils/sendmodel"
 )
 
 func (ops *KafkaOpreations) Produce(topic string, msg []byte) error {

@@ -9,17 +9,17 @@ import (
 	"strings"
 	"time"
 
-	"github.ibm.com/gftn/world-wire-services/utility/common"
-	"github.ibm.com/gftn/world-wire-services/ww-gateway/environment"
+	"github.com/IBM/world-wire/utility/common"
+	"github.com/IBM/world-wire/ww-gateway/environment"
 
 	go_kafka "github.com/confluentinc/confluent-kafka-go/kafka"
-	"github.ibm.com/gftn/world-wire-services/gftn-models/model"
-	global_environment "github.ibm.com/gftn/world-wire-services/utility/global-environment"
-	kafka_utils "github.ibm.com/gftn/world-wire-services/utility/kafka"
-	"github.ibm.com/gftn/world-wire-services/utility/response"
-	"github.ibm.com/gftn/world-wire-services/ww-gateway/kafka"
-	kafkaHandler "github.ibm.com/gftn/world-wire-services/ww-gateway/kafka"
-	"github.ibm.com/gftn/world-wire-services/ww-gateway/utility"
+	"github.com/IBM/world-wire/gftn-models/model"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
+	kafka_utils "github.com/IBM/world-wire/utility/kafka"
+	"github.com/IBM/world-wire/utility/response"
+	"github.com/IBM/world-wire/ww-gateway/kafka"
+	kafkaHandler "github.com/IBM/world-wire/ww-gateway/kafka"
+	"github.com/IBM/world-wire/ww-gateway/utility"
 )
 
 type GatewayOperations struct {

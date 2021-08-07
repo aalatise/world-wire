@@ -2,20 +2,19 @@ package kafka
 
 import (
 	"errors"
+	"github.com/IBM/world-wire/global-whitelist-service/whitelist-handler"
 	"io/ioutil"
 	"os"
 	"strings"
 
-	"github.ibm.com/gftn/world-wire-services/utility/database"
+	"github.com/IBM/world-wire/utility/database"
 
-	global_environment "github.ibm.com/gftn/world-wire-services/utility/global-environment"
-	"github.ibm.com/gftn/world-wire-services/utility/payment/utils/parse"
-	whitelist_handler "github.ibm.com/gftn/world-wire-services/utility/payment/utils/whitelist-handler"
-
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
+	"github.com/IBM/world-wire/utility/payment/constant"
+	"github.com/IBM/world-wire/utility/payment/utils/parse"
+	"github.com/IBM/world-wire/utility/payment/utils/signing"
+	"github.com/IBM/world-wire/utility/payment/utils/transaction"
 	"github.com/confluentinc/confluent-kafka-go/kafka"
-	"github.ibm.com/gftn/world-wire-services/utility/payment/constant"
-	"github.ibm.com/gftn/world-wire-services/utility/payment/utils/signing"
-	"github.ibm.com/gftn/world-wire-services/utility/payment/utils/transaction"
 )
 
 type KafkaOpreations struct {

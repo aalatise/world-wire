@@ -3,7 +3,7 @@ package jwt
 import (
 	"crypto/subtle"
 	"fmt"
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"time"
 )

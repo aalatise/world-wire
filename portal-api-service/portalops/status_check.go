@@ -3,7 +3,7 @@ package portalops
 import (
 	"net/http"
 
-	"github.ibm.com/gftn/world-wire-services/utility/response"
+	"github.com/IBM/world-wire/utility/response"
 )
 
 func StatusCheck(w http.ResponseWriter, r *http.Request) {

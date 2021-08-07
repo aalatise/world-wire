@@ -8,8 +8,8 @@ import (
 	"github.com/go-resty/resty"
 	"github.com/op/go-logging"
 	"github.com/pkg/errors"
-	"github.ibm.com/gftn/world-wire-services/gftn-models/model"
-	"github.ibm.com/gftn/world-wire-services/utility/nodeconfig"
+	"github.com/IBM/world-wire/gftn-models/model"
+	"github.com/IBM/world-wire/utility/nodeconfig"
 )
 
 var LOGGER = logging.MustGetLogger("crypto-client")

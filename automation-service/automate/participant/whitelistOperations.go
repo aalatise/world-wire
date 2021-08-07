@@ -1,7 +1,7 @@
 package participant
 
 import (
-	"github.ibm.com/gftn/world-wire-services/automation-service/constant"
+	"github.com/IBM/world-wire/automation-service/constant"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )

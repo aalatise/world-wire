@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"github.com/op/go-logging"
 	"github.com/pquerna/otp/totp"
-	"github.ibm.com/gftn/world-wire-services/auth-service-go/utility/stringutil"
+	"github.com/IBM/world-wire/auth-service-go/utility/stringutil"
 	"net/http"
 	"strings"
 )

@@ -7,16 +7,16 @@ import (
 	"os"
 	"strings"
 
-	"github.ibm.com/gftn/world-wire-services/utility/common"
-	"github.ibm.com/gftn/world-wire-services/utility/global-environment/services/secrets"
+	"github.com/IBM/world-wire/utility/common"
+	"github.com/IBM/world-wire/utility/global-environment/services/secrets"
 
 	b "github.com/stellar/go/build"
 	hProtocol "github.com/stellar/go/protocols/horizon"
-	gasserviceclient "github.ibm.com/gftn/world-wire-services/gas-service-client"
-	"github.ibm.com/gftn/world-wire-services/gftn-models/model"
-	pr_client "github.ibm.com/gftn/world-wire-services/participant-registry-client/pr-client"
-	util "github.ibm.com/gftn/world-wire-services/utility/common"
-	global_environment "github.ibm.com/gftn/world-wire-services/utility/global-environment"
+	gasserviceclient "github.com/IBM/world-wire/gas-service-client"
+	"github.com/IBM/world-wire/gftn-models/model"
+	pr_client "github.com/IBM/world-wire/participant-registry-client/pr-client"
+	util "github.com/IBM/world-wire/utility/common"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
 )
 
 // getParticipantForDomain : Get participant for domain

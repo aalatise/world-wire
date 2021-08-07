@@ -14,7 +14,7 @@ import (
 	"time"
 
 	"github.com/globalsign/mgo"
-	global_environment "github.ibm.com/gftn/world-wire-services/utility/global-environment"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"

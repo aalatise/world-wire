@@ -7,12 +7,12 @@ import (
 	"strings"
 	"time"
 
-	"github.ibm.com/gftn/world-wire-services/administration-service/environment"
-	global_environment "github.ibm.com/gftn/world-wire-services/utility/global-environment"
+	"github.com/IBM/world-wire/administration-service/environment"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
 
-	"github.ibm.com/gftn/world-wire-services/gftn-models/model"
-	"github.ibm.com/gftn/world-wire-services/utility/database"
-	"github.ibm.com/gftn/world-wire-services/utility/response"
+	"github.com/IBM/world-wire/gftn-models/model"
+	"github.com/IBM/world-wire/utility/database"
+	"github.com/IBM/world-wire/utility/response"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo/options"

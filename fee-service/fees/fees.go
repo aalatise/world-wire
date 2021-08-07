@@ -12,13 +12,13 @@ import (
 	"github.com/go-openapi/strfmt"
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
-	"github.ibm.com/gftn/world-wire-services/fee-service/environment"
-	"github.ibm.com/gftn/world-wire-services/gftn-models/model"
-	pr_client "github.ibm.com/gftn/world-wire-services/participant-registry-client/pr-client"
-	global_environment "github.ibm.com/gftn/world-wire-services/utility/global-environment"
-	"github.ibm.com/gftn/world-wire-services/utility/kafka"
-	participant_checks "github.ibm.com/gftn/world-wire-services/utility/participant"
-	"github.ibm.com/gftn/world-wire-services/utility/response"
+	"github.com/IBM/world-wire/fee-service/environment"
+	"github.com/IBM/world-wire/gftn-models/model"
+	pr_client "github.com/IBM/world-wire/participant-registry-client/pr-client"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
+	"github.com/IBM/world-wire/utility/kafka"
+	participant_checks "github.com/IBM/world-wire/utility/participant"
+	"github.com/IBM/world-wire/utility/response"
 )
 
 type FeeOperations struct {

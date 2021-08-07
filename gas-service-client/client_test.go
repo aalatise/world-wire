@@ -12,8 +12,8 @@ import (
 	"time"
 
 	. "github.com/smartystreets/goconvey/convey"
-	"github.ibm.com/gftn/world-wire-services/utility/common"
-	global_environment "github.ibm.com/gftn/world-wire-services/utility/global-environment"
+	"github.com/IBM/world-wire/utility/common"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
 )
 
 type HTTPClientMock struct {

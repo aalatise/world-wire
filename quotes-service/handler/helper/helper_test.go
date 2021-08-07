@@ -7,7 +7,7 @@ import (
 	"testing"
 
 	. "github.com/smartystreets/goconvey/convey"
-	"github.ibm.com/gftn/world-wire-services/utility/wwfirebase"
+	"github.com/IBM/world-wire/utility/wwfirebase"
 )
 
 func TestExtractCallerIdentity1(t *testing.T) {

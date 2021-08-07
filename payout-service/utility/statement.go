@@ -8,7 +8,7 @@ import (
 	"strconv"
 
 	"github.com/neo4j/neo4j-go-driver/neo4j"
-	"github.ibm.com/gftn/world-wire-services/gftn-models/model"
+	"github.com/IBM/world-wire/gftn-models/model"
 )
 
 func deleteNodeStatement(transaction neo4j.Transaction, id string) error {

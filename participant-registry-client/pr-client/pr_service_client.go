@@ -1,6 +1,6 @@
 package pr_client
 
-import "github.ibm.com/gftn/world-wire-services/gftn-models/model"
+import "github.com/IBM/world-wire/gftn-models/model"
 
 const (
 	PR_ACTIVE    = "active"

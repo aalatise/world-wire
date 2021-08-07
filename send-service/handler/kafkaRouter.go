@@ -3,21 +3,21 @@ package handler
 import (
 	"strings"
 
-	message_handler "github.ibm.com/gftn/world-wire-services/utility/payment/message-handler"
+	message_handler "github.com/IBM/world-wire/utility/payment/message-handler"
 
 	"github.com/golang/protobuf/proto"
-	camt026pbstruct "github.ibm.com/gftn/iso20022/proto/github.ibm.com/gftn/iso20022/camt02600107"
-	camt029pbstruct "github.ibm.com/gftn/iso20022/proto/github.ibm.com/gftn/iso20022/camt02900109"
-	camt056pbstruct "github.ibm.com/gftn/iso20022/proto/github.ibm.com/gftn/iso20022/camt05600108"
-	camt087pbstruct "github.ibm.com/gftn/iso20022/proto/github.ibm.com/gftn/iso20022/camt08700106"
-	ibwf001pbstruct "github.ibm.com/gftn/iso20022/proto/github.ibm.com/gftn/iso20022/ibwf00100101"
-	ibwf002pbstruct "github.ibm.com/gftn/iso20022/proto/github.ibm.com/gftn/iso20022/ibwf00200101"
-	pacs002pbstruct "github.ibm.com/gftn/iso20022/proto/github.ibm.com/gftn/iso20022/pacs00200109"
-	pacs008pbstruct "github.ibm.com/gftn/iso20022/proto/github.ibm.com/gftn/iso20022/pacs00800107"
+	camt026pbstruct "github.com/IBM/world-wire/iso20022/proto/github.ibm.com/gftn/iso20022/camt02600107"
+	camt029pbstruct "github.com/IBM/world-wire/iso20022/proto/github.ibm.com/gftn/iso20022/camt02900109"
+	camt056pbstruct "github.com/IBM/world-wire/iso20022/proto/github.ibm.com/gftn/iso20022/camt05600108"
+	camt087pbstruct "github.com/IBM/world-wire/iso20022/proto/github.ibm.com/gftn/iso20022/camt08700106"
+	ibwf001pbstruct "github.com/IBM/world-wire/iso20022/proto/github.ibm.com/gftn/iso20022/ibwf00100101"
+	ibwf002pbstruct "github.com/IBM/world-wire/iso20022/proto/github.ibm.com/gftn/iso20022/ibwf00200101"
+	pacs002pbstruct "github.com/IBM/world-wire/iso20022/proto/github.ibm.com/gftn/iso20022/pacs00200109"
+	pacs008pbstruct "github.com/IBM/world-wire/iso20022/proto/github.ibm.com/gftn/iso20022/pacs00800107"
 
-	"github.ibm.com/gftn/world-wire-services/utility/kafka"
-	"github.ibm.com/gftn/world-wire-services/utility/payment/constant"
-	"github.ibm.com/gftn/world-wire-services/utility/payment/utils/sendmodel"
+	"github.com/IBM/world-wire/utility/kafka"
+	"github.com/IBM/world-wire/utility/payment/constant"
+	"github.com/IBM/world-wire/utility/payment/utils/sendmodel"
 )
 
 /*

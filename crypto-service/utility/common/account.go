@@ -9,12 +9,12 @@ import (
 
 	"github.com/miekg/pkcs11"
 	"github.com/stellar/go/keypair"
-	"github.ibm.com/gftn/world-wire-services/crypto-service/environment"
-	"github.ibm.com/gftn/world-wire-services/crypto-service/utility/constant"
-	"github.ibm.com/gftn/world-wire-services/crypto-service/utility/hsm"
+	"github.com/IBM/world-wire/crypto-service/environment"
+	"github.com/IBM/world-wire/crypto-service/utility/constant"
+	"github.com/IBM/world-wire/crypto-service/utility/hsm"
 
-	"github.ibm.com/gftn/world-wire-services/crypto-service/utility/hsmclient"
-	"github.ibm.com/gftn/world-wire-services/utility/nodeconfig"
+	"github.com/IBM/world-wire/crypto-service/utility/hsmclient"
+	"github.com/IBM/world-wire/utility/nodeconfig"
 )
 
 type HsmObject struct {

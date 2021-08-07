@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"flag"
-	middlewares "github.ibm.com/gftn/world-wire-services/auth-service-go/handler"
+	authHandler "github.com/IBM/world-wire/auth-service-go/handler"
 	"net/http"
 	"os"
 	"os/signal"
@@ -15,17 +15,17 @@ import (
 	"github.com/op/go-logging"
 	b "github.com/stellar/go/build"
 	"github.com/urfave/negroni"
-	"github.ibm.com/gftn/world-wire-services/anchor-service/handlers"
-	"github.ibm.com/gftn/world-wire-services/anchor-service/kafka"
-	"github.ibm.com/gftn/world-wire-services/api-service/participants"
-	"github.ibm.com/gftn/world-wire-services/utility"
-	global_environment "github.ibm.com/gftn/world-wire-services/utility/global-environment"
-	"github.ibm.com/gftn/world-wire-services/utility/global-environment/services"
-	"github.ibm.com/gftn/world-wire-services/utility/logconfig"
-	"github.ibm.com/gftn/world-wire-services/utility/message"
-	middleware_checks "github.ibm.com/gftn/world-wire-services/utility/middleware"
-	message_handler "github.ibm.com/gftn/world-wire-services/utility/payment/message-handler"
-	"github.ibm.com/gftn/world-wire-services/utility/status"
+	"github.com/IBM/world-wire/anchor-service/handlers"
+	"github.com/IBM/world-wire/anchor-service/kafka"
+	"github.com/IBM/world-wire/api-service/participants"
+	"github.com/IBM/world-wire/utility"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
+	"github.com/IBM/world-wire/utility/global-environment/services"
+	"github.com/IBM/world-wire/utility/logconfig"
+	"github.com/IBM/world-wire/utility/message"
+	middleware_checks "github.com/IBM/world-wire/utility/middleware"
+	message_handler "github.com/IBM/world-wire/utility/payment/message-handler"
+	"github.com/IBM/world-wire/utility/status"
 )
 
 type App struct {
@@ -116,28 +116,28 @@ func (a *App) initializeRoutes() {
 	url := "/" + serviceVersion + "/anchor/service_check"
 	LOGGER.Infof("\t* Internal API:  Service Check")
 	a.Router.Handle(url, negroni.New(
-		negroni.HandlerFunc(middlewares.ParticipantAuthorization),
+		negroni.HandlerFunc(authHandler.ParticipantAuthorization),
 		negroni.WrapFunc(a.serviceCheck.ServiceCheck),
 	)).Methods("GET")
 
 	url = "/" + serviceVersion + "/anchor/address"
 	LOGGER.Infof("Anchor Service Discover URL: %v", url)
 	a.Router.Handle(url, negroni.New(
-		negroni.HandlerFunc(middlewares.ParticipantAuthorization),
+		negroni.HandlerFunc(authHandler.ParticipantAuthorization),
 		negroni.HandlerFunc(a.discoverParticipantHandler.DiscoverParticipant),
 	)).Methods("GET")
 
 	url = "/" + serviceVersion + "/anchor/assets/issued/{anchor_id}"
 	LOGGER.Infof("Anchor Service Issued asset URL: %v", url)
 	a.Router.Handle(url, negroni.New(
-		negroni.HandlerFunc(middlewares.ParticipantAuthorization),
+		negroni.HandlerFunc(authHandler.ParticipantAuthorization),
 		negroni.HandlerFunc(a.trustHandler.GetIssuedAssets),
 	)).Methods(http.MethodGet)
 
 	LOGGER.Infof("\t* External API:  execute Allow Trust Operation")
 	a.Router.Handle("/"+serviceVersion+"/anchor/trust/{anchor_id}",
 		negroni.New(
-			negroni.HandlerFunc(middlewares.ParticipantAuthorization),
+			negroni.HandlerFunc(authHandler.ParticipantAuthorization),
 			negroni.HandlerFunc(a.mwHandler.ParticipantStatusCheck),
 			negroni.HandlerFunc(a.trustHandler.AllowTrust),
 		)).Methods("POST")
@@ -146,7 +146,7 @@ func (a *App) initializeRoutes() {
 	LOGGER.Infof("\t* External API:  execute Fund Request Operation")
 	a.Router.Handle("/"+serviceVersion+"/anchor/fundings/instruction",
 		negroni.New(
-			negroni.HandlerFunc(middlewares.ParticipantAuthorization),
+			negroni.HandlerFunc(authHandler.ParticipantAuthorization),
 			negroni.HandlerFunc(a.mwHandler.ParticipantStatusCheck),
 			negroni.HandlerFunc(a.fundHandler.FundRequest),
 		)).Methods("POST")
@@ -154,21 +154,21 @@ func (a *App) initializeRoutes() {
 	LOGGER.Infof("\t* External API:  execute signed Fund Request Operation")
 	a.Router.Handle("/"+serviceVersion+"/anchor/fundings/send",
 		negroni.New(
-			negroni.HandlerFunc(middlewares.ParticipantAuthorization),
+			negroni.HandlerFunc(authHandler.ParticipantAuthorization),
 			negroni.HandlerFunc(a.mwHandler.ParticipantStatusCheck),
 			negroni.HandlerFunc(a.fundHandler.SignedFundRequest),
 		)).Methods("POST")
 
 	LOGGER.Infof("\t* External API:  get participants on WW using query")
 	a.Router.Handle("/"+serviceVersion+"/anchor"+"/participants", negroni.New(
-		negroni.HandlerFunc(middlewares.ParticipantAuthorization),
+		negroni.HandlerFunc(authHandler.ParticipantAuthorization),
 		negroni.HandlerFunc(a.mwHandler.ParticipantStatusCheck),
 		negroni.WrapFunc(a.participantOps.GetParticipantByQuery),
 	)).Methods(http.MethodGet)
 
 	LOGGER.Infof("\t* External API:  Response of client asset redemption request")
 	a.Router.Handle("/"+serviceVersion+"/anchor/assets/redeem", negroni.New(
-		negroni.HandlerFunc(middlewares.ParticipantAuthorization),
+		negroni.HandlerFunc(authHandler.ParticipantAuthorization),
 		negroni.HandlerFunc(a.mwHandler.ParticipantStatusCheck),
 		negroni.WrapFunc(func(w http.ResponseWriter, r *http.Request) {
 			kafka.Router(w, r, *a.sendHandler)
@@ -177,7 +177,7 @@ func (a *App) initializeRoutes() {
 
 	LOGGER.Infof("\t* External API:  get participants on WW using query")
 	a.Router.Handle("/"+serviceVersion+"/anchor"+"/participants/{participant_id}", negroni.New(
-		negroni.HandlerFunc(middlewares.ParticipantAuthorization),
+		negroni.HandlerFunc(authHandler.ParticipantAuthorization),
 		negroni.HandlerFunc(a.mwHandler.ParticipantStatusCheck),
 		negroni.WrapFunc(a.participantOps.GetParticipantByDomain),
 	)).Methods(http.MethodGet)
@@ -185,7 +185,7 @@ func (a *App) initializeRoutes() {
 	LOGGER.Infof("\t* Admin API: Register an anchor on WW")
 
 	a.Router.Handle("/"+serviceVersion+"/admin/anchor/{anchor_domain}/register", negroni.New(
-		negroni.HandlerFunc(middlewares.SuperAuthorization),
+		negroni.HandlerFunc(authHandler.SuperAuthorization),
 		negroni.WrapFunc(a.onBoardingHandler.RegisterAnchor),
 	)).Methods("POST")
 
@@ -193,13 +193,13 @@ func (a *App) initializeRoutes() {
 	url = "/" + serviceVersion + "/admin/anchor/assets/issued/{anchor_id}"
 	LOGGER.Infof("Anchor Service Issued asset URL: %v", url)
 	a.Router.Handle(url, negroni.New(
-		negroni.HandlerFunc(middlewares.SuperAuthorization),
+		negroni.HandlerFunc(authHandler.SuperAuthorization),
 		negroni.HandlerFunc(a.trustHandler.GetIssuedAssets),
 	)).Methods(http.MethodGet)
 
 	LOGGER.Infof("\t* Admin API: Onboard Anchor Asset on WW")
 	a.Router.Handle("/"+serviceVersion+"/admin/anchor/{anchor_domain}/onboard/assets", negroni.New(
-		negroni.HandlerFunc(middlewares.SuperAuthorization),
+		negroni.HandlerFunc(authHandler.SuperAuthorization),
 		negroni.WrapFunc(a.onBoardingHandler.OnBoardAsset),
 	)).Methods("POST")
 

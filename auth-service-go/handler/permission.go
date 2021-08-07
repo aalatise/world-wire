@@ -3,7 +3,7 @@ package handler
 import (
 	"encoding/json"
 	"errors"
-	"github.ibm.com/gftn/world-wire-services/auth-service-go/permission"
+	"github.com/IBM/world-wire/auth-service-go/permission"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"net/http"

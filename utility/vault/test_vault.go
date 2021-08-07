@@ -1,10 +1,10 @@
 package vault
 
 import (
-	"github.ibm.com/gftn/world-wire-services/utility/vault/api"
-	"github.ibm.com/gftn/world-wire-services/utility/vault/auth"
+	"github.com/IBM/world-wire/utility/vault/api"
+	"github.com/IBM/world-wire/utility/vault/auth"
 	// "encoding/json"
-	// "github.ibm.com/gftn/world-wire-services/utility/vault/utils"
+	// "github.com/IBM/world-wire/utility/vault/utils"
 	// "fmt"
 	// "net/http"
 	// "log"

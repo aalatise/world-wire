@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"time"
 
-	middlewares "github.ibm.com/gftn/world-wire-services/auth-service-go/middleware"
+	middlewares "github.com/IBM/world-wire/auth-service-go/middleware"
 )
 
 func (wlh *WhitelistHandler) getMutualWL(participantID string) ([]string, error) {

@@ -2,9 +2,9 @@ package handlers
 
 import (
 	"net/http"
-	"github.ibm.com/gftn/world-wire-services/utility/response"
-	au "github.ibm.com/gftn/world-wire-services/anchor-service/anchor-util"
-	"github.ibm.com/gftn/world-wire-services/gftn-models/model"
+	"github.com/IBM/world-wire/utility/response"
+	au "github.com/IBM/world-wire/anchor-service/anchor-util"
+	"github.com/IBM/world-wire/gftn-models/model"
 	"encoding/json"
 )
 

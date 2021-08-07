@@ -1,8 +1,8 @@
 package crypto_client
 
 import (
-	"github.ibm.com/gftn/world-wire-services/gftn-models/model"
-	"github.ibm.com/gftn/world-wire-services/utility/nodeconfig"
+	"github.com/IBM/world-wire/gftn-models/model"
+	"github.com/IBM/world-wire/utility/nodeconfig"
 )
 
 type CryptoServiceClient interface {

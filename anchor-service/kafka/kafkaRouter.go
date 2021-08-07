@@ -1,16 +1,18 @@
 package kafka
 
 import (
+	kafka2 "github.com/IBM/world-wire/utility/kafka"
+	sendmodel2 "github.com/IBM/world-wire/utility/payment/utils/sendmodel"
 	"strings"
 
-	message_handler "github.ibm.com/gftn/world-wire-services/utility/payment/message-handler"
+	message_handler "github.com/IBM/world-wire/utility/payment/message-handler"
 
 	"github.com/golang/protobuf/proto"
 
-	pacs009pbstruct "github.ibm.com/gftn/iso20022/proto/github.ibm.com/gftn/iso20022/pacs00900108"
-	"github.ibm.com/gftn/world-wire-services/utility/kafka"
-	"github.ibm.com/gftn/world-wire-services/utility/payment/constant"
-	"github.ibm.com/gftn/world-wire-services/utility/payment/utils/sendmodel"
+	pacs009pbstruct "github.com/IBM/world-wire/iso20022/proto/github.ibm.com/gftn/iso20022/pacs00900108"
+	"github.com/IBM/world-wire/utility/kafka"
+	"github.com/IBM/world-wire/utility/payment/constant"
+	"github.com/IBM/world-wire/utility/payment/utils/sendmodel"
 )
 
 /*
@@ -39,7 +41,7 @@ func KafkaRouter(consumeType string, data []byte, op *kafka.KafkaOpreations) {
 				// For requesting a payment transaction (pacs008 message)
 				var pbs pacs009pbstruct.SendPayload
 				proto.Unmarshal(data, &pbs)
-				message_handler.RFI_Pacs009(pbs, op)
+				message_handler.RFI_Pacs009(pacs009pbstruct.SendPayload(pbs), (*kafka2.KafkaOpreations)(op))
 				return
 			default:
 				LOGGER.Errorf("No matching XML message type found")
@@ -93,7 +95,7 @@ func KafkaRouter(consumeType string, data []byte, op *kafka.KafkaOpreations) {
 				return
 			}
 		case 3:
-			message_handler.HandleErrMsg(pbs, op)
+			message_handler.HandleErrMsg(sendmodel2.SendPayload(pbs), (*kafka2.KafkaOpreations)(op))
 			return
 		}
 	}

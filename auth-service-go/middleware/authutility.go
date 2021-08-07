@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/IBM/world-wire/utility/response"
 	"github.com/gorilla/mux"
-	"github.ibm.com/gftn/world-wire-services/utility/response"
 )
 
 var LOGGER = logging.MustGetLogger("auth-middleware")

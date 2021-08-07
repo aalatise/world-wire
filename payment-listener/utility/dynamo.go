@@ -10,9 +10,9 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
-	"github.ibm.com/gftn/world-wire-services/gftn-models/model"
-	"github.ibm.com/gftn/world-wire-services/payment-listener/environment"
-	global_environment "github.ibm.com/gftn/world-wire-services/utility/global-environment"
+	"github.com/IBM/world-wire/gftn-models/model"
+	"github.com/IBM/world-wire/payment-listener/environment"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
 )
 
 type DynamoClient struct {

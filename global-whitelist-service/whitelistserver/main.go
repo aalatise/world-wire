@@ -4,30 +4,30 @@ import (
 	"context"
 	"flag"
 	"github.com/gorilla/handlers"
-	middlewares "github.ibm.com/gftn/world-wire-services/auth-service-go/handler"
+	middlewares "github.com/IBM/world-wire/auth-service-go/handler"
 	"net/http"
 	"os"
 	"os/signal"
 	"strconv"
 	"time"
 
-	global_environment "github.ibm.com/gftn/world-wire-services/utility/global-environment"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
 
 	"github.com/gorilla/mux"
 	logging "github.com/op/go-logging"
 	"github.com/urfave/negroni"
 
-	"github.ibm.com/gftn/world-wire-services/global-whitelist-service/whitelistserver/database"
-	"github.ibm.com/gftn/world-wire-services/global-whitelist-service/whitelistserver/handler"
-	"github.ibm.com/gftn/world-wire-services/global-whitelist-service/whitelistserver/utility/prclient"
-	"github.ibm.com/gftn/world-wire-services/utility/status"
+	"github.com/IBM/world-wire/global-whitelist-service/whitelistserver/database"
+	"github.com/IBM/world-wire/global-whitelist-service/whitelistserver/handler"
+	"github.com/IBM/world-wire/global-whitelist-service/whitelistserver/utility/prclient"
+	"github.com/IBM/world-wire/utility/status"
 
-	"github.ibm.com/gftn/world-wire-services/utility"
-	"github.ibm.com/gftn/world-wire-services/utility/global-environment/services"
-	"github.ibm.com/gftn/world-wire-services/utility/logconfig"
-	"github.ibm.com/gftn/world-wire-services/utility/message"
-	middleware_checks "github.ibm.com/gftn/world-wire-services/utility/middleware"
-	"github.ibm.com/gftn/world-wire-services/utility/response"
+	"github.com/IBM/world-wire/utility"
+	"github.com/IBM/world-wire/utility/global-environment/services"
+	"github.com/IBM/world-wire/utility/logconfig"
+	"github.com/IBM/world-wire/utility/message"
+	middleware_checks "github.com/IBM/world-wire/utility/middleware"
+	"github.com/IBM/world-wire/utility/response"
 )
 
 type App struct {

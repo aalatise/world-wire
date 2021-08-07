@@ -4,7 +4,7 @@ import (
 	"errors"
 	"strings"
 
-	util "github.ibm.com/gftn/world-wire-services/utility/common"
+	util "github.com/IBM/world-wire/utility/common"
 )
 
 func endpointForAuthConstant(endpointMap map[string][]string, endpoint string) (string, error) {

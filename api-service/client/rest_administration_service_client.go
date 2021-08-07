@@ -7,8 +7,8 @@ import (
 	"os"
 
 	"github.com/go-resty/resty"
-	"github.ibm.com/gftn/world-wire-services/gftn-models/model"
-	global_environment "github.ibm.com/gftn/world-wire-services/utility/global-environment"
+	"github.com/IBM/world-wire/gftn-models/model"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
 )
 
 type RestAdministrationServiceClient struct {

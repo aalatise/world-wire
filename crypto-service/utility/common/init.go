@@ -7,12 +7,12 @@ import (
 	"strings"
 	"sync"
 
-	"github.ibm.com/gftn/world-wire-services/crypto-service/utility/constant"
+	"github.com/IBM/world-wire/crypto-service/utility/constant"
 
 	"github.com/miekg/pkcs11"
 
-	"github.ibm.com/gftn/world-wire-services/crypto-service/environment"
-	"github.ibm.com/gftn/world-wire-services/crypto-service/utility/hsm"
+	"github.com/IBM/world-wire/crypto-service/environment"
+	"github.com/IBM/world-wire/crypto-service/utility/hsm"
 )
 
 func ReinitializeHSM(c *hsm.Crypto, session pkcs11.SessionHandle) (*hsm.Crypto, pkcs11.SessionHandle, error) {

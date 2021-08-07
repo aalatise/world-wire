@@ -3,7 +3,7 @@ package database
 import (
 	"fmt"
 
-	"github.ibm.com/gftn/world-wire-services/utility/database"
+	"github.com/IBM/world-wire/utility/database"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"

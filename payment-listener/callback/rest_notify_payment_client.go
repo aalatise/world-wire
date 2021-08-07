@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/go-resty/resty"
-	"github.ibm.com/gftn/world-wire-services/gftn-models/model"
+	"github.com/IBM/world-wire/gftn-models/model"
 )
 
 type RestNotifyPaymentClient struct {

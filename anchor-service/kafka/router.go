@@ -1,20 +1,19 @@
 package kafka
 
 import (
+	middlewares "github.com/IBM/world-wire/auth-service-go/session"
 	"net/http"
 	"os"
 	"strings"
 
-	global_environment "github.ibm.com/gftn/world-wire-services/utility/global-environment"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
 
-	middlewares "github.ibm.com/gftn/world-wire-services/auth-service-go/middleware"
+	pr_client "github.com/IBM/world-wire/participant-registry-client/pr-client"
+	message_handler "github.com/IBM/world-wire/utility/payment/message-handler"
 
-	pr_client "github.ibm.com/gftn/world-wire-services/participant-registry-client/pr-client"
-	message_handler "github.ibm.com/gftn/world-wire-services/utility/payment/message-handler"
+	"github.com/IBM/world-wire/utility/response"
 
-	"github.ibm.com/gftn/world-wire-services/utility/response"
-
-	"github.ibm.com/gftn/world-wire-services/utility/payment/constant"
+	"github.com/IBM/world-wire/utility/payment/constant"
 )
 
 func Router(w http.ResponseWriter, req *http.Request, op message_handler.PaymentOperations) {

@@ -10,14 +10,14 @@ import (
 	"sync"
 	"time"
 
-	"github.ibm.com/gftn/world-wire-services/payment-listener/utility"
+	"github.com/IBM/world-wire/payment-listener/utility"
 
 	"github.com/stellar/go/clients/horizon"
-	"github.ibm.com/gftn/world-wire-services/gftn-models/model"
-	"github.ibm.com/gftn/world-wire-services/utility/common"
-	"github.ibm.com/gftn/world-wire-services/utility/database"
-	global_environment "github.ibm.com/gftn/world-wire-services/utility/global-environment"
-	"github.ibm.com/gftn/world-wire-services/utility/kafka"
+	"github.com/IBM/world-wire/gftn-models/model"
+	"github.com/IBM/world-wire/utility/common"
+	"github.com/IBM/world-wire/utility/database"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
+	"github.com/IBM/world-wire/utility/kafka"
 )
 
 // StellarAccountPaymentListener is listening for a new payments received by ReceivingAccount

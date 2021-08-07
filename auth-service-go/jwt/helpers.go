@@ -3,7 +3,7 @@ package jwt
 import (
 	"errors"
 	"fmt"
-	"github.com/dgrijalva/jwt-go"
+	jwt "github.com/golang-jwt/jwt"
 	"github.com/op/go-logging"
 	"net/http"
 	"strconv"

@@ -9,20 +9,20 @@ import (
 	"os"
 	"time"
 
-	"github.ibm.com/gftn/world-wire-services/automation-service/environment"
+	"github.com/IBM/world-wire/automation-service/environment"
 
-	"github.ibm.com/gftn/world-wire-services/automation-service/constant"
+	"github.com/IBM/world-wire/automation-service/constant"
 
 	"github.com/go-openapi/strfmt"
 	"github.com/op/go-logging"
-	"github.ibm.com/gftn/world-wire-services/automation-service/internal_model"
-	"github.ibm.com/gftn/world-wire-services/automation-service/model/model"
-	"github.ibm.com/gftn/world-wire-services/automation-service/utility"
-	gftn_model "github.ibm.com/gftn/world-wire-services/gftn-models/model"
-	"github.ibm.com/gftn/world-wire-services/utility/database"
-	global_environment "github.ibm.com/gftn/world-wire-services/utility/global-environment"
-	"github.ibm.com/gftn/world-wire-services/utility/participant"
-	"github.ibm.com/gftn/world-wire-services/utility/response"
+	"github.com/IBM/world-wire/automation-service/internal_model"
+	"github.com/IBM/world-wire/automation-service/model/model"
+	"github.com/IBM/world-wire/automation-service/utility"
+	gftn_model "github.com/IBM/world-wire/gftn-models/model"
+	"github.com/IBM/world-wire/utility/database"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
+	"github.com/IBM/world-wire/utility/participant"
+	"github.com/IBM/world-wire/utility/response"
 )
 
 var LOGGER = logging.MustGetLogger("participant")

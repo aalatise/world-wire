@@ -9,7 +9,7 @@ import (
 
 	"github.com/beevik/etree"
 	"github.com/stellar/go/keypair"
-	"github.ibm.com/gftn/world-wire-services/utility/xmldsig"
+	"github.com/IBM/world-wire/utility/xmldsig"
 )
 
 func (obj *HsmObject) generateSignatureTag(xml, publicKey string, privateKeyHandle string, signUsingStellar bool) (string, error) {

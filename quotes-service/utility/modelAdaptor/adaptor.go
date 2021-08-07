@@ -5,9 +5,9 @@ import (
 	"encoding/json"
 
 	"github.com/go-openapi/strfmt"
-	"github.ibm.com/gftn/world-wire-services/gftn-models/model"
-	"github.ibm.com/gftn/world-wire-services/quotes-service/utility/nqsdbclient"
-	"github.ibm.com/gftn/world-wire-services/quotes-service/utility/nqsmodel"
+	"github.com/IBM/world-wire/gftn-models/model"
+	"github.com/IBM/world-wire/quotes-service/utility/nqsdbclient"
+	"github.com/IBM/world-wire/quotes-service/utility/nqsmodel"
 )
 
 func ExchangeRequestEnvelopeToNqs(exchangeRequestEnv model.ExchangeEnvelope) (nqsmodel.NqsExchangeRequest, error) {

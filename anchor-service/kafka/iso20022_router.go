@@ -3,10 +3,10 @@ package kafka
 import (
 	"errors"
 
-	message_handler "github.ibm.com/gftn/world-wire-services/utility/payment/message-handler"
+	message_handler "github.com/IBM/world-wire/utility/payment/message-handler"
 
-	"github.ibm.com/gftn/world-wire-services/utility/payment/constant"
-	message_converter "github.ibm.com/gftn/world-wire-services/utility/payment/message-converter"
+	"github.com/IBM/world-wire/utility/payment/constant"
+	message_converter "github.com/IBM/world-wire/utility/payment/message-converter"
 )
 
 // Route to different ISO20022 message handler base on the message type

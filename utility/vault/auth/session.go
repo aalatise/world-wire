@@ -10,9 +10,9 @@ import (
 	"os"
 
 	"github.com/op/go-logging"
-	"github.ibm.com/gftn/world-wire-services/utility/global-environment"
-	"github.ibm.com/gftn/world-wire-services/utility/vault/api"
-	"github.ibm.com/gftn/world-wire-services/utility/vault/utils"
+	"github.com/IBM/world-wire/utility/global-environment"
+	"github.com/IBM/world-wire/utility/vault/api"
+	"github.com/IBM/world-wire/utility/vault/utils"
 )
 
 var LOGGER = logging.MustGetLogger("vault")
