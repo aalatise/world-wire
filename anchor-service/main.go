@@ -4,28 +4,27 @@ import (
 	"context"
 	"flag"
 	authHandler "github.com/IBM/world-wire/auth-service-go/handler"
+	kafka2 "github.com/IBM/world-wire/payment/kafka"
+	"github.com/op/go-logging"
 	"net/http"
 	"os"
 	"os/signal"
 	"strconv"
 	"time"
 
-	httpHandlers "github.com/gorilla/handlers"
-	"github.com/gorilla/mux"
-	"github.com/op/go-logging"
-	b "github.com/stellar/go/build"
-	"github.com/urfave/negroni"
 	"github.com/IBM/world-wire/anchor-service/handlers"
-	"github.com/IBM/world-wire/anchor-service/kafka"
 	"github.com/IBM/world-wire/api-service/participants"
 	"github.com/IBM/world-wire/utility"
 	global_environment "github.com/IBM/world-wire/utility/global-environment"
-	"github.com/IBM/world-wire/utility/global-environment/services"
 	"github.com/IBM/world-wire/utility/logconfig"
 	"github.com/IBM/world-wire/utility/message"
 	middleware_checks "github.com/IBM/world-wire/utility/middleware"
-	message_handler "github.com/IBM/world-wire/utility/payment/message-handler"
+	message_handler "github.com/IBM/world-wire/payment/message-handler"
 	"github.com/IBM/world-wire/utility/status"
+	httpHandlers "github.com/gorilla/handlers"
+	"github.com/gorilla/mux"
+	b "github.com/stellar/go/build"
+	"github.com/urfave/negroni"
 )
 
 type App struct {
@@ -71,7 +70,7 @@ func (a *App) Initialize() *message_handler.PaymentOperations {
 	}
 
 	LOGGER.Infof("Initializing Kafka consumer")
-	initConsumerErr := sendHandler.KafkaActor.InitPaymentConsumer("G1", kafka.KafkaRouter)
+	initConsumerErr := sendHandler.KafkaActor.InitPaymentConsumer("G1", kafka2.KafkaRouter)
 	if initConsumerErr != nil {
 		LOGGER.Errorf("Initialize Kafka consumer failed: %s", initConsumerErr.Error())
 		return nil
@@ -171,7 +170,7 @@ func (a *App) initializeRoutes() {
 		negroni.HandlerFunc(authHandler.ParticipantAuthorization),
 		negroni.HandlerFunc(a.mwHandler.ParticipantStatusCheck),
 		negroni.WrapFunc(func(w http.ResponseWriter, r *http.Request) {
-			kafka.Router(w, r, *a.sendHandler)
+			kafka2.Router(w, r, *a.sendHandler)
 		}),
 	)).Methods(http.MethodPost)
 

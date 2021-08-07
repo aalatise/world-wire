@@ -17,13 +17,13 @@ import (
 	gasserviceclient "github.com/IBM/world-wire/gas-service-client"
 	"github.com/IBM/world-wire/gftn-models/model"
 	pr_client "github.com/IBM/world-wire/participant-registry-client/pr-client"
-	"github.com/IBM/world-wire/utility/asset"
-	ast "github.com/IBM/world-wire/utility/asset"
+	"github.com/IBM/world-wire/payment/asset"
+	ast "github.com/IBM/world-wire/payment/asset"
 	"github.com/IBM/world-wire/utility/common"
 	comn "github.com/IBM/world-wire/utility/common"
 	global_environment "github.com/IBM/world-wire/utility/global-environment"
-	"github.com/IBM/world-wire/utility/global-environment/services/secrets"
-	"github.com/IBM/world-wire/utility/global-environment/services/secrets/vault"
+	"github.com/IBM/world-wire/utility/nodeconfig/secrets"
+	"github.com/IBM/world-wire/utility/nodeconfig/secrets/vault"
 	"github.com/IBM/world-wire/utility/response"
 )
 
