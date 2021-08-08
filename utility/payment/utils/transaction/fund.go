@@ -2,8 +2,9 @@ package transaction
 
 import (
 	"errors"
+	constant2 "github.com/IBM/world-wire/utility/common/constant"
 	"github.com/IBM/world-wire/utility/nodeconfig"
-	"github.com/IBM/world-wire/utility/secrets/vault"
+	"github.com/IBM/world-wire/utility/nodeconfig/secrets/vault"
 	"net/http"
 	"os"
 	"strconv"
@@ -11,12 +12,11 @@ import (
 	"time"
 
 	gasserviceclient "github.com/IBM/world-wire/gas-service-client"
-	"github.com/IBM/world-wire/utility/payment/client"
-	"github.com/IBM/world-wire/utility/payment/constant"
-	"github.com/IBM/world-wire/utility/payment/utils/sendmodel"
-	"github.com/IBM/world-wire/utility/payment/utils/signing"
 	"github.com/IBM/world-wire/utility/common"
 	global_environment "github.com/IBM/world-wire/utility/global-environment"
+	"github.com/IBM/world-wire/utility/payment/client"
+	"github.com/IBM/world-wire/utility/payment/utils/sendmodel"
+	"github.com/IBM/world-wire/utility/payment/utils/signing"
 	"github.com/stellar/go/xdr"
 )
 
@@ -60,7 +60,7 @@ func (op *CreateFundingOpereations) FundAndSubmitPaymentTransaction(rfiAccount, 
 	var sendingAccount, receivingAccount, settlementAccountName, ofiAccount string
 
 	switch xmlMsgType {
-	case constant.IBWF001:
+	case constant2.IBWF001:
 		// if OFI receive a ibwf001 message, the transaction sender will be OFI and receiver will be RFI and will use OFI settlement account to sign the transaction
 		receivingAccount = rfiAccount
 		settlementAccountName = dbData.SettlementAccountName
@@ -69,26 +69,26 @@ func (op *CreateFundingOpereations) FundAndSubmitPaymentTransaction(rfiAccount, 
 		account, getErr := op.secrets.GetAccount(domainId, dbData.SettlementAccountName)
 		if getErr != nil {
 			LOGGER.Error("Failed to get OFI account address from AWS secret manager")
-			return constant.STATUS_CODE_INTERNAL_ERROR, "", ""
+			return constant2.STATUS_CODE_INTERNAL_ERROR, "", ""
 		}
 		ofiAccount = account.NodeAddress
 		sendingAccount = ofiAccount
-	case constant.PACS004:
+	case constant2.PACS004:
 		// if RFI receive a pacs004 message, the transaction sender will be RFI and receiver will be OFI and will use RFI settlement account to sign the transaction
 		sendingAccount = rfiAccount
 		settlementAccountName = rfiSettlementAccountName
 		account := client.GetParticipantAccount(op.prServiceURL, dbData.OFIId, dbData.SettlementAccountName)
 		if account == nil {
 			LOGGER.Error("Failed to get OFI account address from PR")
-			return constant.STATUS_CODE_INTERNAL_ERROR, "", ""
+			return constant2.STATUS_CODE_INTERNAL_ERROR, "", ""
 		}
 		receivingAccount = *account
-	case constant.PACS002:
+	case constant2.PACS002:
 		domainId := os.Getenv(global_environment.ENV_KEY_HOME_DOMAIN_NAME)
 		account, getErr := op.secrets.GetAccount(domainId, dbData.SettlementAccountName)
 		if getErr != nil {
 			LOGGER.Error("Failed to get OFI account address from AWS secret manager")
-			return constant.STATUS_CODE_INTERNAL_ERROR, "", ""
+			return constant2.STATUS_CODE_INTERNAL_ERROR, "", ""
 		}
 		sendingAccount = account.NodeAddress
 		receivingAccount = rfiSettlementAccountName
@@ -106,14 +106,14 @@ func (op *CreateFundingOpereations) FundAndSubmitPaymentTransaction(rfiAccount, 
 		if gasErr != nil {
 			LOGGER.Errorf("Failed to get IBM account and tx sequence: %s", gasErr.Error())
 		}
-		return constant.STATUS_CODE_INTERNAL_ERROR, "", ""
+		return constant2.STATUS_CODE_INTERNAL_ERROR, "", ""
 	}
 
 	LOGGER.Infof("Create Stellar transaction")
 	signedTx, txErr := op.createStellarTransaction(ibmAccount, sendingAccount, receivingAccount, settlementAccountName, dbData, seqNum, memoHash)
 	if txErr != nil {
 		LOGGER.Errorf("Failed to create Stellar Transaction: %s", txErr.Error())
-		return constant.STATUS_CODE_INTERNAL_ERROR, "", ""
+		return constant2.STATUS_CODE_INTERNAL_ERROR, "", ""
 	}
 
 	var retryInterval time.Duration
@@ -149,12 +149,12 @@ func (op *CreateFundingOpereations) FundAndSubmitPaymentTransaction(rfiAccount, 
 	})
 	if err != nil {
 		LOGGER.Errorf("Failed to submit Transaction to Stellar: %s", err.Error())
-		return constant.STATUS_CODE_INTERNAL_ERROR, "", ""
+		return constant2.STATUS_CODE_INTERNAL_ERROR, "", ""
 	}
 
 	LOGGER.Infof("Successfully submit transaction to Stellar network. Instrucion ID: %v, TX Hash: %v", instructionId, txHash)
 
-	return constant.STATUS_CODE_TX_SEND_TO_STELLAR, txHash, ofiAccount
+	return constant2.STATUS_CODE_TX_SEND_TO_STELLAR, txHash, ofiAccount
 }
 
 //func (op *CreateFundingOpereations) RecordTimeLogsToKafka(action, task string, timeStamp time.Time) {

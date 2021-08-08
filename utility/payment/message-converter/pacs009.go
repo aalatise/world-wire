@@ -3,18 +3,18 @@ package message_converter
 import (
 	"encoding/xml"
 	"errors"
+	constant2 "github.com/IBM/world-wire/utility/common/constant"
 	"os"
 
 	pacs "github.com/IBM/world-wire/iso20022/pacs00900108"
 
 	pbstruct "github.com/IBM/world-wire/iso20022/proto/github.ibm.com/gftn/iso20022/pacs00900108"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
 	"github.com/IBM/world-wire/utility/payment/client"
-	"github.com/IBM/world-wire/utility/payment/constant"
 	"github.com/IBM/world-wire/utility/payment/environment"
 	"github.com/IBM/world-wire/utility/payment/utils"
 	"github.com/IBM/world-wire/utility/payment/utils/parse"
 	"github.com/IBM/world-wire/utility/payment/utils/sendmodel"
-	global_environment "github.com/IBM/world-wire/utility/global-environment"
 )
 
 type Pacs009 struct {
@@ -46,7 +46,7 @@ func (msg *Pacs009) SanityCheck(bic, participantId string) error {
 	}
 
 	//check the format of both message identifier & business message identifier in the header
-	if err := parse.HeaderIdentifierCheck(string(*msg.Message.Head.BizMsgIdr), string(*msg.Message.Head.MsgDefIdr), constant.PACS009); err != nil {
+	if err := parse.HeaderIdentifierCheck(string(*msg.Message.Head.BizMsgIdr), string(*msg.Message.Head.MsgDefIdr), constant2.PACS009); err != nil {
 		return err
 	}
 
@@ -79,11 +79,11 @@ func (msg *Pacs009) SanityCheck(bic, participantId string) error {
 		}
 	}
 
-	if splmtryDataSet[constant.PACS009_SUPPLEMENTARY_DATA_BANK_NAME] == "" ||
-		splmtryDataSet[constant.PACS009_SUPPLEMENTARY_DATA_BRANCH] == "" ||
-		splmtryDataSet[constant.PACS009_SUPPLEMENTARY_DATA_ACCOUNT_NUMBER] == "" ||
-		splmtryDataSet[constant.PACS009_SUPPLEMENTARY_DATA_ACCOUNT_TYPE] == "" ||
-		splmtryDataSet[constant.PACS009_SUPPLEMENTARY_DATA_PAYMENT_METHOD] == "" {
+	if splmtryDataSet[constant2.PACS009_SUPPLEMENTARY_DATA_BANK_NAME] == "" ||
+		splmtryDataSet[constant2.PACS009_SUPPLEMENTARY_DATA_BRANCH] == "" ||
+		splmtryDataSet[constant2.PACS009_SUPPLEMENTARY_DATA_ACCOUNT_NUMBER] == "" ||
+		splmtryDataSet[constant2.PACS009_SUPPLEMENTARY_DATA_ACCOUNT_TYPE] == "" ||
+		splmtryDataSet[constant2.PACS009_SUPPLEMENTARY_DATA_PAYMENT_METHOD] == "" {
 		return errors.New("Supplementary Data is missing")
 	}
 
@@ -106,7 +106,7 @@ func (msg *Pacs009) StructToProto() error {
 
 	//putting raw xml message into the kafka send payload
 	msg.SendPayload.Message = msg.Raw
-	msg.SendPayload.MsgType = constant.ISO20022 + ":" + constant.PACS009
+	msg.SendPayload.MsgType = constant2.ISO20022 + ":" + constant2.PACS009
 	msg.SendPayload.OfiId = string(*msg.Message.Body.GrpHdr.InstgAgt.FinInstnId.Othr.Id)
 	msg.SendPayload.RfiId = string(*msg.Message.Body.GrpHdr.InstdAgt.FinInstnId.Othr.Id)
 	msg.SendPayload.InstructionId = string(*msg.Message.Body.CdtTrfTxInf[0].PmtId.InstrId)
@@ -136,7 +136,7 @@ func (msg *Pacs009) ProtobuftoStruct() (*sendmodel.XMLData, error) {
 	settlementAccountName := string(*msg.Message.Body.GrpHdr.SttlmInf.SttlmAcct.Nm)
 
 	LOGGER.Infof("Retrieving rfi BIC code from participant registry")
-	rfiBic := client.GetParticipantAccount(os.Getenv(global_environment.ENV_KEY_PARTICIPANT_REGISTRY_URL), rfiId, constant.BIC_STRING)
+	rfiBic := client.GetParticipantAccount(os.Getenv(global_environment.ENV_KEY_PARTICIPANT_REGISTRY_URL), rfiId, constant2.BIC_STRING)
 	wwBicfi := pacs.BICFIIdentifier(os.Getenv(environment.ENV_KEY_WW_BIC))
 	wwId := pacs.Max35Text(os.Getenv(environment.ENV_KEY_WW_ID))
 	rfiBicfi := pacs.BICFIIdentifier(*rfiBic)
@@ -151,11 +151,11 @@ func (msg *Pacs009) ProtobuftoStruct() (*sendmodel.XMLData, error) {
 		}
 	}
 
-	if splmtryDataSet[constant.PACS009_SUPPLEMENTARY_DATA_BANK_NAME] == "" ||
-		splmtryDataSet[constant.PACS009_SUPPLEMENTARY_DATA_BRANCH] == "" ||
-		splmtryDataSet[constant.PACS009_SUPPLEMENTARY_DATA_ACCOUNT_NUMBER] == "" ||
-		splmtryDataSet[constant.PACS009_SUPPLEMENTARY_DATA_ACCOUNT_TYPE] == "" ||
-		splmtryDataSet[constant.PACS009_SUPPLEMENTARY_DATA_PAYMENT_METHOD] == "" {
+	if splmtryDataSet[constant2.PACS009_SUPPLEMENTARY_DATA_BANK_NAME] == "" ||
+		splmtryDataSet[constant2.PACS009_SUPPLEMENTARY_DATA_BRANCH] == "" ||
+		splmtryDataSet[constant2.PACS009_SUPPLEMENTARY_DATA_ACCOUNT_NUMBER] == "" ||
+		splmtryDataSet[constant2.PACS009_SUPPLEMENTARY_DATA_ACCOUNT_TYPE] == "" ||
+		splmtryDataSet[constant2.PACS009_SUPPLEMENTARY_DATA_PAYMENT_METHOD] == "" {
 		return nil, errors.New("Supplementary Data is missing")
 	}
 

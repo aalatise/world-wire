@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/IBM/world-wire/utility/payment/constant"
+	"github.com/IBM/world-wire/utility/common/constant"
 	"github.com/op/go-logging"
 
 	"github.com/IBM/world-wire/gftn-models/model"

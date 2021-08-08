@@ -13,7 +13,6 @@ replace (
 	github.com/IBM/world-wire/utility/database => ./../utility/database
 	github.com/IBM/world-wire/utility/global-environment => ./../utility/global-environment
 	github.com/IBM/world-wire/utility/nodeconfig => ./../utility/nodeconfig
-	github.com/IBM/world-wire/utility/payment => ./../utility/payment
 	github.com/go-resty/resty => gopkg.in/resty.v1 v1.11.0
 	github.com/stellar/go => github.com/kingaj12/go v0.0.0-20210409221219-b9a73c8c53cb
 )
@@ -29,7 +28,6 @@ require (
 	github.com/IBM/world-wire/utility/database v0.0.0-00010101000000-000000000000
 	github.com/IBM/world-wire/utility/global-environment v0.0.0-00010101000000-000000000000
 	github.com/IBM/world-wire/utility/nodeconfig v0.0.0-00010101000000-000000000000
-	github.com/IBM/world-wire/utility/payment v0.0.0-00010101000000-000000000000
 	github.com/go-openapi/strfmt v0.20.1
 	github.com/gorilla/handlers v1.5.1
 	github.com/gorilla/mux v1.8.0

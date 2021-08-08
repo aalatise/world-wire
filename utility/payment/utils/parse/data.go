@@ -2,6 +2,7 @@ package parse
 
 import (
 	"encoding/json"
+	"github.com/IBM/world-wire/utility/common/constant"
 	"strconv"
 
 	pacs008struct "github.com/IBM/world-wire/iso20022/pacs00800107"
@@ -10,7 +11,6 @@ import (
 	"github.com/IBM/world-wire/gftn-models/model"
 	"github.com/IBM/world-wire/utility/payment/utils/database"
 
-	"github.com/IBM/world-wire/utility/payment/constant"
 	"github.com/IBM/world-wire/utility/payment/utils/sendmodel"
 )
 

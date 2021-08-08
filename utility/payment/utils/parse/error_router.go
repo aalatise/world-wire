@@ -2,10 +2,10 @@ package parse
 
 import (
 	"errors"
+	"github.com/IBM/world-wire/utility/common/constant"
 	"os"
 
 	"github.com/IBM/world-wire/iso20022/pacs00200109"
-	"github.com/IBM/world-wire/utility/payment/constant"
 	"github.com/IBM/world-wire/utility/payment/environment"
 	"github.com/IBM/world-wire/utility/payment/utils"
 )

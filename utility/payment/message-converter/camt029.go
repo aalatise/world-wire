@@ -3,18 +3,18 @@ package message_converter
 import (
 	"encoding/xml"
 	"errors"
+	constant2 "github.com/IBM/world-wire/utility/common/constant"
 	"os"
 	"strconv"
 
 	camt "github.com/IBM/world-wire/iso20022/camt02900109"
 	pbstruct "github.com/IBM/world-wire/iso20022/proto/github.ibm.com/gftn/iso20022/camt02900109"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
 	"github.com/IBM/world-wire/utility/payment/client"
-	"github.com/IBM/world-wire/utility/payment/constant"
 	"github.com/IBM/world-wire/utility/payment/environment"
 	"github.com/IBM/world-wire/utility/payment/utils"
 	"github.com/IBM/world-wire/utility/payment/utils/parse"
 	"github.com/IBM/world-wire/utility/payment/utils/sendmodel"
-	global_environment "github.com/IBM/world-wire/utility/global-environment"
 )
 
 type Camt029 struct {
@@ -46,7 +46,7 @@ func (msg *Camt029) SanityCheck(bic, participantId string) error {
 	}
 
 	//check the format of both message identifier & business message identifier in the header
-	if err := parse.HeaderIdentifierCheck(string(*msg.Message.Head.BizMsgIdr), string(*msg.Message.Head.MsgDefIdr), constant.CAMT029); err != nil {
+	if err := parse.HeaderIdentifierCheck(string(*msg.Message.Head.BizMsgIdr), string(*msg.Message.Head.MsgDefIdr), constant2.CAMT029); err != nil {
 		return err
 	}
 
@@ -87,7 +87,7 @@ func (msg *Camt029) StructToProto() error {
 
 	//putting raw xml message into the kafka send payload
 	msg.SendPayload.Message = msg.Raw
-	msg.SendPayload.MsgType = constant.ISO20022 + ":" + constant.CAMT029
+	msg.SendPayload.MsgType = constant2.ISO20022 + ":" + constant2.CAMT029
 	msg.SendPayload.OfiId = string(*msg.Message.Body.Assgnmt.Assgne.Agt.FinInstnId.Othr.Id)
 	msg.SendPayload.RfiId = string(*msg.Message.Body.Assgnmt.Assgnr.Agt.FinInstnId.Othr.Id)
 	msg.SendPayload.InstructionId = string(*msg.Message.Body.Assgnmt.Id)
@@ -125,7 +125,7 @@ func (msg *Camt029) ProtobuftoStruct() (*sendmodel.XMLData, error) {
 	}
 
 	LOGGER.Infof("Retrieving rfi BIC code from participant registry")
-	rfiBic := client.GetParticipantAccount(os.Getenv(global_environment.ENV_KEY_PARTICIPANT_REGISTRY_URL), rfiId, constant.BIC_STRING)
+	rfiBic := client.GetParticipantAccount(os.Getenv(global_environment.ENV_KEY_PARTICIPANT_REGISTRY_URL), rfiId, constant2.BIC_STRING)
 	wwBicfi := camt.BICFIIdentifier(os.Getenv(environment.ENV_KEY_WW_BIC))
 	wwId := camt.Max35Text(os.Getenv(environment.ENV_KEY_WW_ID))
 	rfiBicfi := camt.BICFIIdentifier(*rfiBic)
@@ -172,7 +172,7 @@ func (msg *Camt029) ProtobuftoStruct() (*sendmodel.XMLData, error) {
 		RFIId:                    rfiId,
 		OFIBIC:                   ofiBIC,
 		RFISettlementAccountName: rfiAccountName,
-		StatusCode:               strconv.Itoa(constant.STATUS_CODE_DEFAULT),
+		StatusCode:               strconv.Itoa(constant2.STATUS_CODE_DEFAULT),
 	}
 
 	LOGGER.Infof("Restoring protobuffer successfully")

@@ -4,7 +4,7 @@ import (
 	"encoding/base64"
 	"errors"
 	"github.com/IBM/world-wire/utility/nodeconfig"
-	"github.com/IBM/world-wire/utility/secrets/vault"
+	"github.com/IBM/world-wire/utility/nodeconfig/secrets/vault"
 	"os"
 	"strings"
 

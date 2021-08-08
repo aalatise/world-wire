@@ -3,6 +3,7 @@ package parse
 import (
 	"encoding/json"
 	"errors"
+	"github.com/IBM/world-wire/utility/common/constant"
 	"io/ioutil"
 	"os"
 	"regexp"
@@ -10,7 +11,6 @@ import (
 
 	"github.com/IBM/world-wire/utility/payment/environment"
 
-	"github.com/IBM/world-wire/utility/payment/constant"
 	"github.com/IBM/world-wire/utility/payment/utils/sendmodel"
 	"github.com/lestrrat-go/libxml2"
 	"github.com/lestrrat-go/libxml2/types"

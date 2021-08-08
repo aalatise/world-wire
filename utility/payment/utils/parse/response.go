@@ -3,8 +3,9 @@ package parse
 import (
 	"encoding/json"
 	"encoding/xml"
+	constant2 "github.com/IBM/world-wire/utility/common/constant"
 	"github.com/IBM/world-wire/utility/nodeconfig"
-	"github.com/IBM/world-wire/utility/secrets/vault"
+	"github.com/IBM/world-wire/utility/nodeconfig/secrets/vault"
 	"math/rand"
 	"os"
 	"strconv"
@@ -14,13 +15,12 @@ import (
 	"github.com/IBM/world-wire/gftn-models/model"
 	cancelreportstruct "github.com/IBM/world-wire/iso20022/camt03000105"
 	reportstruct "github.com/IBM/world-wire/iso20022/pacs00200109"
-	"github.com/IBM/world-wire/utility/payment/constant"
+	"github.com/IBM/world-wire/utility/common"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
 	"github.com/IBM/world-wire/utility/payment/environment"
 	"github.com/IBM/world-wire/utility/payment/utils"
 	"github.com/IBM/world-wire/utility/payment/utils/sendmodel"
 	"github.com/IBM/world-wire/utility/payment/utils/signing"
-	"github.com/IBM/world-wire/utility/common"
-	global_environment "github.com/IBM/world-wire/utility/global-environment"
 )
 
 type ResponseHandler struct {
@@ -65,8 +65,8 @@ func (handler *ResponseHandler) CreatePacs002(participantBIC, originalInstrId, t
 	timeNow, _ := time.Parse("2006-01-02T15:04:05", time.Now().UTC().Format("2006-01-02T15:04:05"))
 	t := reportstruct.ISODateTime(timeNow.String())
 
-	var reason = constant.STATUS_CODE_DEFAULT
-	var txStatus = constant.PAYMENT_STATUS_RJCT
+	var reason = constant2.STATUS_CODE_DEFAULT
+	var txStatus = constant2.PAYMENT_STATUS_RJCT
 	var description = ""
 	var statusType = 0
 
@@ -117,7 +117,7 @@ func (handler *ResponseHandler) CreatePacs002(participantBIC, originalInstrId, t
 			StsRsnInf: statusinformation11,
 		}
 
-		currencyCode = constant.WWCCY
+		currencyCode = constant2.WWCCY
 	} else {
 		txsts := reportstruct.ExternalPaymentTransactionStatus1Code(txStatus)
 		reasonInformation11 := []*reportstruct.StatusReasonInformation11{}
@@ -187,7 +187,7 @@ func (handler *ResponseHandler) CreatePacs002(participantBIC, originalInstrId, t
 				},
 			},
 			BizMsgIdr: getReportMax35Text(currencyCode + dateToday + wwBIC + seqNum),
-			MsgDefIdr: getReportMax35Text(constant.PACS002),
+			MsgDefIdr: getReportMax35Text(constant2.PACS002),
 			CreDt:     &credt,
 		},
 	}
@@ -199,7 +199,7 @@ func (handler *ResponseHandler) CreatePacs002(participantBIC, originalInstrId, t
 	header := `<?xml version="1.0" encoding="UTF-8"?>` + "\n"
 	cbMsg := []byte(header + string(msg))
 
-	statusMsgType := constant.ISO20022 + ":" + constant.PACS002
+	statusMsgType := constant2.ISO20022 + ":" + constant2.PACS002
 
 	/*
 		Signing message with IBM master account
@@ -239,8 +239,8 @@ func (handler *ResponseHandler) CreateCamt030(participantBIC, caseId, assignment
 	timeNow, _ := time.Parse("2006-01-02T15:04:05", time.Now().UTC().Format("2006-01-02T15:04:05"))
 	t := cancelreportstruct.ISODateTime(timeNow.String())
 
-	var reason = constant.STATUS_CODE_DEFAULT
-	var txStatus = constant.PAYMENT_STATUS_RJCT
+	var reason = constant2.STATUS_CODE_DEFAULT
+	var txStatus = constant2.PAYMENT_STATUS_RJCT
 	var description = ""
 	var statusType = 0
 
@@ -271,7 +271,7 @@ func (handler *ResponseHandler) CreateCamt030(participantBIC, caseId, assignment
 
 	justificationCode = strconv.Itoa(statusCode)
 	if statusType == 0 {
-		currencyCode = constant.WWCCY
+		currencyCode = constant2.WWCCY
 	} else {
 		currencyCode = assignmentId[:5]
 	}
@@ -364,7 +364,7 @@ func (handler *ResponseHandler) CreateCamt030(participantBIC, caseId, assignment
 			},
 		},
 		BizMsgIdr: getCancelMax35Text(currencyCode + dateToday + wwBIC + seqNum),
-		MsgDefIdr: getCancelMax35Text(constant.CAMT030),
+		MsgDefIdr: getCancelMax35Text(constant2.CAMT030),
 		CreDt:     &credt,
 	}
 
@@ -395,7 +395,7 @@ func (handler *ResponseHandler) CreateCamt030(participantBIC, caseId, assignment
 	}
 	gatewayMsg := EncodeBase64(signedMessage)
 
-	statusMsgType := constant.ISO20022 + ":" + constant.CAMT030
+	statusMsgType := constant2.ISO20022 + ":" + constant2.CAMT030
 
 	reportClient := model.SendPacs{
 		MessageType: &statusMsgType,
@@ -413,8 +413,8 @@ func CreateSuccessPacs002(participantBIC, target string, statusCode int, xmlData
 	timeNow, _ := time.Parse("2006-01-02T15:04:05", time.Now().UTC().Format("2006-01-02T15:04:05"))
 	t := reportstruct.ISODateTime(timeNow.String())
 
-	var reason = constant.STATUS_CODE_DEFAULT
-	var txStatus = constant.PAYMENT_STATUS_RJCT
+	var reason = constant2.STATUS_CODE_DEFAULT
+	var txStatus = constant2.PAYMENT_STATUS_RJCT
 	var description = ""
 	var statusType = 0
 
@@ -466,7 +466,7 @@ func CreateSuccessPacs002(participantBIC, target string, statusCode int, xmlData
 			StsRsnInf: statusinformation11,
 		}
 
-		currencyCode = constant.WWCCY
+		currencyCode = constant2.WWCCY
 	} else {
 		txsts := reportstruct.ExternalPaymentTransactionStatus1Code(txStatus)
 		reasonInformation11 := []*reportstruct.StatusReasonInformation11{}
@@ -535,7 +535,7 @@ func CreateSuccessPacs002(participantBIC, target string, statusCode int, xmlData
 				},
 			},
 			BizMsgIdr: getReportMax35Text(currencyCode + dateToday + wwBIC + seqNum),
-			MsgDefIdr: getReportMax35Text(constant.PACS002),
+			MsgDefIdr: getReportMax35Text(constant2.PACS002),
 			CreDt:     &credt,
 		},
 	}
@@ -557,7 +557,7 @@ func CreateSuccessPacs002(participantBIC, target string, statusCode int, xmlData
 	header := `<?xml version="1.0" encoding="UTF-8"?>` + "\n"
 	cbMsg := []byte(header + string(msg))
 
-	statusMsgType := constant.ISO20022 + ":" + constant.PACS002
+	statusMsgType := constant2.ISO20022 + ":" + constant2.PACS002
 
 	/*
 		Signing message with IBM master account

@@ -23,7 +23,7 @@ import (
 	"github.com/IBM/world-wire/utility/status"
 
 	"github.com/IBM/world-wire/utility"
-	"github.com/IBM/world-wire/utility/global-environment/services"
+	"github.com/IBM/world-wire/utility/nodeconfig/secrets"
 	"github.com/IBM/world-wire/utility/logconfig"
 	"github.com/IBM/world-wire/utility/message"
 	middleware_checks "github.com/IBM/world-wire/utility/middleware"
@@ -174,8 +174,8 @@ func (a *App) initRoutes() {
 
 func main() {
 	app := App{}
-	services.VariableCheck()
-	services.InitEnv()
+	global_environment.VariableCheck()
+	secrets.InitEnv()
 	serviceLogs := os.Getenv(global_environment.ENV_KEY_SERVICE_LOG_FILE)
 	f, err := logconfig.SetupLogging(serviceLogs, LOGGER)
 	defer f.Close()

@@ -3,9 +3,9 @@ package database
 import (
 	"encoding/base64"
 	"encoding/json"
+	"github.com/IBM/world-wire/utility/common/constant"
 
 	"github.com/IBM/world-wire/gftn-models/model"
-	"github.com/IBM/world-wire/utility/payment/constant"
 	"github.com/IBM/world-wire/utility/payment/utils/sendmodel"
 	"github.com/IBM/world-wire/utility/payment/utils/transaction"
 )

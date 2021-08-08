@@ -3,9 +3,9 @@ package message_converter
 import (
 	"encoding/xml"
 	"errors"
+	"github.com/IBM/world-wire/utility/common/constant"
 	"os"
 
-	"github.com/IBM/world-wire/utility/payment/constant"
 	"github.com/IBM/world-wire/utility/payment/utils"
 
 	pacs "github.com/IBM/world-wire/iso20022/pacs00400109"

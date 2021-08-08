@@ -3,8 +3,8 @@ package transaction
 import (
 	"encoding/base64"
 	"encoding/json"
-	"github.com/IBM/world-wire/utility/payment/constant"
 	"github.com/IBM/world-wire/utility/common"
+	"github.com/IBM/world-wire/utility/common/constant"
 	global_environment "github.com/IBM/world-wire/utility/global-environment"
 	"os"
 	"strconv"

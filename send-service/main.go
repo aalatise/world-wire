@@ -21,7 +21,7 @@ import (
 
 	u "github.com/IBM/world-wire/utility"
 	global_environment "github.com/IBM/world-wire/utility/global-environment"
-	"github.com/IBM/world-wire/utility/global-environment/services"
+	"github.com/IBM/world-wire/utility/nodeconfig/secrets"
 	"github.com/IBM/world-wire/utility/logconfig"
 	"github.com/IBM/world-wire/utility/message"
 	middleware_checks "github.com/IBM/world-wire/utility/middleware"
@@ -125,8 +125,8 @@ func ServiceCheck(w http.ResponseWriter, req *http.Request) {
 }
 
 func main() {
-	services.VariableCheck()
-	services.InitEnv()
+	global_environment.VariableCheck()
+	secrets.InitEnv()
 	serviceLogs := os.Getenv(global_environment.ENV_KEY_SERVICE_LOG_FILE)
 	f, err := logconfig.SetupLogging(serviceLogs, LOGGER)
 	if err != nil {

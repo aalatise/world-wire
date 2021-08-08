@@ -3,12 +3,12 @@ package message_converter
 import (
 	"encoding/xml"
 	"errors"
+	constant2 "github.com/IBM/world-wire/utility/common/constant"
 	"os"
 	"strconv"
 
 	ibwf "github.com/IBM/world-wire/iso20022/ibwf00100101"
 	pbstruct "github.com/IBM/world-wire/iso20022/proto/github.ibm.com/gftn/iso20022/ibwf00100101"
-	"github.com/IBM/world-wire/utility/payment/constant"
 	"github.com/IBM/world-wire/utility/payment/environment"
 	"github.com/IBM/world-wire/utility/payment/utils"
 	"github.com/IBM/world-wire/utility/payment/utils/parse"
@@ -44,7 +44,7 @@ func (msg *Ibwf001) SanityCheck(bic, participantId string) error {
 	}
 
 	//check the format of both message identifier & business message identifier in the header
-	if err := parse.HeaderIdentifierCheck(string(*msg.Message.Head.BizMsgIdr), string(*msg.Message.Head.MsgDefIdr), constant.IBWF001); err != nil {
+	if err := parse.HeaderIdentifierCheck(string(*msg.Message.Head.BizMsgIdr), string(*msg.Message.Head.MsgDefIdr), constant2.IBWF001); err != nil {
 		return err
 	}
 
@@ -101,7 +101,7 @@ func (msg *Ibwf001) StructToProto() error {
 
 	//putting raw xml message into the kafka send payload
 	msg.SendPayload.Message = msg.Raw
-	msg.SendPayload.MsgType = constant.ISO20022 + ":" + constant.IBWF001
+	msg.SendPayload.MsgType = constant2.ISO20022 + ":" + constant2.IBWF001
 	msg.SendPayload.OfiId = string(*msg.Message.Body.GrpHdr.InstdAgt.FinInstnId.Othr.Id)
 	msg.SendPayload.RfiId = string(*msg.Message.Body.GrpHdr.InstgAgt.FinInstnId.Othr.Id)
 	msg.SendPayload.InstructionId = string(msg.Message.Body.ResBody[0].Id)
@@ -147,9 +147,9 @@ func (msg *Ibwf001) ProtobuftoStruct() (*sendmodel.XMLData, error) {
 	pacs008InstructionId := string(msg.Message.Body.ResBody[0].FedRes.PmtId.InstrId)
 
 	status, checkErr := checkFedAndCompResult(federationStatus, complianceInfoStatus, complianceTransactionStatus)
-	if checkErr != nil && status == constant.REJECT_STRING {
+	if checkErr != nil && status == constant2.REJECT_STRING {
 		LOGGER.Errorf("RFI reject the transaction request")
-		statusCode := strconv.Itoa(constant.STATUS_CODE_FED_COMP_RJCT)
+		statusCode := strconv.Itoa(constant2.STATUS_CODE_FED_COMP_RJCT)
 		xmlData := &sendmodel.XMLData{}
 		xmlData.OriginalMsgId = pacs008InstructionId
 		xmlData.InstructionId = msgId
@@ -202,7 +202,7 @@ func (msg *Ibwf001) ProtobuftoStruct() (*sendmodel.XMLData, error) {
 		OriginalMsgId:            pacs008InstructionId,
 		OriginalInstructionId:    pacs008InstructionId,
 		InstructionId:            instrId,
-		StatusCode:               strconv.Itoa(constant.STATUS_CODE_DEFAULT),
+		StatusCode:               strconv.Itoa(constant2.STATUS_CODE_DEFAULT),
 		RFIAccount:               rfiAccountPkey,
 		RFISettlementAccountName: rfiAccountName,
 		OFIBIC:                   ofiBIC,
@@ -214,16 +214,16 @@ func (msg *Ibwf001) ProtobuftoStruct() (*sendmodel.XMLData, error) {
 }
 
 func checkFedAndCompResult(fs, cis, cts string) (string, error) {
-	if fs == constant.PAYMENT_STATUS_RJCT {
-		return constant.REJECT_STRING, errors.New("federation not accepted")
-	} else if cis == constant.PAYMENT_STATUS_RJCT {
-		return constant.REJECT_STRING, errors.New("compliance not accepted")
-	} else if cts == constant.PAYMENT_STATUS_RJCT {
-		return constant.REJECT_STRING, errors.New("compliance not accepted")
-	} else if fs == constant.PAYMENT_STATUS_ACTC && cis == constant.PAYMENT_STATUS_ACTC && cts == constant.PAYMENT_STATUS_ACTC {
+	if fs == constant2.PAYMENT_STATUS_RJCT {
+		return constant2.REJECT_STRING, errors.New("federation not accepted")
+	} else if cis == constant2.PAYMENT_STATUS_RJCT {
+		return constant2.REJECT_STRING, errors.New("compliance not accepted")
+	} else if cts == constant2.PAYMENT_STATUS_RJCT {
+		return constant2.REJECT_STRING, errors.New("compliance not accepted")
+	} else if fs == constant2.PAYMENT_STATUS_ACTC && cis == constant2.PAYMENT_STATUS_ACTC && cts == constant2.PAYMENT_STATUS_ACTC {
 		LOGGER.Infof("Federation and Compliance all accepted")
-		return constant.ACCEPT_STRING, nil
+		return constant2.ACCEPT_STRING, nil
 	} else {
-		return constant.REJECT_STRING, errors.New("wrong federation and compliance status")
+		return constant2.REJECT_STRING, errors.New("wrong federation and compliance status")
 	}
 }

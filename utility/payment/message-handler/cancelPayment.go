@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/IBM/world-wire/global-whitelist-service/whitelist-handler"
+	constant2 "github.com/IBM/world-wire/utility/common/constant"
 	"net/http"
 	"os"
 	"strconv"
@@ -21,13 +22,12 @@ import (
 	"github.com/IBM/world-wire/gftn-models/model"
 	camt029pbstruct "github.com/IBM/world-wire/iso20022/proto/github.ibm.com/gftn/iso20022/camt02900109"
 	camt056pbstruct "github.com/IBM/world-wire/iso20022/proto/github.ibm.com/gftn/iso20022/camt05600108"
-	"github.com/IBM/world-wire/utility/payment/constant"
+	DB "github.com/IBM/world-wire/utility/database"
 	"github.com/IBM/world-wire/utility/payment/environment"
 	message_converter "github.com/IBM/world-wire/utility/payment/message-converter"
 	"github.com/IBM/world-wire/utility/payment/utils"
 	"github.com/IBM/world-wire/utility/payment/utils/database"
 	"github.com/IBM/world-wire/utility/payment/utils/horizon"
-	DB "github.com/IBM/world-wire/utility/database"
 	"github.com/IBM/world-wire/utility/xmldsig"
 
 	"github.com/IBM/world-wire/utility/payment/utils/parse"
@@ -63,14 +63,14 @@ import (
 func (op *PaymentOperations) Camt056(camt056 message_converter.Camt056) ([]byte, error) {
 	// Validate content inside the camt056 message
 	structData := camt056.Message
-	msgName := constant.CAMT056
+	msgName := constant2.CAMT056
 	BIC := os.Getenv(environment.ENV_KEY_PARTICIPANT_BIC)
 	ofiId := string(*structData.Body.Assgnmt.Assgnr.Agt.FinInstnId.Othr.Id)
 	rfiId := string(*structData.Body.Assgnmt.Assgne.Agt.FinInstnId.Othr.Id)
 
 	camt056LogHandler := transaction.InitiatePaymentLogOperation()
-	camt056LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_INITIAL)
-	msgType := constant.PAYMENT_TYPE_CANCELLATION
+	camt056LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_INITIAL)
+	msgType := constant2.PAYMENT_TYPE_CANCELLATION
 	msgId := string(*structData.Body.Case.Id)
 	instrId := string(*structData.Body.Assgnmt.Id)
 	target, _, err := op.ResponseHandler.KafkaErrorRouter(msgName, msgId, instrId, ofiId, rfiId, 0, false)
@@ -80,14 +80,14 @@ func (op *PaymentOperations) Camt056(camt056 message_converter.Camt056) ([]byte,
 	*/
 	err = op.DbClient.CreateTx(&DB.PaymentData{
 		InstructionID: &instrId,
-		TxData:        &constant.DATABASE_STATUS_EMPTY,
-		TxStatus:      &constant.DATABASE_STATUS_PENDING,
-		ResId:         &constant.DATABASE_STATUS_NONE,
+		TxData:        &constant2.DATABASE_STATUS_EMPTY,
+		TxStatus:      &constant2.DATABASE_STATUS_PENDING,
+		ResId:         &constant2.DATABASE_STATUS_NONE,
 		TxDetail:      &camt056LogHandler,
 	})
 	if err != nil {
 		LOGGER.Errorf(err.Error())
-		report := op.ResponseHandler.CreateCamt030(BIC, msgId, instrId, msgName, target, constant.STATUS_CODE_DUP_ID)
+		report := op.ResponseHandler.CreateCamt030(BIC, msgId, instrId, msgName, target, constant2.STATUS_CODE_DUP_ID)
 		return report, err
 	}
 
@@ -129,30 +129,30 @@ func (op *PaymentOperations) Camt056(camt056 message_converter.Camt056) ([]byte,
 	res, err := blockListClient.ValidateFromBlocklist(countries, currencies, participants)
 	if err != nil {
 		LOGGER.Errorf("%v", err)
-		camt056LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_FAILED)
+		camt056LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_FAILED)
 		op.DbClient.UpdateTx(&DB.PaymentData{
 			InstructionID: &xmlData.InstructionId,
-			TxData:        &constant.DATABASE_STATUS_EMPTY,
-			TxStatus:      &constant.DATABASE_STATUS_FAILED,
-			ResId:         &constant.DATABASE_STATUS_NONE,
+			TxData:        &constant2.DATABASE_STATUS_EMPTY,
+			TxStatus:      &constant2.DATABASE_STATUS_FAILED,
+			ResId:         &constant2.DATABASE_STATUS_NONE,
 			TxDetail:      &camt056LogHandler,
 		})
-		go database.SyncWithPortalDB(constant.LOG_INIT, msgType, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.InstructionId, "", "", camt056LogHandler, &op.fundHandler, statusData)
-		report := op.ResponseHandler.CreateCamt030(BIC, xmlData.MessageId, xmlData.InstructionId, msgName, target, constant.STATUS_CODE_INTERNAL_ERROR)
+		go database.SyncWithPortalDB(constant2.LOG_INIT, msgType, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.InstructionId, "", "", camt056LogHandler, &op.fundHandler, statusData)
+		report := op.ResponseHandler.CreateCamt030(BIC, xmlData.MessageId, xmlData.InstructionId, msgName, target, constant2.STATUS_CODE_INTERNAL_ERROR)
 		return report, err
 	}
 	if res == common.BlocklistDeniedString {
 		LOGGER.Errorf("The transaction currency/country/institution is within the blocklist, transaction forbidden!")
-		camt056LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_VALIDATION_FAIL)
+		camt056LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_VALIDATION_FAIL)
 		op.DbClient.UpdateTx(&DB.PaymentData{
 			InstructionID: &xmlData.InstructionId,
-			TxData:        &constant.DATABASE_STATUS_EMPTY,
-			TxStatus:      &constant.DATABASE_STATUS_FAILED,
-			ResId:         &constant.DATABASE_STATUS_NONE,
+			TxData:        &constant2.DATABASE_STATUS_EMPTY,
+			TxStatus:      &constant2.DATABASE_STATUS_FAILED,
+			ResId:         &constant2.DATABASE_STATUS_NONE,
 			TxDetail:      &camt056LogHandler,
 		})
-		go database.SyncWithPortalDB(constant.LOG_INIT, msgType, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.InstructionId, "", "", camt056LogHandler, &op.fundHandler, statusData)
-		report := op.ResponseHandler.CreateCamt030(BIC, xmlData.MessageId, xmlData.InstructionId, msgName, target, constant.STATUS_CODE_BLOCKLIST)
+		go database.SyncWithPortalDB(constant2.LOG_INIT, msgType, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.InstructionId, "", "", camt056LogHandler, &op.fundHandler, statusData)
+		report := op.ResponseHandler.CreateCamt030(BIC, xmlData.MessageId, xmlData.InstructionId, msgName, target, constant2.STATUS_CODE_BLOCKLIST)
 		return report, errors.New("the transaction currency/country/institution is within the blocklist, transaction forbidden")
 	}
 
@@ -160,35 +160,35 @@ func (op *PaymentOperations) Camt056(camt056 message_converter.Camt056) ([]byte,
 		Check mutual whitelist
 	*/
 	LOGGER.Infof("Check whether RFI is in OFI's whitelist and vice versa")
-	pKey, whiteListErr := op.whitelistHandler.CheckWhiteListParticipant(xmlData.OFIId, xmlData.RFIId, constant.EMPTY_STRING)
+	pKey, whiteListErr := op.whitelistHandler.CheckWhiteListParticipant(xmlData.OFIId, xmlData.RFIId, constant2.EMPTY_STRING)
 	if whiteListErr != nil {
 		LOGGER.Errorf(whiteListErr.Error())
-		camt056LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_FAILED)
+		camt056LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_FAILED)
 		op.DbClient.UpdateTx(&DB.PaymentData{
 			InstructionID: &xmlData.InstructionId,
-			TxData:        &constant.DATABASE_STATUS_EMPTY,
-			TxStatus:      &constant.DATABASE_STATUS_FAILED,
-			ResId:         &constant.DATABASE_STATUS_NONE,
+			TxData:        &constant2.DATABASE_STATUS_EMPTY,
+			TxStatus:      &constant2.DATABASE_STATUS_FAILED,
+			ResId:         &constant2.DATABASE_STATUS_NONE,
 			TxDetail:      &camt056LogHandler,
 		})
-		go database.SyncWithPortalDB(constant.LOG_INIT, msgType, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.InstructionId, "", "", camt056LogHandler, &op.fundHandler, statusData)
-		report := op.ResponseHandler.CreateCamt030(BIC, xmlData.MessageId, originalReqMsgId, msgName, target, constant.STATUS_CODE_INTERNAL_ERROR)
+		go database.SyncWithPortalDB(constant2.LOG_INIT, msgType, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.InstructionId, "", "", camt056LogHandler, &op.fundHandler, statusData)
+		report := op.ResponseHandler.CreateCamt030(BIC, xmlData.MessageId, originalReqMsgId, msgName, target, constant2.STATUS_CODE_INTERNAL_ERROR)
 		return report, whiteListErr
 	}
 
 	if pKey == "" {
 		errMsg := "OFI can not find RFI in whitelist and vice versa"
 		LOGGER.Errorf(errMsg)
-		camt056LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_VALIDATION_FAIL)
+		camt056LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_VALIDATION_FAIL)
 		op.DbClient.UpdateTx(&DB.PaymentData{
 			InstructionID: &xmlData.InstructionId,
-			TxData:        &constant.DATABASE_STATUS_EMPTY,
-			TxStatus:      &constant.DATABASE_STATUS_FAILED,
-			ResId:         &constant.DATABASE_STATUS_NONE,
+			TxData:        &constant2.DATABASE_STATUS_EMPTY,
+			TxStatus:      &constant2.DATABASE_STATUS_FAILED,
+			ResId:         &constant2.DATABASE_STATUS_NONE,
 			TxDetail:      &camt056LogHandler,
 		})
-		go database.SyncWithPortalDB(constant.LOG_INIT, msgType, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.InstructionId, "", "", camt056LogHandler, &op.fundHandler, statusData)
-		report := op.ResponseHandler.CreateCamt030(BIC, xmlData.MessageId, originalReqMsgId, msgName, target, constant.STATUS_CODE_RFI_OR_OFI_NOT_IN_WL)
+		go database.SyncWithPortalDB(constant2.LOG_INIT, msgType, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.InstructionId, "", "", camt056LogHandler, &op.fundHandler, statusData)
+		report := op.ResponseHandler.CreateCamt030(BIC, xmlData.MessageId, originalReqMsgId, msgName, target, constant2.STATUS_CODE_RFI_OR_OFI_NOT_IN_WL)
 		return report, whiteListErr
 	}
 	LOGGER.Infof("Yes, RFI is in OFI's whitelist and vice versa")
@@ -199,21 +199,21 @@ func (op *PaymentOperations) Camt056(camt056 message_converter.Camt056) ([]byte,
 	if parseErr != nil {
 		errMsg := "Parse data to ProtoBuf error: " + parseErr.Error()
 		LOGGER.Errorf(errMsg)
-		camt056LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_VALIDATION_FAIL)
+		camt056LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_VALIDATION_FAIL)
 		op.DbClient.UpdateTx(&DB.PaymentData{
 			InstructionID: &xmlData.InstructionId,
-			TxData:        &constant.DATABASE_STATUS_EMPTY,
-			TxStatus:      &constant.DATABASE_STATUS_FAILED,
-			ResId:         &constant.DATABASE_STATUS_NONE,
+			TxData:        &constant2.DATABASE_STATUS_EMPTY,
+			TxStatus:      &constant2.DATABASE_STATUS_FAILED,
+			ResId:         &constant2.DATABASE_STATUS_NONE,
 			TxDetail:      &camt056LogHandler,
 		})
-		go database.SyncWithPortalDB(constant.LOG_INIT, msgType, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.InstructionId, "", "", camt056LogHandler, &op.fundHandler, statusData)
-		report := op.ResponseHandler.CreateCamt030(BIC, xmlData.MessageId, originalReqMsgId, msgName, target, constant.STATUS_CODE_INTERNAL_ERROR)
+		go database.SyncWithPortalDB(constant2.LOG_INIT, msgType, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.InstructionId, "", "", camt056LogHandler, &op.fundHandler, statusData)
+		report := op.ResponseHandler.CreateCamt030(BIC, xmlData.MessageId, originalReqMsgId, msgName, target, constant2.STATUS_CODE_INTERNAL_ERROR)
 		return report, parseErr
 	}
 	LOGGER.Infof("Finished parsing Go struct to ProtoBuffer")
 
-	camt056LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_VALIDATION_SUCCESS)
+	camt056LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_VALIDATION_SUCCESS)
 	//save the instruction id of camt056 for pacs004/camt029 msg to use
 	dbData := sendmodel.DBData{
 		MessageId: string(*structData.Body.Assgnmt.Id),
@@ -226,12 +226,12 @@ func (op *PaymentOperations) Camt056(camt056 message_converter.Camt056) ([]byte,
 	op.DbClient.UpdateTx(&DB.PaymentData{
 		InstructionID: &xmlData.InstructionId,
 		TxData:        &base64DBData,
-		TxStatus:      &constant.DATABASE_STATUS_PENDING,
-		ResId:         &constant.DATABASE_STATUS_NONE,
+		TxStatus:      &constant2.DATABASE_STATUS_PENDING,
+		ResId:         &constant2.DATABASE_STATUS_NONE,
 		TxDetail:      &camt056LogHandler,
 	})
 
-	database.SyncWithPortalDB(constant.LOG_INIT, msgType, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.InstructionId, "", "", camt056LogHandler, &op.fundHandler, statusData)
+	database.SyncWithPortalDB(constant2.LOG_INIT, msgType, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.InstructionId, "", "", camt056LogHandler, &op.fundHandler, statusData)
 
 	// Send the ProtoBuffer to the request topic of RFI on Kafka broker
 	LOGGER.Infof("Start to send request to Kafka broker")
@@ -239,23 +239,23 @@ func (op *PaymentOperations) Camt056(camt056 message_converter.Camt056) ([]byte,
 	if kafkaErr != nil {
 		errMsg := "Error while submit message to Kafka broker: " + kafkaErr.Error()
 		LOGGER.Errorf(errMsg)
-		camt056LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_FAILED)
+		camt056LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_FAILED)
 		op.DbClient.UpdateTx(&DB.PaymentData{
 			InstructionID: &xmlData.InstructionId,
-			TxData:        &constant.DATABASE_STATUS_EMPTY,
-			TxStatus:      &constant.DATABASE_STATUS_FAILED,
-			ResId:         &constant.DATABASE_STATUS_NONE,
+			TxData:        &constant2.DATABASE_STATUS_EMPTY,
+			TxStatus:      &constant2.DATABASE_STATUS_FAILED,
+			ResId:         &constant2.DATABASE_STATUS_NONE,
 			TxDetail:      &camt056LogHandler,
 		})
-		go database.SyncWithPortalDB(constant.LOG_INIT, msgType, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.InstructionId, "", "", camt056LogHandler, &op.fundHandler, statusData)
-		report := op.ResponseHandler.CreateCamt030(BIC, xmlData.MessageId, originalReqMsgId, msgName, target, constant.STATUS_CODE_INTERNAL_ERROR)
+		go database.SyncWithPortalDB(constant2.LOG_INIT, msgType, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.InstructionId, "", "", camt056LogHandler, &op.fundHandler, statusData)
+		report := op.ResponseHandler.CreateCamt030(BIC, xmlData.MessageId, originalReqMsgId, msgName, target, constant2.STATUS_CODE_INTERNAL_ERROR)
 		return report, kafkaErr
 	}
 	LOGGER.Infof("Successfully produce message to Kafka broker")
 	LOGGER.Debug("-----------------------------------------------------------------")
 
 	// Send status back to OFI
-	report := op.ResponseHandler.CreateCamt030(BIC, xmlData.MessageId, originalReqMsgId, msgName, target, constant.STATUS_CODE_OFI_SEND_TO_KAFKA)
+	report := op.ResponseHandler.CreateCamt030(BIC, xmlData.MessageId, originalReqMsgId, msgName, target, constant2.STATUS_CODE_OFI_SEND_TO_KAFKA)
 
 	return report, nil
 }
@@ -272,13 +272,13 @@ func (op *PaymentOperations) Camt056(camt056 message_converter.Camt056) ([]byte,
 func (op *PaymentOperations) Pacs004_Cancellation(pacs004 message_converter.Pacs004) ([]byte, error) {
 	// Validate content inside the pacs004 message
 	structData := pacs004.Message
-	msgName := constant.PACS004
+	msgName := constant2.PACS004
 	BIC := os.Getenv(environment.ENV_KEY_PARTICIPANT_BIC)
 	pacs008LogHandler := transaction.InitiatePaymentLogOperation()
 	pacs004LogHandler := transaction.InitiatePaymentLogOperation()
 	// Store the transaction information into the administration service
-	msgType := constant.PAYMENT_TYPE_CANCELLATION
-	pacs004LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_INITIAL)
+	msgType := constant2.PAYMENT_TYPE_CANCELLATION
+	pacs004LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_INITIAL)
 	instrId := string(*structData.Body.TxInf[0].RtrId)
 	ofiId := string(*structData.Body.GrpHdr.InstdAgt.FinInstnId.Othr.Id)
 	rfiId := string(*structData.Body.GrpHdr.InstgAgt.FinInstnId.Othr.Id)
@@ -295,14 +295,14 @@ func (op *PaymentOperations) Pacs004_Cancellation(pacs004 message_converter.Pacs
 	*/
 	err = op.DbClient.CreateTx(&DB.PaymentData{
 		InstructionID: &instrId,
-		TxData:        &constant.DATABASE_STATUS_EMPTY,
-		TxStatus:      &constant.DATABASE_STATUS_PENDING,
-		ResId:         &constant.DATABASE_STATUS_NONE,
+		TxData:        &constant2.DATABASE_STATUS_EMPTY,
+		TxStatus:      &constant2.DATABASE_STATUS_PENDING,
+		ResId:         &constant2.DATABASE_STATUS_NONE,
 		TxDetail:      &pacs004LogHandler,
 	})
 	if err != nil {
 		LOGGER.Errorf(err.Error())
-		report := op.ResponseHandler.CreatePacs002(BIC, instrId, target, constant.STATUS_CODE_DUP_ID, originalGrpInf)
+		report := op.ResponseHandler.CreatePacs002(BIC, instrId, target, constant2.STATUS_CODE_DUP_ID, originalGrpInf)
 		return report, err
 	}
 
@@ -344,30 +344,30 @@ func (op *PaymentOperations) Pacs004_Cancellation(pacs004 message_converter.Pacs
 	res, err := blockListClient.ValidateFromBlocklist(countries, currencies, participants)
 	if err != nil {
 		LOGGER.Errorf("%v", err)
-		pacs004LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_FAILED)
+		pacs004LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_FAILED)
 		op.DbClient.UpdateTx(&DB.PaymentData{
 			InstructionID: &xmlData.InstructionId,
-			TxData:        &constant.DATABASE_STATUS_EMPTY,
-			TxStatus:      &constant.DATABASE_STATUS_FAILED,
-			ResId:         &constant.DATABASE_STATUS_NONE,
+			TxData:        &constant2.DATABASE_STATUS_EMPTY,
+			TxStatus:      &constant2.DATABASE_STATUS_FAILED,
+			ResId:         &constant2.DATABASE_STATUS_NONE,
 			TxDetail:      &pacs004LogHandler,
 		})
-		go database.SyncWithPortalDB(constant.LOG_INIT, msgType, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.InstructionId, "", "", pacs004LogHandler, &op.fundHandler, statusData)
-		report := op.ResponseHandler.CreatePacs002(BIC, xmlData.InstructionId, target, constant.STATUS_CODE_INTERNAL_ERROR, originalGrpInf)
+		go database.SyncWithPortalDB(constant2.LOG_INIT, msgType, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.InstructionId, "", "", pacs004LogHandler, &op.fundHandler, statusData)
+		report := op.ResponseHandler.CreatePacs002(BIC, xmlData.InstructionId, target, constant2.STATUS_CODE_INTERNAL_ERROR, originalGrpInf)
 		return report, err
 	}
 	if res == common.BlocklistDeniedString {
 		LOGGER.Errorf("The transaction currency/country/institution is within the blocklist, transaction forbidden!")
-		pacs004LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_VALIDATION_FAIL)
+		pacs004LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_VALIDATION_FAIL)
 		op.DbClient.UpdateTx(&DB.PaymentData{
 			InstructionID: &xmlData.InstructionId,
-			TxData:        &constant.DATABASE_STATUS_EMPTY,
-			TxStatus:      &constant.DATABASE_STATUS_FAILED,
-			ResId:         &constant.DATABASE_STATUS_NONE,
+			TxData:        &constant2.DATABASE_STATUS_EMPTY,
+			TxStatus:      &constant2.DATABASE_STATUS_FAILED,
+			ResId:         &constant2.DATABASE_STATUS_NONE,
 			TxDetail:      &pacs004LogHandler,
 		})
-		go database.SyncWithPortalDB(constant.LOG_INIT, msgType, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.InstructionId, "", "", pacs004LogHandler, &op.fundHandler, statusData)
-		report := op.ResponseHandler.CreatePacs002(BIC, xmlData.InstructionId, target, constant.STATUS_CODE_BLOCKLIST, originalGrpInf)
+		go database.SyncWithPortalDB(constant2.LOG_INIT, msgType, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.InstructionId, "", "", pacs004LogHandler, &op.fundHandler, statusData)
+		report := op.ResponseHandler.CreatePacs002(BIC, xmlData.InstructionId, target, constant2.STATUS_CODE_BLOCKLIST, originalGrpInf)
 		return report, errors.New("the transaction currency/country/institution is within the blocklist, transaction forbidden")
 	}
 
@@ -380,36 +380,36 @@ func (op *PaymentOperations) Pacs004_Cancellation(pacs004 message_converter.Pacs
 	rfiAccount, whiteListErr := op.whitelistHandler.CheckWhiteListParticipant(ofiId, rfiId, rfiAccountName)
 	if whiteListErr != nil {
 		LOGGER.Error(whiteListErr.Error())
-		report := op.ResponseHandler.CreatePacs002(BIC, xmlData.InstructionId, target, constant.STATUS_CODE_INTERNAL_ERROR, originalGrpInf)
-		pacs004LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_FAILED)
+		report := op.ResponseHandler.CreatePacs002(BIC, xmlData.InstructionId, target, constant2.STATUS_CODE_INTERNAL_ERROR, originalGrpInf)
+		pacs004LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_FAILED)
 		op.DbClient.UpdateTx(&DB.PaymentData{
 			InstructionID: &xmlData.InstructionId,
-			TxData:        &constant.DATABASE_STATUS_EMPTY,
-			TxStatus:      &constant.DATABASE_STATUS_FAILED,
-			ResId:         &constant.DATABASE_STATUS_NONE,
+			TxData:        &constant2.DATABASE_STATUS_EMPTY,
+			TxStatus:      &constant2.DATABASE_STATUS_FAILED,
+			ResId:         &constant2.DATABASE_STATUS_NONE,
 			TxDetail:      &pacs004LogHandler,
 		})
-		go database.SyncWithPortalDB(constant.LOG_INIT, msgType, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.InstructionId, "", "", pacs004LogHandler, &op.fundHandler, statusData)
+		go database.SyncWithPortalDB(constant2.LOG_INIT, msgType, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.InstructionId, "", "", pacs004LogHandler, &op.fundHandler, statusData)
 		return report, whiteListErr
 	}
 	if rfiAccount == "" {
 		errMsg := "RFI can not find OFI in whitelist and vice versa"
 		LOGGER.Error(errMsg)
-		report := op.ResponseHandler.CreatePacs002(BIC, xmlData.InstructionId, target, constant.STATUS_CODE_RFI_OR_OFI_NOT_IN_WL, originalGrpInf)
-		pacs004LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_VALIDATION_FAIL)
+		report := op.ResponseHandler.CreatePacs002(BIC, xmlData.InstructionId, target, constant2.STATUS_CODE_RFI_OR_OFI_NOT_IN_WL, originalGrpInf)
+		pacs004LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_VALIDATION_FAIL)
 		op.DbClient.UpdateTx(&DB.PaymentData{
 			InstructionID: &xmlData.InstructionId,
-			TxData:        &constant.DATABASE_STATUS_EMPTY,
-			TxStatus:      &constant.DATABASE_STATUS_FAILED,
-			ResId:         &constant.DATABASE_STATUS_NONE,
+			TxData:        &constant2.DATABASE_STATUS_EMPTY,
+			TxStatus:      &constant2.DATABASE_STATUS_FAILED,
+			ResId:         &constant2.DATABASE_STATUS_NONE,
 			TxDetail:      &pacs004LogHandler,
 		})
-		go database.SyncWithPortalDB(constant.LOG_INIT, msgType, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.InstructionId, "", "", pacs004LogHandler, &op.fundHandler, statusData)
+		go database.SyncWithPortalDB(constant2.LOG_INIT, msgType, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.InstructionId, "", "", pacs004LogHandler, &op.fundHandler, statusData)
 		return report, whiteListErr
 	}
 	LOGGER.Infof("Yes, OFI is in RFI's whitelist and vice versa")
 
-	pacs004LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_VALIDATION_SUCCESS)
+	pacs004LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_VALIDATION_SUCCESS)
 
 	signData := &sendmodel.SignData{
 		OFIId: ofiId,
@@ -428,38 +428,38 @@ func (op *PaymentOperations) Pacs004_Cancellation(pacs004 message_converter.Pacs
 	submitResult, txHash, ofiAccount := op.fundHandler.FundAndSubmitPaymentTransaction(rfiAccount, xmlData.InstructionId, msgName, rfiAccountName, *signData, xdr.Memo{})
 	report := op.ResponseHandler.CreatePacs002(BIC, xmlData.InstructionId, target, submitResult, originalGrpInf)
 
-	if submitResult != constant.STATUS_CODE_TX_SEND_TO_STELLAR {
-		pacs004LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_FAILED)
-		pacs008LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_FAILED)
+	if submitResult != constant2.STATUS_CODE_TX_SEND_TO_STELLAR {
+		pacs004LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_FAILED)
+		pacs008LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_FAILED)
 
 		op.DbClient.UpdateTx(&DB.PaymentData{
 			InstructionID: &xmlData.InstructionId,
-			TxData:        &constant.DATABASE_STATUS_EMPTY,
-			TxStatus:      &constant.DATABASE_STATUS_FAILED,
-			ResId:         &constant.DATABASE_STATUS_NONE,
+			TxData:        &constant2.DATABASE_STATUS_EMPTY,
+			TxStatus:      &constant2.DATABASE_STATUS_FAILED,
+			ResId:         &constant2.DATABASE_STATUS_NONE,
 			TxDetail:      &pacs004LogHandler,
 		})
 
 		op.DbClient.UpdateTx(&DB.PaymentData{
 			InstructionID: &xmlData.OriginalInstructionId,
-			TxData:        &constant.DATABASE_STATUS_EMPTY,
-			TxStatus:      &constant.DATABASE_STATUS_DONE,
-			ResId:         &constant.DATABASE_STATUS_NONE,
+			TxData:        &constant2.DATABASE_STATUS_EMPTY,
+			TxStatus:      &constant2.DATABASE_STATUS_DONE,
+			ResId:         &constant2.DATABASE_STATUS_NONE,
 			TxDetail:      &pacs008LogHandler,
 		})
 
-		go database.SyncWithPortalDB(constant.LOG_INIT, msgType, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.InstructionId, "", "", pacs004LogHandler, &op.fundHandler, statusData)
-		go database.SyncWithPortalDB(constant.LOG_UPDATE, constant.PACS008, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.OriginalInstructionId, "", "", pacs008LogHandler, &op.fundHandler, statusData)
+		go database.SyncWithPortalDB(constant2.LOG_INIT, msgType, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.InstructionId, "", "", pacs004LogHandler, &op.fundHandler, statusData)
+		go database.SyncWithPortalDB(constant2.LOG_UPDATE, constant2.PACS008, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.OriginalInstructionId, "", "", pacs008LogHandler, &op.fundHandler, statusData)
 		return report, nil
 	} else {
-		if string(*structData.Body.TxInf[0].OrgnlTxRef.SttlmInf.SttlmMtd) == constant.DO_SETTLEMENT {
+		if string(*structData.Body.TxInf[0].OrgnlTxRef.SttlmInf.SttlmMtd) == constant2.DO_SETTLEMENT {
 			// record the payment status "cleared"
-			pacs004LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_RETURNED, txHash)
-			pacs008LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_RETURNED, txHash)
+			pacs004LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_RETURNED, txHash)
+			pacs008LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_RETURNED, txHash)
 		} else {
 			// record the payment status "settled"
-			pacs004LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_SETTLED, txHash)
-			pacs008LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_SETTLED, txHash)
+			pacs004LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_SETTLED, txHash)
+			pacs008LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_SETTLED, txHash)
 		}
 	}
 
@@ -467,21 +467,21 @@ func (op *PaymentOperations) Pacs004_Cancellation(pacs004 message_converter.Pacs
 	op.DbClient.UpdateTx(&DB.PaymentData{
 		InstructionID: &xmlData.OriginalInstructionId,
 		TxData:        &txHash,
-		TxStatus:      &constant.DATABASE_STATUS_CANCELED,
-		ResId:         &constant.DATABASE_STATUS_NONE,
+		TxStatus:      &constant2.DATABASE_STATUS_CANCELED,
+		ResId:         &constant2.DATABASE_STATUS_NONE,
 		TxDetail:      &pacs008LogHandler,
 	})
 
 	op.DbClient.UpdateTx(&DB.PaymentData{
 		InstructionID: &xmlData.InstructionId,
 		TxData:        &txHash,
-		TxStatus:      &constant.DATABASE_STATUS_DONE,
-		ResId:         &constant.DATABASE_STATUS_NONE,
+		TxStatus:      &constant2.DATABASE_STATUS_DONE,
+		ResId:         &constant2.DATABASE_STATUS_NONE,
 		TxDetail:      &pacs004LogHandler,
 	})
 
-	go database.SyncWithPortalDB(constant.LOG_INIT, msgType, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.InstructionId, txHash, ofiAccount, pacs004LogHandler, &op.fundHandler, statusData)
-	go database.SyncWithPortalDB(constant.LOG_UPDATE, msgType, constant.PACS008, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.OriginalInstructionId, txHash, "", pacs008LogHandler, &op.fundHandler, statusData)
+	go database.SyncWithPortalDB(constant2.LOG_INIT, msgType, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.InstructionId, txHash, ofiAccount, pacs004LogHandler, &op.fundHandler, statusData)
+	go database.SyncWithPortalDB(constant2.LOG_UPDATE, msgType, constant2.PACS008, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.OriginalInstructionId, txHash, "", pacs008LogHandler, &op.fundHandler, statusData)
 
 	LOGGER.Debug("---------------------------------------------------------------------")
 
@@ -491,7 +491,7 @@ func (op *PaymentOperations) Pacs004_Cancellation(pacs004 message_converter.Pacs
 func (op *PaymentOperations) Camt029(camt029 message_converter.Camt029) ([]byte, error) {
 	// Validate content inside the camt029 message
 	structData := camt029.Message
-	msgName := constant.CAMT029
+	msgName := constant2.CAMT029
 	BIC := os.Getenv(environment.ENV_KEY_PARTICIPANT_BIC)
 	rfiId := string(*structData.Body.Assgnmt.Assgnr.Agt.FinInstnId.Othr.Id)
 	ofiId := string(*structData.Body.Assgnmt.Assgne.Agt.FinInstnId.Othr.Id)
@@ -499,8 +499,8 @@ func (op *PaymentOperations) Camt029(camt029 message_converter.Camt029) ([]byte,
 
 	camt029LogHandler := transaction.InitiatePaymentLogOperation()
 	// Store the transaction information into the administration service
-	msgType := constant.PAYMENT_TYPE_CANCELLATION
-	camt029LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_INITIAL)
+	msgType := constant2.PAYMENT_TYPE_CANCELLATION
+	camt029LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_INITIAL)
 	target, _, err := op.ResponseHandler.KafkaErrorRouter(msgName, "", instrId, ofiId, rfiId, 0, false)
 
 	/*
@@ -508,14 +508,14 @@ func (op *PaymentOperations) Camt029(camt029 message_converter.Camt029) ([]byte,
 	*/
 	err = op.DbClient.CreateTx(&DB.PaymentData{
 		InstructionID: &instrId,
-		TxData:        &constant.DATABASE_STATUS_EMPTY,
-		TxStatus:      &constant.DATABASE_STATUS_PENDING,
-		ResId:         &constant.DATABASE_STATUS_NONE,
+		TxData:        &constant2.DATABASE_STATUS_EMPTY,
+		TxStatus:      &constant2.DATABASE_STATUS_PENDING,
+		ResId:         &constant2.DATABASE_STATUS_NONE,
 		TxDetail:      &camt029LogHandler,
 	})
 	if err != nil {
 		LOGGER.Errorf(err.Error())
-		report := op.ResponseHandler.CreateCamt030(BIC, "", instrId, msgName, target, constant.STATUS_CODE_DUP_ID)
+		report := op.ResponseHandler.CreateCamt030(BIC, "", instrId, msgName, target, constant2.STATUS_CODE_DUP_ID)
 		return report, err
 	}
 
@@ -558,30 +558,30 @@ func (op *PaymentOperations) Camt029(camt029 message_converter.Camt029) ([]byte,
 	res, err := blockListClient.ValidateFromBlocklist(countries, currencies, participants)
 	if err != nil {
 		LOGGER.Errorf("%v", err)
-		camt029LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_FAILED)
+		camt029LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_FAILED)
 		op.DbClient.UpdateTx(&DB.PaymentData{
 			InstructionID: &xmlData.InstructionId,
-			TxData:        &constant.DATABASE_STATUS_EMPTY,
-			TxStatus:      &constant.DATABASE_STATUS_FAILED,
-			ResId:         &constant.DATABASE_STATUS_NONE,
+			TxData:        &constant2.DATABASE_STATUS_EMPTY,
+			TxStatus:      &constant2.DATABASE_STATUS_FAILED,
+			ResId:         &constant2.DATABASE_STATUS_NONE,
 			TxDetail:      &camt029LogHandler,
 		})
-		go database.SyncWithPortalDB(constant.LOG_INIT, msgType, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.InstructionId, "", "", camt029LogHandler, &op.fundHandler, statusData)
-		report := op.ResponseHandler.CreateCamt030(BIC, xmlData.MessageId, xmlData.InstructionId, msgName, target, constant.STATUS_CODE_INTERNAL_ERROR)
+		go database.SyncWithPortalDB(constant2.LOG_INIT, msgType, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.InstructionId, "", "", camt029LogHandler, &op.fundHandler, statusData)
+		report := op.ResponseHandler.CreateCamt030(BIC, xmlData.MessageId, xmlData.InstructionId, msgName, target, constant2.STATUS_CODE_INTERNAL_ERROR)
 		return report, err
 	}
 	if res == common.BlocklistDeniedString {
 		LOGGER.Errorf("The transaction currency/country/institution is within the blocklist, transaction forbidden!")
-		camt029LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_VALIDATION_FAIL)
+		camt029LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_VALIDATION_FAIL)
 		op.DbClient.UpdateTx(&DB.PaymentData{
 			InstructionID: &xmlData.InstructionId,
-			TxData:        &constant.DATABASE_STATUS_EMPTY,
-			TxStatus:      &constant.DATABASE_STATUS_FAILED,
-			ResId:         &constant.DATABASE_STATUS_NONE,
+			TxData:        &constant2.DATABASE_STATUS_EMPTY,
+			TxStatus:      &constant2.DATABASE_STATUS_FAILED,
+			ResId:         &constant2.DATABASE_STATUS_NONE,
 			TxDetail:      &camt029LogHandler,
 		})
-		go database.SyncWithPortalDB(constant.LOG_INIT, msgType, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.InstructionId, "", "", camt029LogHandler, &op.fundHandler, statusData)
-		report := op.ResponseHandler.CreateCamt030(BIC, xmlData.MessageId, xmlData.InstructionId, msgName, target, constant.STATUS_CODE_BLOCKLIST)
+		go database.SyncWithPortalDB(constant2.LOG_INIT, msgType, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.InstructionId, "", "", camt029LogHandler, &op.fundHandler, statusData)
+		report := op.ResponseHandler.CreateCamt030(BIC, xmlData.MessageId, xmlData.InstructionId, msgName, target, constant2.STATUS_CODE_BLOCKLIST)
 		return report, errors.New("the transaction currency/country/institution is within the blocklist, transaction forbidden")
 	}
 
@@ -589,33 +589,33 @@ func (op *PaymentOperations) Camt029(camt029 message_converter.Camt029) ([]byte,
 		mutual whitelist check
 	*/
 	LOGGER.Infof("Check whether OFI is in RFI's whitelist and vice versa")
-	pKey, whiteListErr := op.whitelistHandler.CheckWhiteListParticipant(rfiId, ofiId, constant.EMPTY_STRING)
+	pKey, whiteListErr := op.whitelistHandler.CheckWhiteListParticipant(rfiId, ofiId, constant2.EMPTY_STRING)
 	if whiteListErr != nil {
 		LOGGER.Errorf(whiteListErr.Error())
-		camt029LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_FAILED)
+		camt029LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_FAILED)
 		op.DbClient.UpdateTx(&DB.PaymentData{
 			InstructionID: &xmlData.InstructionId,
-			TxData:        &constant.DATABASE_STATUS_EMPTY,
-			TxStatus:      &constant.DATABASE_STATUS_FAILED,
-			ResId:         &constant.DATABASE_STATUS_NONE,
+			TxData:        &constant2.DATABASE_STATUS_EMPTY,
+			TxStatus:      &constant2.DATABASE_STATUS_FAILED,
+			ResId:         &constant2.DATABASE_STATUS_NONE,
 			TxDetail:      &camt029LogHandler,
 		})
-		go database.SyncWithPortalDB(constant.LOG_INIT, msgType, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.InstructionId, "", "", camt029LogHandler, &op.fundHandler, statusData)
-		report := op.ResponseHandler.CreateCamt030(BIC, xmlData.MessageId, xmlData.InstructionId, msgName, target, constant.STATUS_CODE_INTERNAL_ERROR)
+		go database.SyncWithPortalDB(constant2.LOG_INIT, msgType, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.InstructionId, "", "", camt029LogHandler, &op.fundHandler, statusData)
+		report := op.ResponseHandler.CreateCamt030(BIC, xmlData.MessageId, xmlData.InstructionId, msgName, target, constant2.STATUS_CODE_INTERNAL_ERROR)
 		return report, whiteListErr
 	}
 	if pKey == "" {
 		LOGGER.Errorf("RFI can not find OFI in whitelist and vice versa")
-		camt029LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_VALIDATION_FAIL)
+		camt029LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_VALIDATION_FAIL)
 		op.DbClient.UpdateTx(&DB.PaymentData{
 			InstructionID: &xmlData.InstructionId,
-			TxData:        &constant.DATABASE_STATUS_EMPTY,
-			TxStatus:      &constant.DATABASE_STATUS_FAILED,
-			ResId:         &constant.DATABASE_STATUS_NONE,
+			TxData:        &constant2.DATABASE_STATUS_EMPTY,
+			TxStatus:      &constant2.DATABASE_STATUS_FAILED,
+			ResId:         &constant2.DATABASE_STATUS_NONE,
 			TxDetail:      &camt029LogHandler,
 		})
-		go database.SyncWithPortalDB(constant.LOG_INIT, msgType, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.InstructionId, "", "", camt029LogHandler, &op.fundHandler, statusData)
-		report := op.ResponseHandler.CreateCamt030(BIC, xmlData.MessageId, xmlData.InstructionId, msgName, target, constant.STATUS_CODE_RFI_OR_OFI_NOT_IN_WL)
+		go database.SyncWithPortalDB(constant2.LOG_INIT, msgType, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.InstructionId, "", "", camt029LogHandler, &op.fundHandler, statusData)
+		report := op.ResponseHandler.CreateCamt030(BIC, xmlData.MessageId, xmlData.InstructionId, msgName, target, constant2.STATUS_CODE_RFI_OR_OFI_NOT_IN_WL)
 		return report, whiteListErr
 	}
 	LOGGER.Infof("Yes, OFI is in RFI's whitelist and vice versa")
@@ -626,52 +626,52 @@ func (op *PaymentOperations) Camt029(camt029 message_converter.Camt029) ([]byte,
 	protoBufData, parseErr := proto.Marshal(&camt029.SendPayload)
 	if parseErr != nil {
 		LOGGER.Errorf("Parse struct to ProtoBuf error %s", parseErr.Error())
-		camt029LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_FAILED)
+		camt029LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_FAILED)
 		op.DbClient.UpdateTx(&DB.PaymentData{
 			InstructionID: &xmlData.InstructionId,
-			TxData:        &constant.DATABASE_STATUS_EMPTY,
-			TxStatus:      &constant.DATABASE_STATUS_FAILED,
-			ResId:         &constant.DATABASE_STATUS_NONE,
+			TxData:        &constant2.DATABASE_STATUS_EMPTY,
+			TxStatus:      &constant2.DATABASE_STATUS_FAILED,
+			ResId:         &constant2.DATABASE_STATUS_NONE,
 			TxDetail:      &camt029LogHandler,
 		})
-		go database.SyncWithPortalDB(constant.LOG_INIT, msgType, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.InstructionId, "", "", camt029LogHandler, &op.fundHandler, statusData)
-		report := op.ResponseHandler.CreateCamt030(BIC, xmlData.MessageId, xmlData.InstructionId, msgName, target, constant.STATUS_CODE_INTERNAL_ERROR)
+		go database.SyncWithPortalDB(constant2.LOG_INIT, msgType, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.InstructionId, "", "", camt029LogHandler, &op.fundHandler, statusData)
+		report := op.ResponseHandler.CreateCamt030(BIC, xmlData.MessageId, xmlData.InstructionId, msgName, target, constant2.STATUS_CODE_INTERNAL_ERROR)
 		return report, parseErr
 	}
 	LOGGER.Infof("Finished parsing Go struct to ProtoBuffer")
 
-	camt029LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_VALIDATION_SUCCESS)
+	camt029LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_VALIDATION_SUCCESS)
 	op.DbClient.UpdateTx(&DB.PaymentData{
 		InstructionID: &xmlData.InstructionId,
-		TxData:        &constant.DATABASE_STATUS_EMPTY,
-		TxStatus:      &constant.DATABASE_STATUS_PENDING,
-		ResId:         &constant.DATABASE_STATUS_NONE,
+		TxData:        &constant2.DATABASE_STATUS_EMPTY,
+		TxStatus:      &constant2.DATABASE_STATUS_PENDING,
+		ResId:         &constant2.DATABASE_STATUS_NONE,
 		TxDetail:      &camt029LogHandler,
 	})
-	database.SyncWithPortalDB(constant.LOG_INIT, msgType, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.InstructionId, "", "", camt029LogHandler, &op.fundHandler, statusData)
+	database.SyncWithPortalDB(constant2.LOG_INIT, msgType, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.InstructionId, "", "", camt029LogHandler, &op.fundHandler, statusData)
 
 	// Send the ProtoBuffer to the response topic of OFI on Kafka broker
 	LOGGER.Infof("Start to send response to Kafka broker")
 	kafkaErr := op.KafkaActor.Produce(ofiId+kafka.RESPONSE_TOPIC, protoBufData)
 	if kafkaErr != nil {
 		LOGGER.Errorf("Error while submit message to Kafka broker: %s", kafkaErr.Error())
-		camt029LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_FAILED)
+		camt029LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_FAILED)
 		op.DbClient.UpdateTx(&DB.PaymentData{
 			InstructionID: &xmlData.InstructionId,
-			TxData:        &constant.DATABASE_STATUS_EMPTY,
-			TxStatus:      &constant.DATABASE_STATUS_FAILED,
-			ResId:         &constant.DATABASE_STATUS_NONE,
+			TxData:        &constant2.DATABASE_STATUS_EMPTY,
+			TxStatus:      &constant2.DATABASE_STATUS_FAILED,
+			ResId:         &constant2.DATABASE_STATUS_NONE,
 			TxDetail:      &camt029LogHandler,
 		})
-		go database.SyncWithPortalDB(constant.LOG_INIT, msgType, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.InstructionId, "", "", camt029LogHandler, &op.fundHandler, statusData)
-		report := op.ResponseHandler.CreateCamt030(BIC, xmlData.MessageId, xmlData.InstructionId, msgName, target, constant.STATUS_CODE_INTERNAL_ERROR)
+		go database.SyncWithPortalDB(constant2.LOG_INIT, msgType, msgName, xmlData.OriginalMsgId, xmlData.OriginalInstructionId, xmlData.InstructionId, "", "", camt029LogHandler, &op.fundHandler, statusData)
+		report := op.ResponseHandler.CreateCamt030(BIC, xmlData.MessageId, xmlData.InstructionId, msgName, target, constant2.STATUS_CODE_INTERNAL_ERROR)
 		return report, kafkaErr
 	}
 	LOGGER.Infof("Successfully produce message to Kafka broker")
 	LOGGER.Debug("-----------------------------------------------------------")
 
 	// Send status back to RFI
-	report := op.ResponseHandler.CreateCamt030(BIC, xmlData.MessageId, xmlData.InstructionId, msgName, target, constant.STATUS_CODE_CXL_RES_SEND_TO_KAFKA)
+	report := op.ResponseHandler.CreateCamt030(BIC, xmlData.MessageId, xmlData.InstructionId, msgName, target, constant2.STATUS_CODE_CXL_RES_SEND_TO_KAFKA)
 
 	return report, nil
 }
@@ -680,9 +680,9 @@ func (op *PaymentOperations) Camt029(camt029 message_converter.Camt029) ([]byte,
 func RFI_Camt056(data camt056pbstruct.SendPayload, op *kafka.KafkaOpreations) {
 	// Parse the ProtoBuffer into Go struct and reconstruct it into pacs008 message
 	LOGGER.Infof("Parsing ProtoBuffer to XML")
-	standardType := constant.ISO20022
-	paymentStatusMsgType := constant.PAYMENT_TYPE_CANCELLATION
-	msgName := constant.CAMT056
+	standardType := constant2.ISO20022
+	paymentStatusMsgType := constant2.PAYMENT_TYPE_CANCELLATION
+	msgName := constant2.CAMT056
 	pacs008InstructionId := data.OriginalInstructionId
 	instructionId := data.InstructionId
 	reqMsgType := data.MsgType
@@ -703,13 +703,13 @@ func RFI_Camt056(data camt056pbstruct.SendPayload, op *kafka.KafkaOpreations) {
 	paymentData, dbErr := op.DbClient.GetTx(pacs008InstructionId)
 	if dbErr != nil {
 		LOGGER.Errorf("Retrieve data from DB failed: %v", dbErr)
-		op.SendErrMsg(msgId, instructionId, standardType, reqMsgType, ofiId, rfiId, constant.STATUS_CODE_INTERNAL_ERROR)
+		op.SendErrMsg(msgId, instructionId, standardType, reqMsgType, ofiId, rfiId, constant2.STATUS_CODE_INTERNAL_ERROR)
 		return
 	}
 
 	if paymentData.TxData == nil || paymentData.TxDetail == nil {
 		LOGGER.Errorf("The original message ID %v does not exist in DB", pacs008InstructionId)
-		op.SendErrMsg(msgId, instructionId, standardType, reqMsgType, ofiId, rfiId, constant.STATUS_CODE_WRONG_ORIGINAL_ID)
+		op.SendErrMsg(msgId, instructionId, standardType, reqMsgType, ofiId, rfiId, constant2.STATUS_CODE_WRONG_ORIGINAL_ID)
 		return
 	}
 	pacs008LogHandler.PaymentStatuses = paymentData.TxDetail.PaymentStatuses
@@ -720,16 +720,16 @@ func RFI_Camt056(data camt056pbstruct.SendPayload, op *kafka.KafkaOpreations) {
 	camt056Data, dbErr := op.DbClient.GetTx(instructionId)
 	if dbErr != nil {
 		LOGGER.Errorf("Retrieve data from DB failed: %v", dbErr)
-		op.SendErrMsg(msgId, instructionId, standardType, reqMsgType, ofiId, rfiId, constant.STATUS_CODE_INTERNAL_ERROR)
+		op.SendErrMsg(msgId, instructionId, standardType, reqMsgType, ofiId, rfiId, constant2.STATUS_CODE_INTERNAL_ERROR)
 		return
 	}
 	if camt056Data.TxData == nil || camt056Data.TxDetail == nil {
 		LOGGER.Errorf("The original message ID %v does not exist in DB", instructionId)
-		op.SendErrMsg(msgId, instructionId, standardType, reqMsgType, ofiId, rfiId, constant.STATUS_CODE_WRONG_INSTRUCTION_ID)
+		op.SendErrMsg(msgId, instructionId, standardType, reqMsgType, ofiId, rfiId, constant2.STATUS_CODE_WRONG_INSTRUCTION_ID)
 		return
 	}
 	camt056LogHandler.PaymentStatuses = camt056Data.TxDetail.PaymentStatuses
-	camt056LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_RFI_PROCESSING)
+	camt056LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_RFI_PROCESSING)
 
 	/*
 		verify signature
@@ -738,17 +738,17 @@ func RFI_Camt056(data camt056pbstruct.SendPayload, op *kafka.KafkaOpreations) {
 	result := xmldsig.VerifySignature(string(data.Message))
 	if !result {
 		LOGGER.Errorf("signature verification failed")
-		camt056LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_RFI_VALIDATION_FAIL)
+		camt056LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_RFI_VALIDATION_FAIL)
 		//camt056 status
 		op.DbClient.UpdateTx(&DB.PaymentData{
 			InstructionID: &instructionId,
-			TxData:        &constant.DATABASE_STATUS_EMPTY,
-			TxStatus:      &constant.DATABASE_STATUS_FAILED,
-			ResId:         &constant.DATABASE_STATUS_FAILED,
+			TxData:        &constant2.DATABASE_STATUS_EMPTY,
+			TxStatus:      &constant2.DATABASE_STATUS_FAILED,
+			ResId:         &constant2.DATABASE_STATUS_FAILED,
 			TxDetail:      &camt056LogHandler,
 		})
-		go database.SyncWithPortalDB(constant.LOG_UPDATE, paymentStatusMsgType, msgName, originalMsgId, pacs008InstructionId, instructionId, "", "", camt056LogHandler, &op.FundHandler, &sendmodel.StatusData{})
-		op.SendErrMsg(msgId, instructionId, standardType, reqMsgType, ofiId, rfiId, constant.STATUS_CODE_OFI_SIGNATURE_FAIL)
+		go database.SyncWithPortalDB(constant2.LOG_UPDATE, paymentStatusMsgType, msgName, originalMsgId, pacs008InstructionId, instructionId, "", "", camt056LogHandler, &op.FundHandler, &sendmodel.StatusData{})
+		op.SendErrMsg(msgId, instructionId, standardType, reqMsgType, ofiId, rfiId, constant2.STATUS_CODE_OFI_SIGNATURE_FAIL)
 		return
 	}
 	LOGGER.Infof("OFI signature verified!")
@@ -761,31 +761,31 @@ func RFI_Camt056(data camt056pbstruct.SendPayload, op *kafka.KafkaOpreations) {
 
 	if xmlData == nil {
 		LOGGER.Errorf("Encounter error while construncting proto buffer to go struct")
-		camt056LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_RFI_VALIDATION_FAIL)
+		camt056LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_RFI_VALIDATION_FAIL)
 		//camt056 status
 		op.DbClient.UpdateTx(&DB.PaymentData{
 			InstructionID: &instructionId,
-			TxData:        &constant.DATABASE_STATUS_EMPTY,
-			TxStatus:      &constant.DATABASE_STATUS_FAILED,
-			ResId:         &constant.DATABASE_STATUS_FAILED,
+			TxData:        &constant2.DATABASE_STATUS_EMPTY,
+			TxStatus:      &constant2.DATABASE_STATUS_FAILED,
+			ResId:         &constant2.DATABASE_STATUS_FAILED,
 			TxDetail:      &camt056LogHandler,
 		})
-		go database.SyncWithPortalDB(constant.LOG_UPDATE, paymentStatusMsgType, msgName, originalMsgId, pacs008InstructionId, instructionId, "", "", camt056LogHandler, &op.FundHandler, &sendmodel.StatusData{})
-		op.SendErrMsg(msgId, instructionId, standardType, reqMsgType, ofiId, rfiId, constant.STATUS_CODE_INTERNAL_ERROR_PARSE)
+		go database.SyncWithPortalDB(constant2.LOG_UPDATE, paymentStatusMsgType, msgName, originalMsgId, pacs008InstructionId, instructionId, "", "", camt056LogHandler, &op.FundHandler, &sendmodel.StatusData{})
+		op.SendErrMsg(msgId, instructionId, standardType, reqMsgType, ofiId, rfiId, constant2.STATUS_CODE_INTERNAL_ERROR_PARSE)
 		return
 	} else if err != nil {
 		LOGGER.Errorf("Parse request from kafka failed: %s", err.Error())
-		camt056LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_RFI_VALIDATION_FAIL)
+		camt056LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_RFI_VALIDATION_FAIL)
 		//camt056 status
 		op.DbClient.UpdateTx(&DB.PaymentData{
 			InstructionID: &instructionId,
-			TxData:        &constant.DATABASE_STATUS_EMPTY,
-			TxStatus:      &constant.DATABASE_STATUS_FAILED,
-			ResId:         &constant.DATABASE_STATUS_FAILED,
+			TxData:        &constant2.DATABASE_STATUS_EMPTY,
+			TxStatus:      &constant2.DATABASE_STATUS_FAILED,
+			ResId:         &constant2.DATABASE_STATUS_FAILED,
 			TxDetail:      &camt056LogHandler,
 		})
-		go database.SyncWithPortalDB(constant.LOG_UPDATE, paymentStatusMsgType, msgName, originalMsgId, pacs008InstructionId, instructionId, "", "", camt056LogHandler, &op.FundHandler, &sendmodel.StatusData{})
-		op.SendErrMsg(msgId, instructionId, standardType, reqMsgType, ofiId, rfiId, constant.STATUS_CODE_INTERNAL_ERROR_PARSE)
+		go database.SyncWithPortalDB(constant2.LOG_UPDATE, paymentStatusMsgType, msgName, originalMsgId, pacs008InstructionId, instructionId, "", "", camt056LogHandler, &op.FundHandler, &sendmodel.StatusData{})
+		op.SendErrMsg(msgId, instructionId, standardType, reqMsgType, ofiId, rfiId, constant2.STATUS_CODE_INTERNAL_ERROR_PARSE)
 		return
 	}
 	// Get important data from the XML data
@@ -813,14 +813,14 @@ func RFI_Camt056(data camt056pbstruct.SendPayload, op *kafka.KafkaOpreations) {
 	// update pacs008 record in DB
 	rfiVerifyRequestAndSendToKafka(topicName, msgId, msgName, originalMessageId, ofiId, settlementAccountName, standardType, msgName, instructionId, originalInstructionId, paymentStatusMsgType, pacs008LogHandler, reqData, statusData, *paymentData.TxData, op)
 
-	camt056LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_CANCELLATION_INIT)
+	camt056LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_CANCELLATION_INIT)
 	op.DbClient.UpdateTx(&DB.PaymentData{
 		InstructionID: &instructionId,
-		TxStatus:      &constant.DATABASE_STATUS_DONE,
-		ResId:         &constant.DATABASE_STATUS_NONE,
+		TxStatus:      &constant2.DATABASE_STATUS_DONE,
+		ResId:         &constant2.DATABASE_STATUS_NONE,
 		TxDetail:      &camt056LogHandler,
 	})
-	go database.SyncWithPortalDB(constant.LOG_UPDATE, paymentStatusMsgType, msgName, originalMessageId, originalInstructionId, instructionId, "", "", camt056LogHandler, &op.FundHandler, statusData)
+	go database.SyncWithPortalDB(constant2.LOG_UPDATE, paymentStatusMsgType, msgName, originalMessageId, originalInstructionId, instructionId, "", "", camt056LogHandler, &op.FundHandler, statusData)
 
 	return
 }
@@ -828,9 +828,9 @@ func RFI_Camt056(data camt056pbstruct.SendPayload, op *kafka.KafkaOpreations) {
 // if message type is camt.029
 func OFI_Camt029(data camt029pbstruct.SendPayload, op *kafka.KafkaOpreations) {
 	// Parse the ProtoBuffer to Go struct and reconstruct it into camt029 message
-	msgName := constant.CAMT029
-	standardType := constant.ISO20022
-	msgType := constant.PAYMENT_TYPE_CANCELLATION
+	msgName := constant2.CAMT029
+	standardType := constant2.ISO20022
+	msgType := constant2.PAYMENT_TYPE_CANCELLATION
 	camt029LogHandler := transaction.InitiatePaymentLogOperation()
 	pacs008LogHandler := transaction.InitiatePaymentLogOperation()
 	originalInstrId := data.OriginalInstructionId
@@ -848,18 +848,18 @@ func OFI_Camt029(data camt029pbstruct.SendPayload, op *kafka.KafkaOpreations) {
 	// Query failed or data unmarshal failed
 	if dbErr != nil {
 		LOGGER.Error("Failed retrieving tx from DB: %v", dbErr)
-		op.SendErrMsg(msgId, instrId, standardType, msgName, ofiId, rfiId, constant.STATUS_CODE_WRONG_INSTRUCTION_ID)
+		op.SendErrMsg(msgId, instrId, standardType, msgName, ofiId, rfiId, constant2.STATUS_CODE_WRONG_INSTRUCTION_ID)
 		return
 	}
 	if paymentData.TxDetail == nil {
 		LOGGER.Error("Can not get camt.029 information from database")
-		op.SendErrMsg(msgId, instrId, standardType, msgName, ofiId, rfiId, constant.STATUS_CODE_WRONG_INSTRUCTION_ID)
+		op.SendErrMsg(msgId, instrId, standardType, msgName, ofiId, rfiId, constant2.STATUS_CODE_WRONG_INSTRUCTION_ID)
 		return
 	}
 
 	// Initialize the payment status
 	camt029LogHandler.PaymentStatuses = paymentData.TxDetail.PaymentStatuses
-	camt029LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_OFI_PROCESSING)
+	camt029LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_OFI_PROCESSING)
 
 	/*
 	 Get pacs008 data from database
@@ -868,12 +868,12 @@ func OFI_Camt029(data camt029pbstruct.SendPayload, op *kafka.KafkaOpreations) {
 	payment008Data, dbErr := op.DbClient.GetTx(originalInstrId)
 	if dbErr != nil {
 		LOGGER.Error("Failed retrieving tx from DB: %v", dbErr)
-		op.SendErrMsg(msgId, instrId, standardType, msgName, ofiId, rfiId, constant.STATUS_CODE_WRONG_INSTRUCTION_ID)
+		op.SendErrMsg(msgId, instrId, standardType, msgName, ofiId, rfiId, constant2.STATUS_CODE_WRONG_INSTRUCTION_ID)
 		return
 	}
 	if payment008Data.TxData == nil || payment008Data.TxDetail == nil {
 		LOGGER.Error("Can not get pacs.008 information from database")
-		op.SendErrMsg(msgId, instrId, standardType, msgName, ofiId, rfiId, constant.STATUS_CODE_WRONG_ORIGINAL_ID)
+		op.SendErrMsg(msgId, instrId, standardType, msgName, ofiId, rfiId, constant2.STATUS_CODE_WRONG_ORIGINAL_ID)
 		return
 	}
 	pacs008LogHandler.PaymentStatuses = payment008Data.TxDetail.PaymentStatuses
@@ -885,16 +885,16 @@ func OFI_Camt029(data camt029pbstruct.SendPayload, op *kafka.KafkaOpreations) {
 	result := xmldsig.VerifySignature(string(data.Message))
 	if !result {
 		LOGGER.Errorf("signature verification failed")
-		camt029LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_OFI_VALIDATION_FAIL)
+		camt029LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_OFI_VALIDATION_FAIL)
 		op.DbClient.UpdateTx(&DB.PaymentData{
 			InstructionID: &instrId,
-			TxData:        &constant.DATABASE_STATUS_EMPTY,
-			TxStatus:      &constant.DATABASE_STATUS_FAILED,
-			ResId:         &constant.DATABASE_STATUS_FAILED,
+			TxData:        &constant2.DATABASE_STATUS_EMPTY,
+			TxStatus:      &constant2.DATABASE_STATUS_FAILED,
+			ResId:         &constant2.DATABASE_STATUS_FAILED,
 			TxDetail:      &camt029LogHandler,
 		})
-		go database.SyncWithPortalDB(constant.LOG_UPDATE, msgType, msgName, originalReqMsgId, originalInstrId, instrId, "", "", camt029LogHandler, &op.FundHandler, &sendmodel.StatusData{})
-		op.SendErrMsg(msgId, instrId, standardType, msgName, ofiId, rfiId, constant.STATUS_CODE_RFI_SIGNATURE_FAIL)
+		go database.SyncWithPortalDB(constant2.LOG_UPDATE, msgType, msgName, originalReqMsgId, originalInstrId, instrId, "", "", camt029LogHandler, &op.FundHandler, &sendmodel.StatusData{})
+		op.SendErrMsg(msgId, instrId, standardType, msgName, ofiId, rfiId, constant2.STATUS_CODE_RFI_SIGNATURE_FAIL)
 		return
 	}
 	LOGGER.Infof("RFI signature verified!")
@@ -908,28 +908,28 @@ func OFI_Camt029(data camt029pbstruct.SendPayload, op *kafka.KafkaOpreations) {
 
 	if xmlData == nil {
 		LOGGER.Errorf("Encounter error while construncting proto buffer to go struct")
-		camt029LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_OFI_VALIDATION_FAIL)
+		camt029LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_OFI_VALIDATION_FAIL)
 		op.DbClient.UpdateTx(&DB.PaymentData{
 			InstructionID: &instrId,
-			TxData:        &constant.DATABASE_STATUS_EMPTY,
-			TxStatus:      &constant.DATABASE_STATUS_FAILED,
-			ResId:         &constant.DATABASE_STATUS_FAILED,
+			TxData:        &constant2.DATABASE_STATUS_EMPTY,
+			TxStatus:      &constant2.DATABASE_STATUS_FAILED,
+			ResId:         &constant2.DATABASE_STATUS_FAILED,
 			TxDetail:      &camt029LogHandler,
 		})
-		go database.SyncWithPortalDB(constant.LOG_UPDATE, msgType, msgName, originalReqMsgId, originalInstrId, instrId, "", "", camt029LogHandler, &op.FundHandler, &sendmodel.StatusData{})
-		op.SendErrMsg(msgId, instrId, standardType, msgName, ofiId, rfiId, constant.STATUS_CODE_INTERNAL_ERROR_PARSE)
+		go database.SyncWithPortalDB(constant2.LOG_UPDATE, msgType, msgName, originalReqMsgId, originalInstrId, instrId, "", "", camt029LogHandler, &op.FundHandler, &sendmodel.StatusData{})
+		op.SendErrMsg(msgId, instrId, standardType, msgName, ofiId, rfiId, constant2.STATUS_CODE_INTERNAL_ERROR_PARSE)
 		return
-	} else if err != nil || statusCode != constant.STATUS_CODE_DEFAULT {
-		camt029LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_OFI_VALIDATION_FAIL)
+	} else if err != nil || statusCode != constant2.STATUS_CODE_DEFAULT {
+		camt029LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_OFI_VALIDATION_FAIL)
 		op.DbClient.UpdateTx(&DB.PaymentData{
 			InstructionID: &instrId,
-			TxData:        &constant.DATABASE_STATUS_EMPTY,
-			TxStatus:      &constant.DATABASE_STATUS_FAILED,
-			ResId:         &constant.DATABASE_STATUS_FAILED,
+			TxData:        &constant2.DATABASE_STATUS_EMPTY,
+			TxStatus:      &constant2.DATABASE_STATUS_FAILED,
+			ResId:         &constant2.DATABASE_STATUS_FAILED,
 			TxDetail:      &camt029LogHandler,
 		})
-		go database.SyncWithPortalDB(constant.LOG_UPDATE, msgType, msgName, originalReqMsgId, originalInstrId, instrId, "", "", camt029LogHandler, &op.FundHandler, &sendmodel.StatusData{})
-		op.SendErrMsg(msgId, instrId, standardType, msgName, ofiId, rfiId, constant.STATUS_CODE_INTERNAL_ERROR_PARSE)
+		go database.SyncWithPortalDB(constant2.LOG_UPDATE, msgType, msgName, originalReqMsgId, originalInstrId, instrId, "", "", camt029LogHandler, &op.FundHandler, &sendmodel.StatusData{})
+		op.SendErrMsg(msgId, instrId, standardType, msgName, ofiId, rfiId, constant2.STATUS_CODE_INTERNAL_ERROR_PARSE)
 		return
 	}
 	// Get important data from the XML data
@@ -973,30 +973,30 @@ func OFI_Camt029(data camt029pbstruct.SendPayload, op *kafka.KafkaOpreations) {
 	res, err := blockListClient.ValidateFromBlocklist(countries, currencies, participants)
 	if err != nil {
 		LOGGER.Errorf("%v", err)
-		op.SendErrMsg(msgId, instrId, standardType, msgName, ofiId, rfiId, constant.STATUS_CODE_INTERNAL_ERROR)
-		camt029LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_FAILED)
+		op.SendErrMsg(msgId, instrId, standardType, msgName, ofiId, rfiId, constant2.STATUS_CODE_INTERNAL_ERROR)
+		camt029LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_FAILED)
 		op.DbClient.UpdateTx(&DB.PaymentData{
 			InstructionID: &instrId,
-			TxData:        &constant.DATABASE_STATUS_EMPTY,
-			TxStatus:      &constant.DATABASE_STATUS_FAILED,
-			ResId:         &constant.DATABASE_STATUS_FAILED,
+			TxData:        &constant2.DATABASE_STATUS_EMPTY,
+			TxStatus:      &constant2.DATABASE_STATUS_FAILED,
+			ResId:         &constant2.DATABASE_STATUS_FAILED,
 			TxDetail:      &camt029LogHandler,
 		})
-		go database.SyncWithPortalDB(constant.LOG_UPDATE, msgType, msgName, originalReqMsgId, originalInstrId, instrId, "", "", camt029LogHandler, &op.FundHandler, commonStatusData)
+		go database.SyncWithPortalDB(constant2.LOG_UPDATE, msgType, msgName, originalReqMsgId, originalInstrId, instrId, "", "", camt029LogHandler, &op.FundHandler, commonStatusData)
 		return
 	}
 	if res == common.BlocklistDeniedString {
 		LOGGER.Errorf("The transaction currency/country/institution is within the blocklist, transaction forbidden!")
-		op.SendErrMsg(msgId, instrId, standardType, msgName, ofiId, rfiId, constant.STATUS_CODE_BLOCKLIST)
-		camt029LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_OFI_VALIDATION_FAIL)
+		op.SendErrMsg(msgId, instrId, standardType, msgName, ofiId, rfiId, constant2.STATUS_CODE_BLOCKLIST)
+		camt029LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_OFI_VALIDATION_FAIL)
 		op.DbClient.UpdateTx(&DB.PaymentData{
 			InstructionID: &instrId,
-			TxData:        &constant.DATABASE_STATUS_EMPTY,
-			TxStatus:      &constant.DATABASE_STATUS_FAILED,
-			ResId:         &constant.DATABASE_STATUS_FAILED,
+			TxData:        &constant2.DATABASE_STATUS_EMPTY,
+			TxStatus:      &constant2.DATABASE_STATUS_FAILED,
+			ResId:         &constant2.DATABASE_STATUS_FAILED,
 			TxDetail:      &camt029LogHandler,
 		})
-		go database.SyncWithPortalDB(constant.LOG_UPDATE, msgType, msgName, originalReqMsgId, originalInstrId, instrId, "", "", camt029LogHandler, &op.FundHandler, commonStatusData)
+		go database.SyncWithPortalDB(constant2.LOG_UPDATE, msgType, msgName, originalReqMsgId, originalInstrId, instrId, "", "", camt029LogHandler, &op.FundHandler, commonStatusData)
 		return
 	}
 
@@ -1008,30 +1008,30 @@ func OFI_Camt029(data camt029pbstruct.SendPayload, op *kafka.KafkaOpreations) {
 	rfiAccount, whiteListErr := whitelistHandler.CheckWhiteListParticipant(homeDomain, rfiId, rfiAccountName)
 	if whiteListErr != nil {
 		LOGGER.Errorf(whiteListErr.Error())
-		op.SendErrMsg(msgId, instrId, standardType, msgName, ofiId, rfiId, constant.STATUS_CODE_INTERNAL_ERROR)
-		camt029LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_FAILED)
+		op.SendErrMsg(msgId, instrId, standardType, msgName, ofiId, rfiId, constant2.STATUS_CODE_INTERNAL_ERROR)
+		camt029LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_FAILED)
 		op.DbClient.UpdateTx(&DB.PaymentData{
 			InstructionID: &instrId,
-			TxData:        &constant.DATABASE_STATUS_EMPTY,
-			TxStatus:      &constant.DATABASE_STATUS_FAILED,
-			ResId:         &constant.DATABASE_STATUS_FAILED,
+			TxData:        &constant2.DATABASE_STATUS_EMPTY,
+			TxStatus:      &constant2.DATABASE_STATUS_FAILED,
+			ResId:         &constant2.DATABASE_STATUS_FAILED,
 			TxDetail:      &camt029LogHandler,
 		})
-		go database.SyncWithPortalDB(constant.LOG_UPDATE, msgType, msgName, originalReqMsgId, originalInstrId, instrId, "", "", camt029LogHandler, &op.FundHandler, commonStatusData)
+		go database.SyncWithPortalDB(constant2.LOG_UPDATE, msgType, msgName, originalReqMsgId, originalInstrId, instrId, "", "", camt029LogHandler, &op.FundHandler, commonStatusData)
 		return
 	}
 	if rfiAccount == "" {
 		LOGGER.Errorf("Can not find RFI or OFI in whitelist and vice versa")
-		op.SendErrMsg(msgId, instrId, standardType, msgName, ofiId, rfiId, constant.STATUS_CODE_RFI_OR_OFI_NOT_IN_WL)
-		camt029LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_OFI_VALIDATION_FAIL)
+		op.SendErrMsg(msgId, instrId, standardType, msgName, ofiId, rfiId, constant2.STATUS_CODE_RFI_OR_OFI_NOT_IN_WL)
+		camt029LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_OFI_VALIDATION_FAIL)
 		op.DbClient.UpdateTx(&DB.PaymentData{
 			InstructionID: &instrId,
-			TxData:        &constant.DATABASE_STATUS_EMPTY,
-			TxStatus:      &constant.DATABASE_STATUS_FAILED,
-			ResId:         &constant.DATABASE_STATUS_FAILED,
+			TxData:        &constant2.DATABASE_STATUS_EMPTY,
+			TxStatus:      &constant2.DATABASE_STATUS_FAILED,
+			ResId:         &constant2.DATABASE_STATUS_FAILED,
 			TxDetail:      &camt029LogHandler,
 		})
-		go database.SyncWithPortalDB(constant.LOG_UPDATE, msgType, msgName, originalReqMsgId, originalInstrId, instrId, "", "", camt029LogHandler, &op.FundHandler, commonStatusData)
+		go database.SyncWithPortalDB(constant2.LOG_UPDATE, msgType, msgName, originalReqMsgId, originalInstrId, instrId, "", "", camt029LogHandler, &op.FundHandler, commonStatusData)
 		return
 	}
 	LOGGER.Infof("Yes, RFI is in OFI's whitelist and vice versa.")
@@ -1042,16 +1042,16 @@ func OFI_Camt029(data camt029pbstruct.SendPayload, op *kafka.KafkaOpreations) {
 	signedMessage, signErr := op.SignHandler.SignPayloadByMasterAccount(resData)
 	if signErr != nil {
 		LOGGER.Errorf("Failed to sign payload: %v", signErr.Error())
-		camt029LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_FAILED)
+		camt029LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_FAILED)
 		op.DbClient.UpdateTx(&DB.PaymentData{
 			InstructionID: &instrId,
-			TxData:        &constant.DATABASE_STATUS_EMPTY,
-			TxStatus:      &constant.DATABASE_STATUS_FAILED,
-			ResId:         &constant.DATABASE_STATUS_FAILED,
+			TxData:        &constant2.DATABASE_STATUS_EMPTY,
+			TxStatus:      &constant2.DATABASE_STATUS_FAILED,
+			ResId:         &constant2.DATABASE_STATUS_FAILED,
 			TxDetail:      &camt029LogHandler,
 		})
-		go database.SyncWithPortalDB(constant.LOG_UPDATE, msgType, msgName, originalReqMsgId, originalInstrId, instrId, "", "", camt029LogHandler, &op.FundHandler, commonStatusData)
-		op.SendErrMsg(msgId, instrId, standardType, msgName, ofiId, rfiId, constant.STATUS_CODE_SIGN_PAYLOAD_FAIL)
+		go database.SyncWithPortalDB(constant2.LOG_UPDATE, msgType, msgName, originalReqMsgId, originalInstrId, instrId, "", "", camt029LogHandler, &op.FundHandler, commonStatusData)
+		op.SendErrMsg(msgId, instrId, standardType, msgName, ofiId, rfiId, constant2.STATUS_CODE_SIGN_PAYLOAD_FAIL)
 		return
 	}
 	gatewayMsg := parse.EncodeBase64(signedMessage)
@@ -1073,40 +1073,40 @@ func OFI_Camt029(data camt029pbstruct.SendPayload, op *kafka.KafkaOpreations) {
 	err = op.SendRequestToKafka(topicName, msg)
 	if err != nil {
 		LOGGER.Errorf("Encounter error while producing message to Kafka topic: %v", ofiId+"_"+kafka.TRANSACTION_TOPIC)
-		camt029LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_FAILED)
+		camt029LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_FAILED)
 		op.DbClient.UpdateTx(&DB.PaymentData{
 			InstructionID: &instrId,
-			TxData:        &constant.DATABASE_STATUS_EMPTY,
-			TxStatus:      &constant.DATABASE_STATUS_FAILED,
-			ResId:         &constant.DATABASE_STATUS_FAILED,
+			TxData:        &constant2.DATABASE_STATUS_EMPTY,
+			TxStatus:      &constant2.DATABASE_STATUS_FAILED,
+			ResId:         &constant2.DATABASE_STATUS_FAILED,
 			TxDetail:      &camt029LogHandler,
 		})
-		go database.SyncWithPortalDB(constant.LOG_UPDATE, msgType, msgName, originalReqMsgId, originalInstrId, instrId, "", "", camt029LogHandler, &op.FundHandler, commonStatusData)
-		op.SendErrMsg(msgId, instrId, standardType, msgName, ofiId, rfiId, constant.STATUS_CODE_INTERNAL_ERROR)
+		go database.SyncWithPortalDB(constant2.LOG_UPDATE, msgType, msgName, originalReqMsgId, originalInstrId, instrId, "", "", camt029LogHandler, &op.FundHandler, commonStatusData)
+		op.SendErrMsg(msgId, instrId, standardType, msgName, ofiId, rfiId, constant2.STATUS_CODE_INTERNAL_ERROR)
 		return
 	}
 
-	camt029LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_REJECTED)
-	pacs008LogHandler.RecordPaymentStatus(constant.PAYMENT_STATUS_REJECTED)
+	camt029LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_REJECTED)
+	pacs008LogHandler.RecordPaymentStatus(constant2.PAYMENT_STATUS_REJECTED)
 
 	op.DbClient.UpdateTx(&DB.PaymentData{
 		InstructionID: &xmlData.OriginalInstructionId,
-		TxData:        &constant.DATABASE_STATUS_EMPTY,
-		TxStatus:      &constant.DATABASE_STATUS_CLEARED,
-		ResId:         &constant.DATABASE_STATUS_NONE,
+		TxData:        &constant2.DATABASE_STATUS_EMPTY,
+		TxStatus:      &constant2.DATABASE_STATUS_CLEARED,
+		ResId:         &constant2.DATABASE_STATUS_NONE,
 		TxDetail:      &pacs008LogHandler,
 	})
 
 	op.DbClient.UpdateTx(&DB.PaymentData{
 		InstructionID: &instrId,
-		TxData:        &constant.DATABASE_STATUS_EMPTY,
-		TxStatus:      &constant.DATABASE_STATUS_DONE,
-		ResId:         &constant.DATABASE_STATUS_NONE,
+		TxData:        &constant2.DATABASE_STATUS_EMPTY,
+		TxStatus:      &constant2.DATABASE_STATUS_DONE,
+		ResId:         &constant2.DATABASE_STATUS_NONE,
 		TxDetail:      &camt029LogHandler,
 	})
 
-	go database.SyncWithPortalDB(constant.LOG_UPDATE, msgType, msgName, originalReqMsgId, originalInstrId, instrId, "", rfiAccount, camt029LogHandler, &op.FundHandler, commonStatusData)
-	go database.SyncWithPortalDB(constant.LOG_UPDATE, msgType, constant.PACS008, originalReqMsgId, originalInstrId, originalInstrId, "", "", pacs008LogHandler, &op.FundHandler, commonStatusData)
+	go database.SyncWithPortalDB(constant2.LOG_UPDATE, msgType, msgName, originalReqMsgId, originalInstrId, instrId, "", rfiAccount, camt029LogHandler, &op.FundHandler, commonStatusData)
+	go database.SyncWithPortalDB(constant2.LOG_UPDATE, msgType, constant2.PACS008, originalReqMsgId, originalInstrId, originalInstrId, "", "", pacs008LogHandler, &op.FundHandler, commonStatusData)
 
 	LOGGER.Debug("---------------------------------------------------------------------")
 	return
@@ -1128,37 +1128,37 @@ func getCriticalInfoFromCAMT056(document *camt056struct.FIToFIPaymentCancellatio
 		OFIId:                    ofiId,
 		RFIId:                    rfiId,
 		OFISettlementAccountName: ofiSettlementAccountName,
-		ErrorCode:                constant.STATUS_CODE_DEFAULT,
+		ErrorCode:                constant2.STATUS_CODE_DEFAULT,
 		InstructionId:            instrId,
 		OriginalInstructionId:    originalInstrId,
 	}
 
 	if !utils.StringsEqual(ofiId, homeDomain) {
 		LOGGER.Error("Instructing agent is an incorrect participant")
-		checkData.ErrorCode = constant.STATUS_CODE_WRONG_FI
+		checkData.ErrorCode = constant2.STATUS_CODE_WRONG_FI
 		return checkData, &sendmodel.StatusData{}, errors.New("instructing agent is an incorrect participant")
 	}
 
 	// Check if the original payment type is pacs.008
-	if !utils.StringsEqual(originalPaymentType, constant.PACS008) {
+	if !utils.StringsEqual(originalPaymentType, constant2.PACS008) {
 		LOGGER.Error("Incorrect original message name ID")
-		checkData.ErrorCode = constant.STATUS_CODE_WRONG_MSG_NAME_ID
+		checkData.ErrorCode = constant2.STATUS_CODE_WRONG_MSG_NAME_ID
 		return checkData, &sendmodel.StatusData{}, errors.New("incorrect original message name ID")
 	}
 
 	paymentData, dbErr := dbClient.GetTx(originalInstrId)
 	if dbErr != nil {
-		checkData.ErrorCode = constant.STATUS_CODE_INTERNAL_ERROR
+		checkData.ErrorCode = constant2.STATUS_CODE_INTERNAL_ERROR
 		return checkData, &sendmodel.StatusData{}, errors.New("database query error")
 	}
 
 	if paymentData.TxData == nil {
-		checkData.ErrorCode = constant.STATUS_CODE_WRONG_ORIGINAL_ID
+		checkData.ErrorCode = constant2.STATUS_CODE_WRONG_ORIGINAL_ID
 		return checkData, &sendmodel.StatusData{}, errors.New("wrong original Instruction ID")
 	}
 
-	if *paymentData.TxStatus != constant.DATABASE_STATUS_CLEARED && *paymentData.TxStatus != constant.DATABASE_STATUS_SETTLED {
-		checkData.ErrorCode = constant.STATUS_CODE_ORIGINAL_REQUEST_NOT_DONE
+	if *paymentData.TxStatus != constant2.DATABASE_STATUS_CLEARED && *paymentData.TxStatus != constant2.DATABASE_STATUS_SETTLED {
+		checkData.ErrorCode = constant2.STATUS_CODE_ORIGINAL_REQUEST_NOT_DONE
 		return checkData, &sendmodel.StatusData{}, errors.New("original payment request is not CLEARED/SETTLED yet")
 	}
 
@@ -1201,25 +1201,25 @@ func getCriticalInfoFromPacs004(document *pacs004struct.PaymentReturnV09, homeDo
 		RFIId:                    rfiId,
 		OFISettlementAccountName: ofiSettlementAccountName,
 		RFISettlementAccountName: rfiSettlementAccountName,
-		ErrorCode:                constant.STATUS_CODE_DEFAULT,
+		ErrorCode:                constant2.STATUS_CODE_DEFAULT,
 		MessageId:                msgId,
 		AssetIssuer:              assetIssuerId,
 	}
 
 	if !utils.StringsEqual(rfiId, homeDomain) {
 		LOGGER.Error("Instructing agent is an incorrect participant")
-		checkData.ErrorCode = constant.STATUS_CODE_WRONG_FI
+		checkData.ErrorCode = constant2.STATUS_CODE_WRONG_FI
 		return checkData, nil, nil, errors.New("instructing agent is an incorrect participant")
 	}
 
 	paymentData, dbErr := dbClient.GetTx(originalInstrId)
 	if dbErr != nil {
-		checkData.ErrorCode = constant.STATUS_CODE_INTERNAL_ERROR
+		checkData.ErrorCode = constant2.STATUS_CODE_INTERNAL_ERROR
 		return checkData, nil, nil, errors.New("database query error")
 	}
 
 	if paymentData.TxData == nil {
-		checkData.ErrorCode = constant.STATUS_CODE_WRONG_ORIGINAL_ID
+		checkData.ErrorCode = constant2.STATUS_CODE_WRONG_ORIGINAL_ID
 		return checkData, nil, nil, errors.New("wrong original instruction ID")
 	}
 
@@ -1234,22 +1234,22 @@ func getCriticalInfoFromPacs004(document *pacs004struct.PaymentReturnV09, homeDo
 		if elem.Transactionstatus == nil {
 			continue
 		}
-		if *elem.Transactionstatus == constant.PAYMENT_STATUS_UNABLE_TO_APPLY && charges != 0 {
+		if *elem.Transactionstatus == constant2.PAYMENT_STATUS_UNABLE_TO_APPLY && charges != 0 {
 			return checkData, nil, nil, errors.New("The payment is not executed by RFI, so no charges should be included")
 		}
 
-		if *elem.Transactionstatus == constant.PAYMENT_STATUS_SETTLED && originalAssetType == constant.DO_SETTLEMENT {
+		if *elem.Transactionstatus == constant2.PAYMENT_STATUS_SETTLED && originalAssetType == constant2.DO_SETTLEMENT {
 			return checkData, nil, nil, errors.New("Please contact counterparty for reconciliation outside World Wire")
 		}
 	}
 
 	// if it is DO, check if they are using issuing account & if either OFI or RFI is the issuer
-	if utils.StringsEqual(settlementMethod, constant.DO_SETTLEMENT) {
+	if utils.StringsEqual(settlementMethod, constant2.DO_SETTLEMENT) {
 		// check if this DO was issued by either OFI or RFI
 		if !utils.StringsEqual(ofiId, assetIssuerId) && !utils.StringsEqual(rfiId, assetIssuerId) {
 			errMsg := "Either OFI or RFI should be the asset issuer, if settlement method is WWDO"
 			LOGGER.Error(errMsg)
-			checkData.ErrorCode = constant.STATUS_CODE_WRONG_ASSET_ISSUER
+			checkData.ErrorCode = constant2.STATUS_CODE_WRONG_ASSET_ISSUER
 			return checkData, nil, nil, errors.New(errMsg)
 		}
 
@@ -1257,49 +1257,49 @@ func getCriticalInfoFromPacs004(document *pacs004struct.PaymentReturnV09, homeDo
 		if !utils.StringsEqual(rfiSettlementAccountName, common.ISSUING) || !utils.StringsEqual(ofiSettlementAccountName, common.ISSUING) {
 			errMsg := "The settlement method is WWDO, so the account name of both OFI & RFI should be \"issuing\""
 			LOGGER.Error(errMsg)
-			checkData.ErrorCode = constant.STATUS_CODE_WRONG_ACCOUNT_NAME
+			checkData.ErrorCode = constant2.STATUS_CODE_WRONG_ACCOUNT_NAME
 			return checkData, nil, nil, errors.New(errMsg)
 		}
 
 		if utils.StringsEqual(ofiId, rfiId) {
 			LOGGER.Error("Internal DO transfer is not allowed")
-			checkData.ErrorCode = constant.STATUS_CODE_DO_INTERNAL_TRANSFER_ERROR
+			checkData.ErrorCode = constant2.STATUS_CODE_DO_INTERNAL_TRANSFER_ERROR
 			return checkData, nil, nil, errors.New("Internal DO transfer is not allowed")
 		}
 
 		if !horizon.IsIssuer(assetIssuerId, currencyCode) {
 			errMsg := "The asset " + currencyCode + " is not issued by the asset issuer " + assetIssuerId
 			LOGGER.Errorf(errMsg)
-			checkData.ErrorCode = constant.STATUS_CODE_WRONG_ASSET_ISSUER
+			checkData.ErrorCode = constant2.STATUS_CODE_WRONG_ASSET_ISSUER
 			return checkData, nil, nil, errors.New(errMsg)
 		}
 
 		// check if settlement asset currency code is ended with "DO"
-		if !strings.HasSuffix(currencyCode, constant.SETTLEMENT_METHOD_DIGITAL_OBLIGATION) {
+		if !strings.HasSuffix(currencyCode, constant2.SETTLEMENT_METHOD_DIGITAL_OBLIGATION) {
 			errMsg := "Settlement method is DO, please use DO as settlement currency"
 			LOGGER.Error(errMsg)
-			checkData.ErrorCode = constant.STATUS_CODE_WRONG_SETTLEMENT_METHOD
+			checkData.ErrorCode = constant2.STATUS_CODE_WRONG_SETTLEMENT_METHOD
 			return checkData, nil, nil, errors.New(errMsg)
 		}
 	}
 
-	if *paymentData.TxStatus == constant.DATABASE_STATUS_CANCEL_INIT {
+	if *paymentData.TxStatus == constant2.DATABASE_STATUS_CANCEL_INIT {
 		reqSettlementMethod := string(*document.TxInf[0].OrgnlTxRef.SttlmInf.SttlmMtd)
 		if !utils.StringsEqual(reqSettlementMethod, settlementMethod) {
-			checkData.ErrorCode = constant.STATUS_CODE_WRONG_SETTLEMENT_METHOD
+			checkData.ErrorCode = constant2.STATUS_CODE_WRONG_SETTLEMENT_METHOD
 			return checkData, nil, nil, errors.New("settlement method is not the same as payment request")
 		}
 
-		if utils.StringsEqual(settlementMethod, constant.DO_SETTLEMENT) {
+		if utils.StringsEqual(settlementMethod, constant2.DO_SETTLEMENT) {
 			if !utils.StringsEqual(rfiSettlementAccountName, common.ISSUING) {
 				LOGGER.Error("Account name should be \"issuing\", if settlement method is WWDO")
-				checkData.ErrorCode = constant.STATUS_CODE_WRONG_ACCOUNT_NAME
+				checkData.ErrorCode = constant2.STATUS_CODE_WRONG_ACCOUNT_NAME
 				return checkData, nil, nil, errors.New("wrong account name for DO")
 			}
 		}
 	} else {
 		LOGGER.Error("Data not found in database")
-		checkData.ErrorCode = constant.STATUS_CODE_ORIGINAL_REQUEST_NOT_INIT
+		checkData.ErrorCode = constant2.STATUS_CODE_ORIGINAL_REQUEST_NOT_INIT
 		return checkData, nil, nil, errors.New("Data not found in database")
 	}
 
@@ -1348,7 +1348,7 @@ func getCriticalInfoFromCamt029(document *camt029struct.ResolutionOfInvestigatio
 	// Check if the assignor is using the correct participant ID
 	if !utils.StringsEqual(rfiId, homeDomain) {
 		LOGGER.Error("Instructing agent is an incorrect participant")
-		checkData.ErrorCode = constant.STATUS_CODE_WRONG_FI
+		checkData.ErrorCode = constant2.STATUS_CODE_WRONG_FI
 		return checkData, nil, errors.New("instructing agent is an incorrect participant")
 	}
 
@@ -1357,26 +1357,26 @@ func getCriticalInfoFromCamt029(document *camt029struct.ResolutionOfInvestigatio
 
 	// Query failed or data unmarshal failed
 	if dbErr != nil {
-		checkData.ErrorCode = constant.STATUS_CODE_INTERNAL_ERROR
+		checkData.ErrorCode = constant2.STATUS_CODE_INTERNAL_ERROR
 		return checkData, nil, errors.New("database query error")
 	}
 
 	// Not corresponding data exist in the database
 	if *paymentData.TxData == "" {
-		checkData.ErrorCode = constant.STATUS_CODE_WRONG_ORIGINAL_ID
+		checkData.ErrorCode = constant2.STATUS_CODE_WRONG_ORIGINAL_ID
 		return checkData, nil, errors.New("wrong original instruction ID")
 	}
 
-	if *paymentData.TxStatus != constant.DATABASE_STATUS_CANCEL_INIT {
+	if *paymentData.TxStatus != constant2.DATABASE_STATUS_CANCEL_INIT {
 		LOGGER.Error("Data not found in database")
-		checkData.ErrorCode = constant.STATUS_CODE_ORIGINAL_REQUEST_NOT_INIT
+		checkData.ErrorCode = constant2.STATUS_CODE_ORIGINAL_REQUEST_NOT_INIT
 		return checkData, nil, errors.New("Original cancel request not found")
 	}
 
 	// Check if the response status if RJCR
-	if !utils.StringsEqual(rejectStatus, constant.PAYMENT_STATUS_RJCR) {
+	if !utils.StringsEqual(rejectStatus, constant2.PAYMENT_STATUS_RJCR) {
 		LOGGER.Error("Unknown response status code")
-		checkData.ErrorCode = constant.STATUS_CODE_WRONG_RESPONSE_CODE
+		checkData.ErrorCode = constant2.STATUS_CODE_WRONG_RESPONSE_CODE
 		return checkData, nil, errors.New("unknown response status code")
 	}
 

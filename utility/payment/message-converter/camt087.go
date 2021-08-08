@@ -3,17 +3,17 @@ package message_converter
 import (
 	"encoding/xml"
 	"errors"
+	"github.com/IBM/world-wire/utility/common/constant"
 	"os"
 
 	camt "github.com/IBM/world-wire/iso20022/camt08700106"
 	pbstruct "github.com/IBM/world-wire/iso20022/proto/github.ibm.com/gftn/iso20022/camt08700106"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
 	"github.com/IBM/world-wire/utility/payment/client"
-	"github.com/IBM/world-wire/utility/payment/constant"
 	"github.com/IBM/world-wire/utility/payment/environment"
 	"github.com/IBM/world-wire/utility/payment/utils"
 	"github.com/IBM/world-wire/utility/payment/utils/parse"
 	"github.com/IBM/world-wire/utility/payment/utils/sendmodel"
-	global_environment "github.com/IBM/world-wire/utility/global-environment"
 )
 
 type Camt087 struct {

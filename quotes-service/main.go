@@ -29,7 +29,7 @@ import (
 	"github.com/IBM/world-wire/quotes-service/utility/nqsdbclient"
 	"github.com/IBM/world-wire/quotes-service/utility/participantregistry"
 	"github.com/IBM/world-wire/utility"
-	"github.com/IBM/world-wire/utility/global-environment/services"
+	"github.com/IBM/world-wire/utility/nodeconfig/secrets"
 	"github.com/IBM/world-wire/utility/kafka"
 	"github.com/IBM/world-wire/utility/logconfig"
 	"github.com/IBM/world-wire/utility/message"
@@ -155,8 +155,8 @@ func exchangeHandlerBuilder() exchangehandler.ExchangeHandler {
 }
 
 func (a *App) initialize() {
-	services.VariableCheck()
-	services.InitEnv()
+	global_environment.VariableCheck()
+	secrets.InitEnv()
 
 	a.HTTPHandler = nil
 	if os.Getenv(global_environment.ENV_KEY_ORIGIN_ALLOWED) == "true" {

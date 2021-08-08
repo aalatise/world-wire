@@ -17,6 +17,7 @@ replace (
 	github.com/IBM/world-wire/utility/global-environment => ./../global-environment
 	github.com/IBM/world-wire/utility/database => ./../database
 	github.com/IBM/world-wire/utility => ./..
+	github.com/IBM/world-wire/utility/kafka => ./../kafka
 	github.com/IBM/world-wire/utility/nodeconfig => ./../nodeconfig
 	github.com/go-resty/resty => gopkg.in/resty.v1 v1.11.0
 	github.com/stellar/go => github.com/kingaj12/go v0.0.0-20210409221219-b9a73c8c53cb
