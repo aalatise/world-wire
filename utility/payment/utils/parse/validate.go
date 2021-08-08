@@ -8,10 +8,10 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/IBM/world-wire/payment/environment"
+	"github.com/IBM/world-wire/utility/payment/environment"
 
-	"github.com/IBM/world-wire/payment/constant"
-	"github.com/IBM/world-wire/payment/utils/sendmodel"
+	"github.com/IBM/world-wire/utility/payment/constant"
+	"github.com/IBM/world-wire/utility/payment/utils/sendmodel"
 	"github.com/lestrrat-go/libxml2"
 	"github.com/lestrrat-go/libxml2/types"
 	"github.com/lestrrat-go/libxml2/xsd"

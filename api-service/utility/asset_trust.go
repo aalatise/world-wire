@@ -6,7 +6,7 @@ import (
 	hClient "github.com/stellar/go/clients/horizonclient"
 	"github.com/IBM/world-wire/gftn-models/model"
 	pr_client "github.com/IBM/world-wire/participant-registry-client/pr-client"
-	"github.com/IBM/world-wire/utility/asset"
+	"github.com/IBM/world-wire/utility/payment/asset"
 	"github.com/IBM/world-wire/utility/common"
 	global_environment "github.com/IBM/world-wire/utility/global-environment"
 )

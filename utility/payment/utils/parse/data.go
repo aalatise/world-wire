@@ -8,10 +8,10 @@ import (
 	pacs009struct "github.com/IBM/world-wire/iso20022/pacs00900108"
 
 	"github.com/IBM/world-wire/gftn-models/model"
-	"github.com/IBM/world-wire/payment/utils/database"
+	"github.com/IBM/world-wire/utility/payment/utils/database"
 
-	"github.com/IBM/world-wire/payment/constant"
-	"github.com/IBM/world-wire/payment/utils/sendmodel"
+	"github.com/IBM/world-wire/utility/payment/constant"
+	"github.com/IBM/world-wire/utility/payment/utils/sendmodel"
 )
 
 func CreatePacs008DbData(d *pacs008struct.FIToFICustomerCreditTransferV07) *sendmodel.DBData {

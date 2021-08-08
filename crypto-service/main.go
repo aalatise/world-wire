@@ -11,6 +11,7 @@ import (
 	"time"
 
 	global_environment "github.com/IBM/world-wire/utility/global-environment"
+	"github.com/IBM/world-wire/utility/nodeconfig/secrets"
 
 	"github.com/gorilla/mux"
 	"github.com/op/go-logging"
@@ -18,7 +19,6 @@ import (
 	"github.com/urfave/negroni"
 	crypto_handler "github.com/IBM/world-wire/crypto-service/crypto-handler"
 	"github.com/IBM/world-wire/utility"
-	"github.com/IBM/world-wire/utility/global-environment/services"
 	"github.com/IBM/world-wire/utility/logconfig"
 	"github.com/IBM/world-wire/utility/message"
 	middleware_checks "github.com/IBM/world-wire/utility/middleware"
@@ -41,8 +41,8 @@ var serviceVersion string
 
 func (a *App) Initialize() {
 
-	services.VariableCheck()
-	services.InitEnv()
+	global_environment.VariableCheck()
+	secrets.InitEnv()
 
 	a.HTTPHandler = nil
 	a.InternalHTTPHandler = nil

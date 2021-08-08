@@ -7,7 +7,7 @@ import (
 
 	"github.com/IBM/world-wire/utility/common"
 
-	"github.com/IBM/world-wire/payment/utils/test/functions"
+	"github.com/IBM/world-wire/utility/payment/utils/test/functions"
 	global_environment "github.com/IBM/world-wire/utility/global-environment"
 )
 

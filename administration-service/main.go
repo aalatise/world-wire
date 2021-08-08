@@ -5,27 +5,27 @@ import (
 	"flag"
 	"fmt"
 	middlewares "github.com/IBM/world-wire/auth-service-go/handler"
+	"github.com/IBM/world-wire/utility"
+	"github.com/IBM/world-wire/utility/nodeconfig/secrets"
 	"net/http"
 	"os"
 	"os/signal"
 	"strconv"
 	"time"
 
+	"github.com/IBM/world-wire/administration-service/blocklist"
+	"github.com/IBM/world-wire/administration-service/killswitch"
+	rr "github.com/IBM/world-wire/administration-service/persistence"
+	global_environment "github.com/IBM/world-wire/utility/global-environment"
+	"github.com/IBM/world-wire/utility/logconfig"
+	"github.com/IBM/world-wire/utility/message"
+	"github.com/IBM/world-wire/utility/response"
+	"github.com/IBM/world-wire/utility/status"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	logging "github.com/op/go-logging"
 	b "github.com/stellar/go/build"
 	"github.com/urfave/negroni"
-	"github.com/IBM/world-wire/administration-service/blocklist"
-	"github.com/IBM/world-wire/administration-service/killswitch"
-	rr "github.com/IBM/world-wire/administration-service/persistence"
-	"github.com/IBM/world-wire/utility"
-	global_environment "github.com/IBM/world-wire/utility/global-environment"
-	"github.com/IBM/world-wire/utility/global-environment/services"
-	"github.com/IBM/world-wire/utility/logconfig"
-	"github.com/IBM/world-wire/utility/message"
-	"github.com/IBM/world-wire/utility/response"
-	"github.com/IBM/world-wire/utility/status"
 )
 
 type App struct {
@@ -167,8 +167,8 @@ func (a *App) initRoutes() {
 
 func main() {
 
-	services.VariableCheck()
-	services.InitEnv()
+	global_environment.VariableCheck()
+	secrets.InitEnv()
 	a = App{}
 	serviceLogs := os.Getenv(global_environment.ENV_KEY_SERVICE_LOG_FILE)
 	f, err := logconfig.SetupLogging(serviceLogs, LOGGER)

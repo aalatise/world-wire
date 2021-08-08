@@ -4,8 +4,8 @@ import (
 	"time"
 
 	"github.com/IBM/world-wire/gftn-models/model"
-	"github.com/IBM/world-wire/payment"
-	"github.com/IBM/world-wire/payment/utils/sendmodel"
+	"github.com/IBM/world-wire/utility/payment"
+	"github.com/IBM/world-wire/utility/payment/utils/sendmodel"
 )
 
 type Payment struct {

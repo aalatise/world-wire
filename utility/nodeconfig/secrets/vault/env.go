@@ -2,7 +2,7 @@ package vault
 
 import (
 	"errors"
-	"github.com/IBM/world-wire/utility/secrets"
+	"github.com/IBM/world-wire/utility/nodeconfig/secrets"
 	"os"
 	"strings"
 

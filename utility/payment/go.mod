@@ -1,12 +1,11 @@
-module github.com/IBM/world-wire/payment
+module github.com/IBM/world-wire/utility/payment
 
 go 1.16
 
 replace (
 	github.com/IBM/world-wire/administration-service => ./../../administration-service
 	github.com/IBM/world-wire/anchor-service/handlers => ./../../anchor-service/handlers
-	github.com/IBM/world-wire/auth-service-go/jwt => ./../../auth-service-go/jwt
-	github.com/IBM/world-wire/auth-service-go/session => ./../../auth-service-go/session
+	github.com/IBM/world-wire/auth-service-go => ./../../auth-service-go
 	github.com/IBM/world-wire/crypto-service-client => ./../../crypto-service-client
 	github.com/IBM/world-wire/gas-service-client => ./../../gas-service-client
 	github.com/IBM/world-wire/global-whitelist-service => ./../../global-whitelist-service

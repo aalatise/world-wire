@@ -3,7 +3,7 @@ package transaction
 import (
 	"errors"
 
-	"github.com/IBM/world-wire/payment/utils/sendmodel"
+	"github.com/IBM/world-wire/utility/payment/utils/sendmodel"
 	"github.com/stellar/go/xdr"
 )
 

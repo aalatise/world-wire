@@ -1,13 +1,12 @@
 package secrets
 
 import (
+	"github.com/IBM/world-wire/utility/global-environment"
 	"github.com/IBM/world-wire/utility/nodeconfig/secrets/vault"
 	"os"
 	"strings"
 
 	"github.com/IBM/world-wire/utility/common"
-
-	global_environment "github.com/IBM/world-wire/utility/global-environment"
 )
 
 func InitEnv() {

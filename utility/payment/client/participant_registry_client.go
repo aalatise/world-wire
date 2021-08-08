@@ -2,7 +2,7 @@ package client
 
 import (
 	pr_client "github.com/IBM/world-wire/participant-registry-client/pr-client"
-	"github.com/IBM/world-wire/payment/constant"
+	"github.com/IBM/world-wire/utility/payment/constant"
 	"github.com/IBM/world-wire/utility/common"
 )
 

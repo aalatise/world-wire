@@ -9,8 +9,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/IBM/world-wire/payment/environment"
-	"github.com/IBM/world-wire/payment/utils"
+	"github.com/IBM/world-wire/utility/payment/environment"
+	"github.com/IBM/world-wire/utility/payment/utils"
 	DB "github.com/IBM/world-wire/utility/database"
 	"github.com/IBM/world-wire/utility/xmldsig"
 	"github.com/golang/protobuf/proto"
@@ -18,23 +18,23 @@ import (
 
 	blocklist_client "github.com/IBM/world-wire/administration-service/blocklist-client"
 	"github.com/IBM/world-wire/gftn-models/model"
-	"github.com/IBM/world-wire/payment/client"
-	"github.com/IBM/world-wire/payment/utils/horizon"
-	"github.com/IBM/world-wire/payment/utils/transaction"
+	"github.com/IBM/world-wire/utility/payment/client"
+	"github.com/IBM/world-wire/utility/payment/utils/horizon"
+	"github.com/IBM/world-wire/utility/payment/utils/transaction"
 
 	ibwf002struct "github.com/IBM/world-wire/iso20022/ibwf00200101"
 	pacs002struct "github.com/IBM/world-wire/iso20022/pacs00200109"
 	pacs004struct "github.com/IBM/world-wire/iso20022/pacs00400109"
 
 	ibwfPbStruct "github.com/IBM/world-wire/iso20022/proto/github.ibm.com/gftn/iso20022/ibwf00200101"
-	"github.com/IBM/world-wire/payment/constant"
-	message_converter "github.com/IBM/world-wire/payment/message-converter"
-	"github.com/IBM/world-wire/payment/utils/database"
+	"github.com/IBM/world-wire/utility/payment/constant"
+	message_converter "github.com/IBM/world-wire/utility/payment/message-converter"
+	"github.com/IBM/world-wire/utility/payment/utils/database"
 	global_environment "github.com/IBM/world-wire/utility/global-environment"
 	"github.com/IBM/world-wire/utility/kafka"
 
-	"github.com/IBM/world-wire/payment/utils/parse"
-	"github.com/IBM/world-wire/payment/utils/sendmodel"
+	"github.com/IBM/world-wire/utility/payment/utils/parse"
+	"github.com/IBM/world-wire/utility/payment/utils/sendmodel"
 	"github.com/IBM/world-wire/utility/common"
 )
 

@@ -6,7 +6,7 @@ import (
 	"fmt"
 
 	"github.com/IBM/world-wire/gftn-models/model"
-	"github.com/IBM/world-wire/payment/constant"
+	"github.com/IBM/world-wire/utility/payment/constant"
 )
 
 func BuildFiToFiCCTTxnMemo(opType string, tr model.Send, stellarTxnID, orgnlMsgId, orgnlInstrId, messageType, messageName string) model.FitoFICCTMemoData {

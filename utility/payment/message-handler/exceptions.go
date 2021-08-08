@@ -10,14 +10,14 @@ import (
 	"time"
 
 	"github.com/IBM/world-wire/gftn-models/model"
-	"github.com/IBM/world-wire/payment/environment"
-	"github.com/IBM/world-wire/payment/utils"
+	"github.com/IBM/world-wire/utility/payment/environment"
+	"github.com/IBM/world-wire/utility/payment/utils"
 	DB "github.com/IBM/world-wire/utility/database"
 	"github.com/IBM/world-wire/utility/xmldsig"
 	"github.com/golang/protobuf/proto"
 
-	message_converter "github.com/IBM/world-wire/payment/message-converter"
-	"github.com/IBM/world-wire/payment/utils/transaction"
+	message_converter "github.com/IBM/world-wire/utility/payment/message-converter"
+	"github.com/IBM/world-wire/utility/payment/utils/transaction"
 
 	camt026struct "github.com/IBM/world-wire/iso20022/camt02600107"
 	camt087struct "github.com/IBM/world-wire/iso20022/camt08700106"
@@ -26,10 +26,10 @@ import (
 	camt087pbstruct "github.com/IBM/world-wire/iso20022/proto/github.ibm.com/gftn/iso20022/camt08700106"
 
 	blocklist_client "github.com/IBM/world-wire/administration-service/blocklist-client"
-	"github.com/IBM/world-wire/payment/constant"
-	"github.com/IBM/world-wire/payment/utils/database"
-	"github.com/IBM/world-wire/payment/utils/parse"
-	"github.com/IBM/world-wire/payment/utils/sendmodel"
+	"github.com/IBM/world-wire/utility/payment/constant"
+	"github.com/IBM/world-wire/utility/payment/utils/database"
+	"github.com/IBM/world-wire/utility/payment/utils/parse"
+	"github.com/IBM/world-wire/utility/payment/utils/sendmodel"
 	"github.com/IBM/world-wire/utility/common"
 	global_environment "github.com/IBM/world-wire/utility/global-environment"
 	"github.com/IBM/world-wire/utility/kafka"

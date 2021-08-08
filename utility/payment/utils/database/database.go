@@ -5,9 +5,9 @@ import (
 	"encoding/json"
 
 	"github.com/IBM/world-wire/gftn-models/model"
-	"github.com/IBM/world-wire/payment/constant"
-	"github.com/IBM/world-wire/payment/utils/sendmodel"
-	"github.com/IBM/world-wire/payment/utils/transaction"
+	"github.com/IBM/world-wire/utility/payment/constant"
+	"github.com/IBM/world-wire/utility/payment/utils/sendmodel"
+	"github.com/IBM/world-wire/utility/payment/utils/transaction"
 )
 
 func SyncWithPortalDB(

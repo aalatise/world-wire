@@ -11,8 +11,8 @@ import (
 	"github.com/IBM/world-wire/crypto-service/utility/constant"
 	comn "github.com/IBM/world-wire/utility/common"
 	global_environment "github.com/IBM/world-wire/utility/global-environment"
-	"github.com/IBM/world-wire/utility/global-environment/services/secrets"
-	"github.com/IBM/world-wire/utility/global-environment/services/secrets/vault"
+	"github.com/IBM/world-wire/utility/nodeconfig/secrets"
+	"github.com/IBM/world-wire/utility/nodeconfig/secrets/vault"
 )
 
 var LOGGER = logging.MustGetLogger("crypto-handler")

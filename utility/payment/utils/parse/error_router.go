@@ -5,9 +5,9 @@ import (
 	"os"
 
 	"github.com/IBM/world-wire/iso20022/pacs00200109"
-	"github.com/IBM/world-wire/payment/constant"
-	"github.com/IBM/world-wire/payment/environment"
-	"github.com/IBM/world-wire/payment/utils"
+	"github.com/IBM/world-wire/utility/payment/constant"
+	"github.com/IBM/world-wire/utility/payment/environment"
+	"github.com/IBM/world-wire/utility/payment/utils"
 )
 
 func (handler *ResponseHandler) KafkaErrorRouter(xmlMsgType, msgId, instructionId, ofiId, rfiId string, statusCode int, generateReport bool) (string, []byte, error) {

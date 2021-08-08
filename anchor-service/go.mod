@@ -3,7 +3,7 @@ module github.com/IBM/world-wire/anchor-service
 go 1.16
 
 replace (
-	github.com/IBM/world-wire/auth-service-go/handler => ./../auth-service-go/handler
+	github.com/IBM/world-wire/auth-service-go => ./../auth-service-go
 	github.com/IBM/world-wire/administration-service => ../../../../github.com/IBM/world-wire/administration-service
 	github.com/IBM/world-wire/api-service => ../../../../github.com/IBM/world-wire/api-service
 	github.com/IBM/world-wire/crypto-service-client => ../../../../github.com/IBM/world-wire/crypto-service-client
@@ -12,7 +12,7 @@ replace (
 	github.com/IBM/world-wire/global-whitelist-service => ../../../../github.com/IBM/world-wire/global-whitelist-service
 	github.com/IBM/world-wire/iso20022 => ../../../../github.com/IBM/world-wire/iso20022
 	github.com/IBM/world-wire/participant-registry-client => ../../../../github.com/IBM/world-wire/participant-registry-client
-	github.com/IBM/world-wire/payment => ./../utility/payment
+	github.com/IBM/world-wire/utility/payment => ./../utility/payment
 	github.com/IBM/world-wire/utility => ../../../../github.com/IBM/world-wire/utility
 	github.com/IBM/world-wire/utility/global-environment => ./../utility/global-environment
 	github.com/IBM/world-wire/utility/common => ../../../../github.com/IBM/world-wire/utility/common

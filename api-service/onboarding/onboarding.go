@@ -19,7 +19,7 @@ import (
 	"github.com/IBM/world-wire/gftn-models/model"
 	pr_client "github.com/IBM/world-wire/participant-registry-client/pr-client"
 	"github.com/IBM/world-wire/utility"
-	ast "github.com/IBM/world-wire/utility/asset"
+	ast "github.com/IBM/world-wire/utility/payment/asset"
 	comn "github.com/IBM/world-wire/utility/common"
 	global_environment "github.com/IBM/world-wire/utility/global-environment"
 	"github.com/IBM/world-wire/utility/global-environment/services/secrets"

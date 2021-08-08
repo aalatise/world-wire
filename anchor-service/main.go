@@ -25,6 +25,7 @@ import (
 	"github.com/gorilla/mux"
 	b "github.com/stellar/go/build"
 	"github.com/urfave/negroni"
+	"github.com/IBM/world-wire/utility/nodeconfig/secrets"
 )
 
 type App struct {
@@ -45,8 +46,8 @@ var APP App
 var serviceVersion = ""
 
 func (a *App) Initialize() *message_handler.PaymentOperations {
-	services.VariableCheck()
-	services.InitEnv()
+	global_environment.VariableCheck()
+	secrets.InitEnv()
 
 	a.HTTPHandler = nil
 	if os.Getenv(global_environment.ENV_KEY_ORIGIN_ALLOWED) == "true" {

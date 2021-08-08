@@ -11,8 +11,8 @@ import (
 	"github.com/IBM/world-wire/utility/xmldsig"
 
 	crypto_client "github.com/IBM/world-wire/crypto-service-client/crypto-client"
-	"github.com/IBM/world-wire/payment/client"
-	"github.com/IBM/world-wire/payment/utils/sendmodel"
+	"github.com/IBM/world-wire/utility/payment/client"
+	"github.com/IBM/world-wire/utility/payment/utils/sendmodel"
 	"github.com/IBM/world-wire/utility/common"
 	global_environment "github.com/IBM/world-wire/utility/global-environment"
 	"github.com/IBM/world-wire/utility/participant"

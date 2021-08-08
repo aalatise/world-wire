@@ -12,8 +12,8 @@ import (
 
 	"github.com/IBM/world-wire/utility/blockchain-adaptor/ww_stellar"
 	"github.com/IBM/world-wire/utility/database"
-	"github.com/IBM/world-wire/utility/global-environment/services/secrets"
-	"github.com/IBM/world-wire/utility/global-environment/services/secrets/vault"
+	"github.com/IBM/world-wire/utility/nodeconfig/secrets"
+	"github.com/IBM/world-wire/utility/nodeconfig/secrets/vault"
 	"go.mongodb.org/mongo-driver/bson"
 
 	"github.com/go-openapi/strfmt"
@@ -27,8 +27,8 @@ import (
 	"github.com/IBM/world-wire/gftn-models/model"
 	"github.com/IBM/world-wire/global-whitelist-service/whitelistclient"
 	pr_client "github.com/IBM/world-wire/participant-registry-client/pr-client"
-	"github.com/IBM/world-wire/utility/asset"
-	ast "github.com/IBM/world-wire/utility/asset"
+	"github.com/IBM/world-wire/utility/payment/asset"
+	ast "github.com/IBM/world-wire/utility/apayment/sset"
 	"github.com/IBM/world-wire/utility/common"
 	comn "github.com/IBM/world-wire/utility/common"
 	global_environment "github.com/IBM/world-wire/utility/global-environment"

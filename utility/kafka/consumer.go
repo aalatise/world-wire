@@ -3,7 +3,7 @@ package kafka
 import (
 	"github.com/IBM/world-wire/utility/global-environment"
 	"github.com/IBM/world-wire/utility/payment/constant"
-	"github.com/IBM/world-wire/utility/secrets"
+	"github.com/IBM/world-wire/utility/nodeconfig/secrets"
 )
 
 func (ops *KafkaOpreations) Consume(data chan<- []byte, topic string, consumerIndex int) {

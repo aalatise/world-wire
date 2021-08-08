@@ -1,7 +1,7 @@
 package message_converter
 
 import (
-	"github.com/IBM/world-wire/payment/utils/sendmodel"
+	"github.com/IBM/world-wire/utility/payment/utils/sendmodel"
 )
 
 var LOGGER = logging.MustGetLogger("message-converter")

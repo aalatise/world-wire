@@ -8,16 +8,14 @@ import (
 	"strings"
 	"time"
 
-	"github.com/IBM/world-wire/utility/global-environment/services/secrets"
+	"github.com/IBM/world-wire/utility/nodeconfig/secrets"
+	"github.com/IBM/world-wire/utility/nodeconfig/secrets/vault"
 
 	crypto_client "github.com/IBM/world-wire/crypto-service-client/crypto-client"
 	gasserviceclient "github.com/IBM/world-wire/gas-service-client"
 	ast "github.com/IBM/world-wire/utility/asset"
-	"github.com/IBM/world-wire/utility/common"
 	util "github.com/IBM/world-wire/utility/common"
 	global_environment "github.com/IBM/world-wire/utility/global-environment"
-	"github.com/IBM/world-wire/utility/global-environment/services/secrets/vault"
-	"github.com/IBM/world-wire/utility/participant"
 	"github.com/IBM/world-wire/utility/response"
 	"github.com/gorilla/mux"
 	b "github.com/stellar/go/build"
@@ -40,7 +38,7 @@ CreateKillSwitch is a Context initializing function
 func CreateKillSwitch() (KillSwitch, error) {
 	ks := KillSwitch{}
 	var err error
-	if strings.ToUpper(os.Getenv(global_environment.ENV_KEY_SECRET_STORAGE_LOCATION)) == common.HASHICORP_VAULT_SECRET {
+	if strings.ToUpper(os.Getenv(global_environment.ENV_KEY_SECRET_STORAGE_LOCATION)) == util.HASHICORP_VAULT_SECRET {
 		ks.secrets, err = vault.InitializeVault()
 		if err != nil {
 			panic(err)
@@ -107,7 +105,7 @@ func (ks KillSwitch) SuspendAccount(w http.ResponseWriter, req *http.Request) {
 
 	// retrieve IBM token account
 	domainId := os.Getenv(global_environment.ENV_KEY_IBM_TOKEN_DOMAIN_ID)
-	wwAdminAccount, err := ks.secrets.GetAccount(domainId, common.MASTER_ACCOUNT)
+	wwAdminAccount, err := ks.secrets.GetAccount(domainId, util.MASTER_ACCOUNT)
 	if err != nil {
 		LOGGER.Debugf("IBM account: %v", wwAdminAccount.NodeAddress)
 		LOGGER.Errorf("Error: %v", err.Error())
@@ -222,7 +220,8 @@ func (ks KillSwitch) ReactivateAccount(w http.ResponseWriter, req *http.Request)
 	horizonClient := util.GetHorizonClient(os.Getenv(global_environment.ENV_KEY_HORIZON_CLIENT_URL))
 	stellarNetwork := util.GetStellarNetwork(os.Getenv(global_environment.ENV_KEY_STELLAR_NETWORK))
 
-	secretString := participant.GetSecretPhrase()
+	ks, err := CreateKillSwitch()
+	secretString, _ := ks.secrets.GetSecretPhrase(participantId, accountName)
 
 	op := Operations{}
 	gasServiceClient := gasserviceclient.Client{
@@ -240,7 +239,7 @@ func (ks KillSwitch) ReactivateAccount(w http.ResponseWriter, req *http.Request)
 
 	// retrieve IBM token account
 	domainId := os.Getenv(global_environment.ENV_KEY_IBM_TOKEN_DOMAIN_ID)
-	wwAdminAccount, err := ks.secrets.GetAccount(domainId, common.MASTER_ACCOUNT)
+	wwAdminAccount, err := ks.secrets.GetAccount(domainId, util.MASTER_ACCOUNT)
 	if err != nil {
 		LOGGER.Debugf("IBM account: %v", wwAdminAccount.NodeAddress)
 		LOGGER.Errorf("Error: %v", err.Error())
@@ -330,7 +329,6 @@ func generateSHA256Hash(key string) string {
 	}
 	return actual
 }
-
 
 /*
 This function would take 'preimage' value as argument and get the

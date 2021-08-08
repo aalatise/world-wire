@@ -10,7 +10,7 @@ import (
 	b "github.com/stellar/go/build"
 	crypto_client "github.com/IBM/world-wire/crypto-service-client/crypto-client"
 	gasserviceclient "github.com/IBM/world-wire/gas-service-client"
-	ast "github.com/IBM/world-wire/utility/asset"
+	ast "github.com/IBM/world-wire/utility/payment/asset"
 	util "github.com/IBM/world-wire/utility/common"
 	global_environment "github.com/IBM/world-wire/utility/global-environment"
 )

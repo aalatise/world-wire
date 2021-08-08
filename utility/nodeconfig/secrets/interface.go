@@ -1,6 +1,6 @@
-package nodeconfig
+package secrets
 
-import "github.com/IBM/world-wire/utility/nodeconfig/secrets"
+import "github.com/IBM/world-wire/utility/nodeconfig"
 
 type Client interface {
 	Read(string) (map[string]interface{}, error)
@@ -12,12 +12,12 @@ type Client interface {
 
 	// admin
 	// domainId, accountName
-	GetAccount(string, string) (Account, error)
+	GetAccount(string, string) (nodeconfig.Account, error)
 	GetSecretPhrase(string, string) (string, error)
-	DeleteSingleSecretEntry(secrets.CredentialInfo, string) error
-	AppendSecret(secrets.CredentialInfo, map[string]interface{}) error
+	DeleteSingleSecretEntry(CredentialInfo, string) error
+	AppendSecret(CredentialInfo, map[string]interface{}) error
 
 	//api
-	StoreAccount(string, Account, string) error
+	StoreAccount(string, nodeconfig.Account, string) error
 	InitEnv()
 }
